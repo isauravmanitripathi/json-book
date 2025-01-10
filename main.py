@@ -102,18 +102,20 @@ def main():
                 console.print("[bold red]Invalid file path. Please try again.[/bold red]")
                 continue
 
+            # Get book name
+            book_name = console.input("[bold blue]Enter the name of the book: [/bold blue]").strip()
+            
+            if not book_name:
+                console.print("[bold red]Book name cannot be empty. Please try again.[/bold red]")
+                continue
+
             # Ensure results/pdfs directory exists
             os.makedirs('results/pdfs', exist_ok=True)
-
-            # Generate output file path
-            base_filename = os.path.splitext(os.path.basename(file_path))[0]
-            output_filename = f"{base_filename}.pdf"
-            output_path = os.path.join('results', 'pdfs', output_filename)
 
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
                     pdf_generator = PDFGenerator()
-                    result = pdf_generator.generate_pdf(file_path, output_path)
+                    result = pdf_generator.generate_pdf(file_path, book_name)
                 
                 if result:
                     console.print("[bold green]PDF generated successfully![/bold green]")
