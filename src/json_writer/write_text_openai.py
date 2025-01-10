@@ -1,3 +1,4 @@
+# src/json_writer/write_text_openai.py
 import os
 import json
 from typing import List, Dict, Optional
@@ -24,78 +25,118 @@ class ConversationGenerator:
         
         # Create output file with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.output_file = os.path.join(self.output_dir, f"conversation_{timestamp}.txt")
+        self.output_file = os.path.join(self.output_dir, f"article_{timestamp}.txt")
         
         # Initialize the file with a header
         with open(self.output_file, 'w', encoding='utf-8') as f:
             f.write(f"Article Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write("="*50 + "\n\n")
 
+    def clean_text(self, text: str) -> str:
+        """Clean and format the text."""
+        # Remove multiple newlines and extra spaces
+        text = ' '.join(text.split())
+        return text
+
+    def format_name(self, name: str) -> str:
+        """Format chapter or section name by removing unnecessary prefixes."""
+        name = str(name).strip()
+        # Remove common prefixes
+        prefixes = ['Chapter:', 'Section:', 'CHAPTER', 'SECTION']
+        for prefix in prefixes:
+            if name.upper().startswith(prefix.upper()):
+                name = name[len(prefix):].strip()
+        return name
+
     def generate_prompt(self, text: str, chapter_name: str, section_name: str) -> str:
         """Generate the conversation prompt."""
+        # Clean and format names
+        chapter_name = self.format_name(chapter_name)
+        section_name = self.format_name(section_name)
+        
         return f"""<instruction>
-    Transform this conversation-style text into a well-structured article paragraph.
-    
-    <context>
-    Chapter Context: {chapter_name}
-    - This chapter focuses on {chapter_name.split(':')[0]} and sets the context for understanding the broader topic.
-    
-    Section Focus: {section_name}
-    - This section specifically deals with {section_name.replace('Section:', '').strip()} within the chapter's context.
-    </context>
-    
-    Input Text to Transform:
-    {text}
-    
-    <guidelines>
-    1. Context Integration:
-        - Begin by understanding how this section fits within the chapter's broader theme
-        - Ensure the content aligns with both the chapter and section objectives
-        - Maintain the hierarchical relationship between chapter and section topics
-    
-    2. Content Analysis:
-        - Identify the main topic and key points being discussed
-        - Extract important facts, examples, and explanations
-        - Preserve all substantive information from the dialogue
-        - Focus on the relationship between ideas and the chapter/section context
-        
-    3. Article Writing:
-        - Write in a formal, academic style appropriate for the chapter's theme
-        - Present ideas in a logical sequence that follows the chapter's flow
-        - Connect related points and create smooth transitions
-        - Expand on important concepts where appropriate
-        - Remove conversational elements (um, well, etc.)
-        - Eliminate speaker attributions and dialogue format
-        
-    4. Structure:
-        - Begin with a topic sentence that connects to both chapter and section themes
-        - Develop ideas in a coherent paragraph format
-        - Use proper transitions between related points
-        - Maintain professional tone throughout
-        - End with a conclusion that ties back to the section's main focus
-        
-    5. Enhancement:
-        - Add relevant context where needed
-        - Clarify any ambiguous points
-        - Strengthen connections between ideas
-        - Ensure technical accuracy
-        - Keep focus on the section's role within the chapter
-    </guidelines>
+First, analyze the input text and plan how to transform it into a natural article passage.
 
-    <output_format>
-    Write the response as a single, well-structured paragraph that reads like a section from a professional article or textbook. 
-    The content should clearly belong in this chapter and section, maintaining proper context and flow.
-    Do not include any dialogue markers, speaker names, or conversational elements.
-    </output_format>
-    </instruction>"""
+<context>
+Chapter: {chapter_name}
+Section: {section_name}
 
-    def save_conversation(self, conversation: str, chapter_name: str, section_name: str) -> bool:
+Input Text to Transform:
+{self.clean_text(text)}
+</context>
+
+<scratchpad>
+- Identify the main topic and key concepts
+- List important points and their relationships
+- Note any examples or supporting evidence
+- Identify technical terms and their significance
+- Understand the logical flow of ideas
+</scratchpad>
+
+<discussion>
+Based on the scratchpad analysis:
+- Determine the best opening statement
+- Plan the logical flow of ideas
+- Identify natural transitions between points
+- Consider how to integrate examples and evidence
+- Plan a natural conclusion
+</discussion>
+
+<writing_guidelines>
+1. Core Principles:
+    - Write with authority and directness
+    - Maintain academic rigor and precision
+    - Present ideas in a logical sequence
+    - Use clear, professional language
+
+2. Content Focus:
+    - Present facts and concepts directly
+    - Explain relationships between ideas clearly
+    - Support claims with relevant evidence
+    - Build complexity progressively
+
+3. Tone and Style:
+    - Use formal but accessible language
+    - Maintain consistent terminology
+    - Employ active voice predominantly
+    - Keep sentences clear and varied
+
+4. Key DOs:
+    - Start with the main concept directly
+    - Use precise, technical language appropriately
+    - Connect ideas naturally
+    - Include all crucial information
+    - Maintain academic rigor
+
+5. Key DON'Ts:
+    - Avoid meta-references to the chapter/section
+    - Don't use "in this context" or similar phrases
+    - Skip unnecessary transitions
+    - Avoid informal language
+    - Don't summarize or preview other sections
+</writing_guidelines>
+
+<output_format>
+Write a single, cohesive paragraph that:
+- Begins directly with the main topic
+- Flows naturally between related ideas
+- Maintains academic precision
+- Ends with a relevant conclusion
+- Reads as a natural part of a larger academic work
+</output_format>
+</instruction>"""
+
+    def save_conversation(self, conversation: str, chapter_name: str, section_name: str, 
+                        chapter_id: str = "", section_number: str = "") -> bool:
         """Save the generated conversation to the output file."""
         try:
             with open(self.output_file, 'a', encoding='utf-8') as f:
                 f.write(f"\n{'='*50}\n")
-                f.write(f"Chapter: {chapter_name}\n")
-                f.write(f"Section: {section_name}\n")
+                chapter_info = f"Chapter {chapter_id}: " if chapter_id else ""
+                section_info = f"Section {section_number}: " if section_number else ""
+                
+                f.write(f"{chapter_info}{self.format_name(chapter_name)}\n")
+                f.write(f"{section_info}{self.format_name(section_name)}\n")
                 f.write(f"{'='*50}\n\n")
                 f.write(conversation)
                 f.write("\n\n")
@@ -104,48 +145,78 @@ class ConversationGenerator:
                 os.fsync(f.fileno())
             return True
         except Exception as e:
-            print(f"Error saving conversation: {str(e)}")
+            print(f"Error saving article: {str(e)}")
             return False
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
-        total_sections = len(data)
-        print(f"Found {total_sections} sections to process")
-        
-        for i, section in enumerate(data, 1):
-            print(f"\nProcessing section {i}/{total_sections}")
-            print(f"Chapter: {section['chapter_name']}")
-            print(f"Section: {section['section_name']}")
+        try:
+            total_sections = len(data)
+            print(f"Found {total_sections} sections to process")
             
-            try:
-                # Create prompt
-                prompt = self.generate_prompt(
-                    text=section['text'],
-                    chapter_name=section['chapter_name'],
-                    section_name=section['section_name']
-                )
+            for i, section in enumerate(data, 1):
+                print(f"\nProcessing section {i}/{total_sections}")
                 
-                # Generate conversation
-                chat_prompt = ChatPromptTemplate.from_template(prompt)
-                chain = chat_prompt | self.llm
-                response = chain.invoke({"text": section['text']}).content
-                
-                # Save conversation immediately
-                if not self.save_conversation(
-                    conversation=response,
-                    chapter_name=section['chapter_name'],
-                    section_name=section['section_name']
-                ):
-                    print(f"Failed to save section {i}")
-                    return False
-                
-                print(f"✓ Processed and saved section {i}/{total_sections}")
-                
-            except Exception as e:
-                print(f"Error processing section {i}: {str(e)}")
-                return False
-        
-        return True
+                try:
+                    # Handle both string and dict inputs
+                    if isinstance(section, str):
+                        # Try to parse string as JSON if it's a string
+                        try:
+                            section = json.loads(section)
+                        except json.JSONDecodeError:
+                            # If it's not JSON, create a minimal section
+                            section = {"text": section}
+                    
+                    # Extract all possible fields with defaults
+                    chapter_name = str(section.get('chapter_name', 'Chapter'))
+                    chapter_id = str(section.get('chapter_id', ''))
+                    section_name = str(section.get('section_name', 'Section'))
+                    section_number = str(section.get('section_number', ''))
+                    text = str(section.get('text', ''))
+
+                    print(f"Chapter: {chapter_name}")
+                    print(f"Section: {section_name}")
+                    
+                    # Skip if no text content
+                    if not text.strip():
+                        print(f"Skipping section {i} - No text content")
+                        continue
+                    
+                    # Create prompt
+                    prompt = self.generate_prompt(
+                        text=text,
+                        chapter_name=chapter_name,
+                        section_name=section_name
+                    )
+                    
+                    # Generate article
+                    chat_prompt = ChatPromptTemplate.from_template(prompt)
+                    chain = chat_prompt | self.llm
+                    response = chain.invoke({"text": text}).content
+                    
+                    # Save article immediately
+                    if not self.save_conversation(
+                        conversation=response,
+                        chapter_name=chapter_name,
+                        section_name=section_name,
+                        chapter_id=chapter_id,
+                        section_number=section_number
+                    ):
+                        print(f"Failed to save section {i}")
+                        return False
+                    
+                    print(f"✓ Processed and saved section {i}/{total_sections}")
+                    
+                except Exception as e:
+                    print(f"Error processing section {i}: {str(e)}")
+                    print(f"Section content: {section}")
+                    continue
+            
+            return True
+            
+        except Exception as e:
+            print(f"Error in process_sections: {str(e)}")
+            return False
 
 def generate_conversations(json_path: str) -> Optional[str]:
     """
@@ -157,6 +228,26 @@ def generate_conversations(json_path: str) -> Optional[str]:
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
+        # Check if data is a list
+        if not isinstance(data, list):
+            # If it's not a list, try to find the relevant data
+            if isinstance(data, dict):
+                # Handle nested structure if present
+                for key in data:
+                    if isinstance(data[key], list):
+                        data = data[key]
+                        break
+                    elif isinstance(data[key], dict):
+                        # Look for nested lists
+                        for subkey in data[key]:
+                            if isinstance(data[key][subkey], list):
+                                data = data[key][subkey]
+                                break
+        
+        # Ensure data is a list
+        if not isinstance(data, list):
+            raise ValueError("Could not find a valid list of sections in the JSON file")
+            
         # Initialize generator
         generator = ConversationGenerator()
         
@@ -168,4 +259,8 @@ def generate_conversations(json_path: str) -> Optional[str]:
         
     except Exception as e:
         print(f"Error processing JSON file: {str(e)}")
+        print("\nDebug info:")
+        print(f"JSON structure: {type(data)}")
+        if isinstance(data, dict):
+            print(f"Available keys: {list(data.keys())}")
         return None
