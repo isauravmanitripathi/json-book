@@ -6,6 +6,7 @@ from rich.panel import Panel
 from rich.table import Table
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_openai import generate_conversations
+from src.json_writer.write_text_gemini import generate_conversations_gemini
 
 def main():
     """Main entry point for the application."""
@@ -22,8 +23,8 @@ def main():
     table.add_column("Option", style="dim")
     table.add_column("Action", style="cyan")
     table.add_row("1", "Extract Chapter Text from JSON")
-    table.add_row("2", "Generate Conversations from JSON")
-    table.add_row("3", "Dummy Option")
+    table.add_row("2", "Generate Articles with OpenAI")
+    table.add_row("3", "Generate Articles with Gemini")
     table.add_row("4", "Exit")
     console.print(table)
 
@@ -56,7 +57,7 @@ def main():
                 console.print(f"[bold red]Error extracting text: {str(e)}[/bold red]")
         
         elif choice == '2':
-            # Generate conversations option
+            # Generate with OpenAI
             file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
             
             if not file_path or not os.path.exists(file_path):
@@ -64,19 +65,32 @@ def main():
                 continue
 
             try:
-                # Call conversation generator
-                with console.status("[bold green]Generating conversations...", spinner="dots"):
+                with console.status("[bold green]Generating articles with OpenAI...", spinner="dots"):
                     result = generate_conversations(file_path)
                 
                 if result:
-                    console.print("[bold green]Conversations generated successfully![/bold green]")
+                    console.print("[bold green]Articles generated successfully![/bold green]")
                     console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
-                console.print(f"[bold red]Error generating conversations: {str(e)}[/bold red]")
+                console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
         
         elif choice == '3':
-            # Dummy Option
-            console.print("[bold yellow]Dummy Option selected. No action implemented.[/bold yellow]")
+            # Generate with Gemini
+            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            
+            if not file_path or not os.path.exists(file_path):
+                console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                continue
+
+            try:
+                with console.status("[bold green]Generating articles with Gemini...", spinner="dots"):
+                    result = generate_conversations_gemini(file_path)
+                
+                if result:
+                    console.print("[bold green]Articles generated successfully![/bold green]")
+                    console.print(f"[bold green]Output saved to: {result}[/bold green]")
+            except Exception as e:
+                console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
         
         elif choice == '4':
             # Exit the program
