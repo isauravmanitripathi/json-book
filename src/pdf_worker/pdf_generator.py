@@ -7,15 +7,26 @@ from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame
-from reportlab.platypus.flowables import Flowable
+from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, NextPageTemplate
+from reportlab.platypus.flowables import Flowable, KeepTogether
 from reportlab.pdfgen import canvas
 import os
 import json
 
+class VerticalSpace(Flowable):
+    """Custom Flowable for adding vertical space"""
+    def __init__(self, space):
+        self.space = space
+        
+    def wrap(self, *args):
+        return (0, self.space)
+        
+    def draw(self):
+        pass
+
 class PageNumCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
-        canvas.Canvas.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._saved_page_states = []
 
     def showPage(self):
@@ -56,11 +67,25 @@ class PDFGenerator:
                 name='BookTitle',
                 parent=self.styles['Heading1'],
                 fontSize=32,
+                spaceAfter=0,
+                spaceBefore=0,
+                textColor=colors.HexColor('#2E4053'),
+                alignment=1,
+                fontName='Helvetica-Bold',
+                leading=40
+            ))
+            
+        # Author style
+        if 'AuthorName' not in self.styles:
+            self.styles.add(ParagraphStyle(
+                name='AuthorName',
+                parent=self.styles['Normal'],
+                fontSize=16,
                 spaceAfter=30,
-                spaceBefore=100,
+                spaceBefore=0,
                 textColor=colors.HexColor('#2E4053'),
                 alignment=1,  # Center alignment
-                fontName='Helvetica-Bold'
+                fontName='Helvetica'
             ))
 
         # Chapter Number style
@@ -70,9 +95,9 @@ class PDFGenerator:
                 parent=self.styles['Heading1'],
                 fontSize=24,
                 spaceAfter=10,
-                spaceBefore=100,
+                spaceBefore=0,
                 textColor=colors.HexColor('#2E4053'),
-                alignment=1  # Center alignment
+                alignment=1
             ))
 
         # Chapter Title style
@@ -81,10 +106,10 @@ class PDFGenerator:
                 name='CustomChapterTitle',
                 parent=self.styles['Heading1'],
                 fontSize=28,
-                spaceAfter=30,
+                spaceAfter=0,
                 spaceBefore=10,
                 textColor=colors.HexColor('#2E4053'),
-                alignment=1  # Center alignment
+                alignment=1
             ))
 
         # Section style
@@ -109,7 +134,36 @@ class PDFGenerator:
                 alignment=4  # Justified alignment
             ))
 
-    def generate_pdf(self, input_json_path, book_name, output_dir='results/pdfs'):
+    def _add_centered_title_page(self, story, book_name, author_name):
+        """Add a vertically centered title page with spaced words"""
+        # Add vertical space to center the title
+        story.append(VerticalSpace(A4[1] * 0.4))  # Move down 40% of page height
+        
+        # Split the book name into words and join with line breaks
+        words = book_name.upper().split()
+        spaced_title = '<br/>'.join(words)
+        story.append(Paragraph(spaced_title, self.styles['BookTitle']))
+        
+        # Add author name at the bottom of the page
+        story.append(VerticalSpace(A4[1] * 0.3))  # Add space between title and author
+        story.append(Paragraph(f"By<br/>{author_name}", self.styles['AuthorName']))
+        
+        story.append(PageBreak())
+
+    def _add_centered_chapter_page(self, story, chapter_id, chapter_name):
+        """Add a vertically centered chapter page"""
+        # Add vertical space to center the chapter title
+        story.append(VerticalSpace(A4[1] * 0.4))  # Move down 40% of page height
+        
+        if chapter_id:
+            story.append(Paragraph(f"Chapter {chapter_id}", self.styles['ChapterNumber']))
+            story.append(Paragraph(f"{chapter_name}", self.styles['CustomChapterTitle']))
+        else:
+            story.append(Paragraph(chapter_name, self.styles['CustomChapterTitle']))
+        
+        story.append(PageBreak())
+
+    def generate_pdf(self, input_json_path, book_name, author_name, output_dir='results/pdfs'):
         """Generate PDF from the input JSON file"""
         # Create output filename from book name
         safe_filename = "".join(x for x in book_name if x.isalnum() or x in (' ', '-', '_')).rstrip()
@@ -143,9 +197,8 @@ class PDFGenerator:
         # Process articles
         story = []
         
-        # Add title page
-        story.append(Paragraph(book_name.upper(), self.styles['BookTitle']))
-        story.append(PageBreak())
+        # Add title page with author name
+        self._add_centered_title_page(story, book_name, author_name)
 
         current_chapter = None
         
@@ -165,20 +218,9 @@ class PDFGenerator:
             # Check if we're starting a new chapter
             chapter_identifier = article['chapter_id'] if article['chapter_id'] else chapter_name
             if chapter_identifier != current_chapter:
-                # Add page break if not the first chapter
-                if current_chapter is not None:
-                    story.append(PageBreak())
-                
-                # Add chapter number and title separately
-                if article['chapter_id']:
-                    story.append(Paragraph(f"Chapter {article['chapter_id']}", self.styles['ChapterNumber']))
-                    story.append(Paragraph(f"{chapter_name}", self.styles['CustomChapterTitle']))
-                else:
-                    story.append(Paragraph(chapter_name, self.styles['CustomChapterTitle']))
-                
+                # Add chapter page
+                self._add_centered_chapter_page(story, article['chapter_id'], chapter_name)
                 current_chapter = chapter_identifier
-                # Add page break after chapter title
-                story.append(PageBreak())
 
             # Add section title
             full_section_title = f"{section_number}. {section_name}"

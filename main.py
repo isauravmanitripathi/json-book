@@ -108,6 +108,13 @@ def main():
             if not book_name:
                 console.print("[bold red]Book name cannot be empty. Please try again.[/bold red]")
                 continue
+                
+            # Get author name
+            author_name = console.input("[bold blue]Enter the name of the author: [/bold blue]").strip()
+            
+            if not author_name:
+                console.print("[bold red]Author name cannot be empty. Please try again.[/bold red]")
+                continue
 
             # Ensure results/pdfs directory exists
             os.makedirs('results/pdfs', exist_ok=True)
@@ -115,7 +122,7 @@ def main():
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
                     pdf_generator = PDFGenerator()
-                    result = pdf_generator.generate_pdf(file_path, book_name)
+                    result = pdf_generator.generate_pdf(file_path, book_name, author_name)
                 
                 if result:
                     console.print("[bold green]PDF generated successfully![/bold green]")
