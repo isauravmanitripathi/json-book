@@ -25,12 +25,19 @@ class ConversationGenerator:
         
         # Create output file with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.output_file = os.path.join(self.output_dir, f"article_{timestamp}.txt")
+        self.output_file = os.path.join(self.output_dir, f"article_{timestamp}.json")
         
-        # Initialize the file with a header
-        with open(self.output_file, 'w', encoding='utf-8') as f:
-            f.write(f"Article Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write("="*50 + "\n\n")
+        # Initialize the output data structure
+        self.output_data = {
+            "metadata": {
+                "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "model": model_name
+            },
+            "articles": []
+        }
+        
+        # Save initial structure
+        self._save_json()
 
     def clean_text(self, text: str) -> str:
         """Clean and format the text."""
@@ -47,6 +54,37 @@ class ConversationGenerator:
             if name.upper().startswith(prefix.upper()):
                 name = name[len(prefix):].strip()
         return name
+
+    def _save_json(self) -> bool:
+        """Save the current state of output_data to JSON file."""
+        try:
+            with open(self.output_file, 'w', encoding='utf-8') as f:
+                json.dump(self.output_data, f, indent=2, ensure_ascii=False)
+            return True
+        except Exception as e:
+            print(f"Error saving JSON: {str(e)}")
+            return False
+
+    def save_article(self, article_data: Dict) -> bool:
+        """Save a new article entry to the output JSON."""
+        try:
+            # Standardize the article structure
+            standardized_article = {
+                "chapter_name": article_data.get("chapter_name", ""),
+                "chapter_id": article_data.get("chapter_id", ""),
+                "section_number": article_data.get("section_number", ""),
+                "section_name": article_data.get("section_name", ""),
+                "text": article_data.get("text", "")
+            }
+            
+            # Add to articles list
+            self.output_data["articles"].append(standardized_article)
+            
+            # Save the updated JSON
+            return self._save_json()
+        except Exception as e:
+            print(f"Error saving article: {str(e)}")
+            return False
 
     def generate_prompt(self, text: str, chapter_name: str, section_name: str) -> str:
         """Generate the conversation prompt."""
@@ -126,28 +164,6 @@ Write a single, cohesive paragraph that:
 </output_format>
 </instruction>"""
 
-    def save_conversation(self, conversation: str, chapter_name: str, section_name: str, 
-                        chapter_id: str = "", section_number: str = "") -> bool:
-        """Save the generated conversation to the output file."""
-        try:
-            with open(self.output_file, 'a', encoding='utf-8') as f:
-                f.write(f"\n{'='*50}\n")
-                chapter_info = f"Chapter {chapter_id}: " if chapter_id else ""
-                section_info = f"Section {section_number}: " if section_number else ""
-                
-                f.write(f"{chapter_info}{self.format_name(chapter_name)}\n")
-                f.write(f"{section_info}{self.format_name(section_name)}\n")
-                f.write(f"{'='*50}\n\n")
-                f.write(conversation)
-                f.write("\n\n")
-                # Flush the buffer to ensure immediate writing
-                f.flush()
-                os.fsync(f.fileno())
-            return True
-        except Exception as e:
-            print(f"Error saving article: {str(e)}")
-            return False
-
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
         try:
@@ -160,11 +176,9 @@ Write a single, cohesive paragraph that:
                 try:
                     # Handle both string and dict inputs
                     if isinstance(section, str):
-                        # Try to parse string as JSON if it's a string
                         try:
                             section = json.loads(section)
                         except json.JSONDecodeError:
-                            # If it's not JSON, create a minimal section
                             section = {"text": section}
                     
                     # Extract all possible fields with defaults
@@ -182,26 +196,27 @@ Write a single, cohesive paragraph that:
                         print(f"Skipping section {i} - No text content")
                         continue
                     
-                    # Create prompt
+                    # Generate article
                     prompt = self.generate_prompt(
                         text=text,
                         chapter_name=chapter_name,
                         section_name=section_name
                     )
                     
-                    # Generate article
                     chat_prompt = ChatPromptTemplate.from_template(prompt)
                     chain = chat_prompt | self.llm
                     response = chain.invoke({"text": text}).content
                     
-                    # Save article immediately
-                    if not self.save_conversation(
-                        conversation=response,
-                        chapter_name=chapter_name,
-                        section_name=section_name,
-                        chapter_id=chapter_id,
-                        section_number=section_number
-                    ):
+                    # Save article in JSON format
+                    article_data = {
+                        "chapter_name": chapter_name,
+                        "chapter_id": chapter_id,
+                        "section_number": section_number,
+                        "section_name": section_name,
+                        "text": response
+                    }
+                    
+                    if not self.save_article(article_data):
                         print(f"Failed to save section {i}")
                         return False
                     
