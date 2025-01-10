@@ -93,76 +93,44 @@ class ConversationGenerator:
         section_name = self.format_name(section_name)
         
         return f"""<instruction>
-First, analyze the input text and plan how to transform it into a natural article passage.
+    Transform this text into a well-written article passage.
 
-<context>
-Chapter: {chapter_name}
-Section: {section_name}
+    <context>
+    Chapter: {chapter_name}
+    Section: {section_name}
 
-Input Text to Transform:
-{self.clean_text(text)}
-</context>
+    Input Text:
+    {self.clean_text(text)}
+    </context>
 
-<scratchpad>
-- Identify the main topic and key concepts
-- List important points and their relationships
-- Note any examples or supporting evidence
-- Identify technical terms and their significance
-- Understand the logical flow of ideas
-</scratchpad>
+    <scratchpad>
+    First, identify the main points being discussed in simple, clear statements:
+    - What are the key concepts?
+    - What are the main relationships or processes described?
+    - What are the important components mentioned?
 
-<discussion>
-Based on the scratchpad analysis:
-- Determine the best opening statement
-- Plan the logical flow of ideas
-- Identify natural transitions between points
-- Consider how to integrate examples and evidence
-- Plan a natural conclusion
-</discussion>
+    List these as simple bullet points.
+    </scratchpad>
 
-<writing_guidelines>
-1. Core Principles:
-    - Write with authority and directness
-    - Maintain academic rigor and precision
-    - Present ideas in a logical sequence
-    - Use clear, professional language
+    <discussion>
+    Using the points from the scratchpad:
+    - How should these points flow together?
+    - What is the most logical order?
+    - How do these points connect to each other?
+    </discussion>
 
-2. Content Focus:
-    - Present facts and concepts directly
-    - Explain relationships between ideas clearly
-    - Support claims with relevant evidence
-    - Build complexity progressively
+    <writing_guidelines>
+    1. Write directly and clearly
+    2. Connect the points naturally
+    3. Maintain academic tone
+    4. Avoid meta-references or phrases like "in this context"
+    5. Focus on clear explanation of concepts
+    </writing_guidelines>
 
-3. Tone and Style:
-    - Use formal but accessible language
-    - Maintain consistent terminology
-    - Employ active voice predominantly
-    - Keep sentences clear and varied
-
-4. Key DOs:
-    - Start with the main concept directly
-    - Use precise, technical language appropriately
-    - Connect ideas naturally
-    - Include all crucial information
-    - Maintain academic rigor
-
-5. Key DON'Ts:
-    - Avoid meta-references to the chapter/section
-    - Don't use "in this context" or similar phrases
-    - Skip unnecessary transitions
-    - Avoid informal language
-    - Don't summarize or preview other sections
-</writing_guidelines>
-
-<output_format>
-Write a single, cohesive paragraph that:
-- Begins directly with the main topic
-- Flows naturally between related ideas
-- Maintains academic precision
-- Ends with a relevant conclusion
-- Reads as a natural part of a larger academic work
-</output_format>
-</instruction>"""
+    <output_format>
+    Write a single, clear paragraph that explains these concepts in a natural, flowing way. Use the points from the scratchpad as your foundation.
+    </output_format>
+    </instruction>"""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
