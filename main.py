@@ -7,6 +7,7 @@ from rich.table import Table
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_openai import generate_conversations
 from src.json_writer.write_text_gemini import generate_conversations_gemini
+from src.pdf_worker import PDFGenerator
 
 def main():
     """Main entry point for the application."""
@@ -25,11 +26,12 @@ def main():
     table.add_row("1", "Extract Chapter Text from JSON")
     table.add_row("2", "Generate Articles with OpenAI")
     table.add_row("3", "Generate Articles with Gemini")
-    table.add_row("4", "Exit")
+    table.add_row("4", "Generate PDF from JSON")
+    table.add_row("5", "Exit")
     console.print(table)
 
     while True:
-        choice = console.input("[bold blue]Enter your choice (1-4): [/bold blue]").strip()
+        choice = console.input("[bold blue]Enter your choice (1-5): [/bold blue]").strip()
 
         if choice == '1':
             # Extract chapter text option
@@ -91,14 +93,41 @@ def main():
                     console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
-        
+
         elif choice == '4':
+            # Generate PDF
+            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            
+            if not file_path or not os.path.exists(file_path):
+                console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                continue
+
+            # Ensure results/pdfs directory exists
+            os.makedirs('results/pdfs', exist_ok=True)
+
+            # Generate output file path
+            base_filename = os.path.splitext(os.path.basename(file_path))[0]
+            output_filename = f"{base_filename}.pdf"
+            output_path = os.path.join('results', 'pdfs', output_filename)
+
+            try:
+                with console.status("[bold green]Generating PDF...", spinner="dots"):
+                    pdf_generator = PDFGenerator()
+                    result = pdf_generator.generate_pdf(file_path, output_path)
+                
+                if result:
+                    console.print("[bold green]PDF generated successfully![/bold green]")
+                    console.print(f"[bold green]Output saved to: {result}[/bold green]")
+            except Exception as e:
+                console.print(f"[bold red]Error generating PDF: {str(e)}[/bold red]")
+        
+        elif choice == '5':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
             break
         
         else:
-            console.print("[bold red]Invalid choice. Please select 1-4.[/bold red]")
+            console.print("[bold red]Invalid choice. Please select 1-5.[/bold red]")
 
 if __name__ == "__main__":
     main()
