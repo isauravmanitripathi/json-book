@@ -33,84 +33,114 @@ def extract_section_text(input_file_path, output_file_path=None):
         console.print(f"[bold red]Error reading file: {e}[/bold red]")
         return None
 
+    # Determine the correct key for chapters
+    chapters_key = None
+    if 'chapters' in input_data:
+        chapters_key = 'chapters'
+    elif input_data.get('New item', {}).get('chapters'):
+        chapters_key = 'chapters'
+        input_data = input_data['New item']
+
+    if not chapters_key:
+        console.print("[bold red]Error: Could not find chapters in the JSON file[/bold red]")
+        return None
+
     # Create output structure
     output_data = []
 
     # Process each chapter
-    for chapter_index, chapter in enumerate(input_data.get('chapters', []), 1):
-        chapter_name = chapter.get('chapter_name', f'Chapter {chapter_index}')
-        
-        # Track section number within this chapter
-        chapter_section_number = 0
-        
-        # Temporary storage for current chapter's sections
-        chapter_sections = []
-        
-        # Process conversations in the chapter
-        current_section = None
-        
-        for conv_turn in chapter.get('conversations', []):
-            # Check for section info marker
-            if conv_turn['speaker'] == 'SECTION_INFO':
-                # If we had a previous section, add it to chapter sections
-                if current_section:
-                    chapter_sections.append(current_section)
-                
-                # Increment section number
-                chapter_section_number += 1
-                
-                # Create a new section
-                current_section = {
-                    "chapter_name": chapter_name,
-                    "section_number": str(chapter_section_number),
-                    "section_name": conv_turn['text'].replace("From ", ""),
-                    "text": ""
-                }
+    for chapter in input_data.get(chapters_key, []):
+        # Handle podcast conversation style
+        if 'conversations' in chapter:
+            # For podcast conversation JSON
+            chapter_name = chapter.get('chapter_name', 'Unnamed Chapter')
             
-            # Combine dialogue text (excluding section info)
-            elif current_section is not None and conv_turn['speaker'] != 'SECTION_INFO':
-                # Add dialogue text with a space between turns
-                current_section['text'] += conv_turn['text'] + " "
+            # Accumulate text from non-section-info conversations
+            section_text = " ".join([
+                conv['text'] for conv in chapter.get('conversations', []) 
+                if conv['speaker'] != 'SECTION_INFO'
+            ])
+            
+            output_data.append({
+                "chapter_name": chapter_name,
+                "section_number": "1",
+                "section_name": chapter_name,
+                "text": section_text
+            })
         
-        # Add the last section if exists
-        if current_section:
-            chapter_sections.append(current_section)
-        
-        # Add chapter sections to overall output
-        output_data.extend(chapter_sections)
+        # Handle structured document style
+        else:
+            chapter_name = chapter.get('chapter_name', 'Unnamed Chapter')
+            chapter_id = str(chapter.get('chapter_id', ''))
+
+            # Process sections in the chapter
+            for section in chapter.get('sections', []):
+                # Extract text, use extracted-text if available
+                text = section.get('extracted-text', '').strip()
+                
+                # Only add non-empty text
+                if text:
+                    output_item = {
+                        "chapter_name": chapter_name,
+                        "chapter_id": chapter_id,
+                        "section_number": str(section.get('section_id', '')),
+                        "section_name": section.get('section_name', 'Unnamed Section'),
+                        "text": text
+                    }
+                    output_data.append(output_item)
 
     # Write output to JSON file if output path is provided
     if output_file_path:
         try:
             with open(output_file_path, 'w', encoding='utf-8') as file:
                 json.dump(output_data, file, indent=2, ensure_ascii=False)
+            
+            console.print(f"[bold green]Text extracted successfully to {output_file_path}[/bold green]")
         except Exception as e:
             console.print(f"[bold red]Error writing output file: {e}[/bold red]")
-            return None
 
     return output_data
 
-def preview_extracted_text(extracted_text):
-    """
-    Preview the extracted text sections.
-    
-    Args:
-    extracted_text (list): List of extracted text sections
-    """
+def main():
+    """Main function to run the text extraction script."""
     console = Console()
     
-    if not extracted_text:
-        console.print("[bold yellow]No text to preview.[/bold yellow]")
-        return
+    console.print(Panel.fit(
+        "[bold cyan]Text Extractor[/bold cyan]\n"
+        "[dim]Extract text from JSON with chapter and section details[/dim]",
+        border_style="blue"
+    ))
 
-    # Optionally, print a preview of extracted text
-    console.print("\n[bold green]Extraction Preview:[/bold green]")
-    for section in extracted_text[:3]:  # Preview first 3 sections
-        console.print(Panel(
-            f"[bold]Chapter:[/bold] {section['chapter_name']}\n"
-            f"[bold]Section Number:[/bold] {section.get('section_number', 'N/A')}\n"
-            f"[bold]Section Name:[/bold] {section.get('section_name', 'N/A')}\n"
-            f"[bold]Text Length:[/bold] {len(section.get('text', ''))} characters",
-            title="Section Overview",
-            border_style="green"
-        ))
+    # Get input file path
+    while True:
+        file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+        
+        if not file_path:
+            console.print("[bold yellow]Please provide a file path.[/bold yellow]")
+            continue
+        
+        # Attempt to extract text
+        result = extract_section_text(file_path)
+        
+        if result:
+            # Optionally, print a preview of extracted text
+            console.print("\n[bold green]Extraction Preview:[/bold green]")
+            for section in result[:3]:  # Preview first 3 sections
+                console.print(Panel(
+                    f"[bold]Chapter:[/bold] {section.get('chapter_name', 'N/A')} (ID: {section.get('chapter_id', 'N/A')})\n"
+                    f"[bold]Section Number:[/bold] {section.get('section_number', 'N/A')}\n"
+                    f"[bold]Section Name:[/bold] {section.get('section_name', 'N/A')}\n"
+                    f"[bold]Text Length:[/bold] {len(section.get('text', ''))} characters",
+                    title="Section Overview",
+                    border_style="green"
+                ))
+            
+            break
+        
+        # Ask if user wants to try again
+        retry = console.input("[bold yellow]Do you want to try another file? (y/n): [/bold yellow]").strip().lower()
+        if retry != 'y':
+            break
+
+if __name__ == "__main__":
+    main()

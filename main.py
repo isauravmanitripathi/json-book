@@ -46,11 +46,14 @@ def main():
             output_filename = os.path.splitext(base_filename)[0] + '_extracted.json'
             output_path = os.path.join('results', 'json-combined', output_filename)
 
-            # Call extraction function
-            result = extract_section_text(file_path, output_path)
-            
-            if result:
-                console.print(f"[bold green]Text extracted successfully to {output_path}[/bold green]")
+            try:
+                # Call extraction function
+                result = extract_section_text(file_path, output_path)
+                
+                if result:
+                    console.print(f"[bold green]Text extracted successfully to {output_path}[/bold green]")
+            except Exception as e:
+                console.print(f"[bold red]Error extracting text: {str(e)}[/bold red]")
         
         elif choice == '2':
             # Generate conversations option
