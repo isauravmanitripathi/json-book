@@ -154,7 +154,7 @@ class ConversationGenerator:
         if not chunks:
             return ""
             
-        formatted_chunks = "\nPrevious sections from this chapter:\n\n"
+        formatted_chunks = "\nPreviously Generated Sections:\n\n"
         for chunk in chunks:
             formatted_chunks += f"Section {chunk['section_number']}: {chunk['section_name']}\n"
             formatted_chunks += f"Key points:\n{chunk['text']}\n\n"
@@ -164,10 +164,11 @@ class ConversationGenerator:
     def generate_prompt(self, text: str, chapter_name: str, section_name: str,
                         section_number: str = "") -> str:
         """
-        Generate a conversation prompt that instructs the model:
-        1. To understand the text and extract the core ideas.
-        2. NOT to copy or rewrite the original text's exact wording or examples.
-        3. To produce a completely new piece of writing on the same ideas.
+        Generate a conversation prompt that instructs the model to:
+        1. Identify main points and explain them to a beginner in an advanced topic.
+        2. Use an accessible style with varied sentence structure (avoid rewriting the original text).
+        3. Provide new or improved examples if needed, not existing ones.
+        4. Avoid repeating prior sections’ content.
         """
         # Clean and format names
         chapter_name = self.clean_text(self.format_name(chapter_name))
@@ -182,32 +183,33 @@ class ConversationGenerator:
         # Clean the current text
         cleaned_text = self.clean_text(text)
         
-        return f"""You will receive a passage of text. Your task is:
-1. Read and understand the main ideas or concepts in it.
-2. Summarize or note these core points *internally* (scratchpad).
-3. Then, write a brand-new paragraph (or paragraphs) that:
-   - Conveys the underlying ideas in your own words.
-   - Does NOT copy or simply rephrase any sentences or examples from the original text.
-   - If the original text uses a specific example, either skip it or create a fresh example of your own.
-   - Focus on generating new content that captures the concept but does not reuse wording.
+        return f"""You are explaining an advanced topic to someone with minimal background. 
+Focus on clarity, but do not copy or rewrite the text exactly as given.
 
-Instructions:
-- Avoid direct or partial quotations from the given text.
-- Do not replicate the structure or examples; provide your own unique approach or explanation.
-- Incorporate ideas from previous sections only if needed for continuity, but do not repeat them verbatim.
+Your objectives:
+1. Identify the main points from the current text.
+2. Re-express these ideas with a fresh structure and vocabulary.
+3. If the text has specific examples, replace them with new, more realistic ones.
+4. Maintain an approachable, beginner-friendly tone.
+5. Skip or remove any content already discussed in the previous sections.
 
-Chapter: {chapter_name}
-Section: {section_name}
-Section Number: {section_number}{previous_context}
-
+{previous_context}
 Current Text to Analyze:
 {cleaned_text}
 
 [System/Instruction to the AI Model]:
-Follow these steps meticulously. 
-In your final answer, present only the new piece of writing. 
-Do not show intermediate notes or mention the scratchpad. 
-Ensure it is an original creation inspired by the text, not a rewrite."""
+- First, read the text and mentally note key ideas or steps.
+- Then compose a new explanation using different language and sentence patterns.
+- Imagine you are guiding a novice through a complex idea, so simplify but keep it factually accurate.
+- Do NOT repeat your earlier writing from previous sections, and do NOT lift any direct phrasing from the current text.
+- If examples are present in the text, replace them with newly invented, realistic examples, or skip them if they don’t serve a purpose.
+
+Final Output Requirements:
+- Write in paragraph form, suitable for a beginner audience.
+- Use your own wording and unique structure.
+- Avoid summarizing or rewriting verbatim.
+- Ensure continuity if relevant, but do not duplicate previously generated material.
+"""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
