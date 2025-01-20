@@ -84,45 +84,38 @@ class GeminiGenerator:
         chapter_name = self.format_name(chapter_name)
         section_name = self.format_name(section_name)
         
-        return f"""<instruction>
-Transform this text into a well-written article passage.
+        return f"""Read and understand this text carefully, then:
+1. Identify what's actually being explained or taught
+2. Determine the main ideas that matter
+3. Only list the essential points that someone needs to understand this topic
 
-<context>
+[System/Instruction to the AI Model]:
+You will receive a text. Follow these steps in order:
+1. **Paragraph-by-Paragraph Understanding**:
+   - Break the text into its paragraphs.
+   - For each paragraph, determine the main points or ideas, removing irrelevant or repetitive details.
+2. **Enrich with Relevant Context**:
+   - Think about any additional, related information that might enhance each paragraph's ideas (e.g., broader context, historical notes, modern-day parallels, etc.), without altering the core message.
+3. **Compose a New Article (Same Length)**:
+   - Write a fresh article in about the same total length (paragraph for paragraph) as the original text.
+   - Present the essential ideas you identified, plus any relevant context or insight you've thought of.
+   - **Do not copy or simply rephrase** large chunks from the original text.
+   - Maintain a coherent style so that it reads like a seamless article.
+4. **Final Output**:
+   - Only output your new article text.
+   - Do not reveal the main-point breakdown or the original text in any form.
+   - The final piece should be about the same length as the original.
+
 Chapter: {chapter_name}
 Section: {section_name}
 
-Input Text:
 {self.clean_text(text)}
-</context>
 
-<scratchpad>
-First, identify the main points being discussed in simple, clear statements:
-- What are the key concepts?
-- What are the main relationships or processes described?
-- What are the important components mentioned?
-
-List these as simple bullet points.
-</scratchpad>
-
-<discussion>
-Using the points from the scratchpad:
-- How should these points flow together?
-- What is the most logical order?
-- How do these points connect to each other?
-</discussion>
-
-<writing_guidelines>
-1. Write directly and clearly
-2. Connect the points naturally
-3. Maintain academic tone
-4. Avoid meta-references or phrases like "in this context"
-5. Focus on clear explanation of concepts
-</writing_guidelines>
-
-<output_format>
-Write a single, clear paragraph that explains these concepts in a natural, flowing way. Use the points from the scratchpad as your foundation.
-</output_format>
-</instruction>"""
+Format:
+• Write only bullet points
+• Each point should be a key concept or important idea
+• Skip examples, definitions, and extra details unless crucial
+• No introductions, summaries, or explanations needed"""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
