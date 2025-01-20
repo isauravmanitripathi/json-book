@@ -62,6 +62,105 @@ class GeminiGenerator:
             print(f"Error saving JSON: {str(e)}")
             return False
 
+    def get_previous_chunks(self, current_chapter: str, current_section: str) -> List[Dict]:
+        """Get up to 5 previous chunks from the same chapter."""
+        previous_chunks = []
+        
+        try:
+            # Get all articles from the current chapter
+            chapter_articles = [
+                article for article in self.output_data["articles"]
+                if article["chapter_name"] == current_chapter
+            ]
+            
+            # Sort them by section number if available
+            chapter_articles.sort(
+                key=lambda x: float(x["section_number"]) 
+                if x["section_number"].replace(".", "").isdigit() 
+                else float('inf')
+            )
+            
+            # Find current section's index
+            current_index = next(
+                (i for i, article in enumerate(chapter_articles) 
+                 if article["section_name"] == current_section),
+                -1
+            )
+            
+            # If we found the current section and it's not the first one
+            if current_index > 0:
+                # Get up to 5 previous chunks
+                start_index = max(0, current_index - 5)
+                previous_chunks = chapter_articles[start_index:current_index]
+                
+        except Exception as e:
+            print(f"Error getting previous chunks: {str(e)}")
+            
+        return previous_chunks
+
+    def format_previous_chunks(self, chunks: List[Dict]) -> str:
+        """Format previous chunks for inclusion in the prompt."""
+        if not chunks:
+            return ""
+            
+        formatted_chunks = "\nPrevious sections from this chapter:\n\n"
+        for chunk in chunks:
+            formatted_chunks += f"Section {chunk['section_number']}: {chunk['section_name']}\n"
+            formatted_chunks += f"Key points:\n{chunk['text']}\n\n"
+        
+        return formatted_chunks
+
+    def generate_prompt(self, text: str, chapter_name: str, section_name: str, section_number: str = "") -> str:
+        """
+        Generate the conversation prompt with explicit instructions to avoid repeating old content
+        and focus on adding new insights.
+        """
+        chapter_name = self.format_name(chapter_name)
+        section_name = self.format_name(section_name)
+
+        # Get previous chunks only if this isn't the first section
+        previous_chunks = []
+        if section_number and section_number != "1" and section_number != "1.0":
+            previous_chunks = self.get_previous_chunks(chapter_name, section_name)
+
+        previous_context = self.format_previous_chunks(previous_chunks)
+
+        return f"""Read and understand this text carefully, then:
+1. Identify what's actually being explained or taught in the *current* text.
+2. Determine the main ideas that matter in each paragraph.
+3. Avoid repeating information that has already been established in the previous sections.
+   Only extract new or additional points that build on the previous context.
+
+[System/Instruction to the AI Model]:
+You will receive the current text along with context from previous sections. Follow these steps in order:
+
+1. **Paragraph-by-Paragraph Understanding**:
+   - Break the *current* text into paragraphs.
+   - For each paragraph, figure out the key points or ideas, ignoring any repeated or irrelevant details.
+   - Consider the context from the previous sections so you don't re-list points that were already covered.
+
+2. **Enrich with Relevant Context**:
+   - If there's an opportunity to deepen or clarify the topic based on what was covered before, do so.
+   - Only add new insights or angles. Do not repeat facts that appeared previously unless crucial to understanding.
+
+3. **Key Points Extraction**:
+   - Focus on the *new and essential* ideas introduced by the current text.
+   - Make sure each bullet point truly adds value beyond what's been stated.
+   - Skip examples, definitions, or overly detailed exposition unless they significantly expand understanding.
+   
+Chapter: {chapter_name}
+Section: {section_name}
+Section Number: {section_number}{previous_context}
+
+Current Text to Analyze:
+{self.clean_text(text)}
+
+**Output Format**:
+- Provide only concise, bulleted points.
+- Each point should highlight something new or essential.
+- Do not include introductions, summaries, or explanatory text.
+- Avoid re-stating points from previous sections or from the current text if already covered."""
+
     def save_article(self, article_data: Dict) -> bool:
         """Save a new article entry to the output JSON."""
         try:
@@ -78,44 +177,6 @@ class GeminiGenerator:
         except Exception as e:
             print(f"Error saving article: {str(e)}")
             return False
-
-    def generate_prompt(self, text: str, chapter_name: str, section_name: str) -> str:
-        """Generate the conversation prompt."""
-        chapter_name = self.format_name(chapter_name)
-        section_name = self.format_name(section_name)
-        
-        return f"""Read and understand this text carefully, then:
-1. Identify what's actually being explained or taught
-2. Determine the main ideas that matter
-3. Only list the essential points that someone needs to understand this topic
-
-[System/Instruction to the AI Model]:
-You will receive a text. Follow these steps in order:
-1. **Paragraph-by-Paragraph Understanding**:
-   - Break the text into its paragraphs.
-   - For each paragraph, determine the main points or ideas, removing irrelevant or repetitive details.
-2. **Enrich with Relevant Context**:
-   - Think about any additional, related information that might enhance each paragraph's ideas (e.g., broader context, historical notes, modern-day parallels, etc.), without altering the core message.
-3. **Compose a New Article (Same Length)**:
-   - Write a fresh article in about the same total length (paragraph for paragraph) as the original text.
-   - Present the essential ideas you identified, plus any relevant context or insight you've thought of.
-   - **Do not copy or simply rephrase** large chunks from the original text.
-   - Maintain a coherent style so that it reads like a seamless article.
-4. **Final Output**:
-   - Only output your new article text.
-   - Do not reveal the main-point breakdown or the original text in any form.
-   - The final piece should be about the same length as the original.
-
-Chapter: {chapter_name}
-Section: {section_name}
-
-{self.clean_text(text)}
-
-Format:
-• Write only bullet points
-• Each point should be a key concept or important idea
-• Skip examples, definitions, and extra details unless crucial
-• No introductions, summaries, or explanations needed"""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
@@ -147,11 +208,12 @@ Format:
                         print(f"Skipping section {i} - No text content")
                         continue
                     
-                    # Generate article
+                    # Generate article with context awareness
                     prompt = self.generate_prompt(
                         text=text,
                         chapter_name=chapter_name,
-                        section_name=section_name
+                        section_name=section_name,
+                        section_number=section_number
                     )
                     
                     response = self.llm.invoke(prompt)

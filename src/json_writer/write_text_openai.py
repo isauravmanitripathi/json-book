@@ -109,23 +109,105 @@ class ConversationGenerator:
             print(f"Error saving article: {str(e)}")
             return False
 
-    def generate_prompt(self, text: str, chapter_name: str, section_name: str) -> str:
-        """Generate the conversation prompt."""
-        # Clean and format names and text
+    def get_previous_chunks(self, current_chapter: str, current_section: str) -> List[Dict]:
+        """
+        Get up to 5 previous chunks from the same chapter, 
+        to avoid repeating already covered info.
+        """
+        previous_chunks = []
+        try:
+            # Filter articles from the same chapter
+            chapter_articles = [
+                article for article in self.output_data["articles"]
+                if article["chapter_name"] == current_chapter
+            ]
+            
+            # Sort them by section number if it's numeric
+            chapter_articles.sort(
+                key=lambda x: float(x["section_number"]) 
+                if x["section_number"].replace(".", "").isdigit() 
+                else float('inf')
+            )
+            
+            # Find the current section's index
+            current_index = next(
+                (i for i, article in enumerate(chapter_articles) 
+                 if article["section_name"] == current_section),
+                -1
+            )
+            
+            # If found and it's not the first one
+            if current_index > 0:
+                start_index = max(0, current_index - 5)
+                previous_chunks = chapter_articles[start_index:current_index]
+                
+        except Exception as e:
+            print(f"Error getting previous chunks: {str(e)}")
+            
+        return previous_chunks
+
+    def format_previous_chunks(self, chunks: List[Dict]) -> str:
+        """
+        Format previous chunks for inclusion in the prompt.
+        Each chunk is summarized as "Section X: <Name> / Key points: <Text>"
+        """
+        if not chunks:
+            return ""
+            
+        formatted_chunks = "\nPrevious sections from this chapter:\n\n"
+        for chunk in chunks:
+            formatted_chunks += f"Section {chunk['section_number']}: {chunk['section_name']}\n"
+            formatted_chunks += f"Key points:\n{chunk['text']}\n\n"
+        
+        return formatted_chunks
+
+    def generate_prompt(self, text: str, chapter_name: str, section_name: str,
+                        section_number: str = "") -> str:
+        """
+        Generate a conversation prompt that instructs the model:
+        1. To understand the text and extract the core ideas.
+        2. NOT to copy or rewrite the original text's exact wording or examples.
+        3. To produce a completely new piece of writing on the same ideas.
+        """
+        # Clean and format names
         chapter_name = self.clean_text(self.format_name(chapter_name))
         section_name = self.clean_text(self.format_name(section_name))
+        
+        # Retrieve previous context if not the very first section
+        previous_chunks = []
+        if section_number and section_number not in ["", "1", "1.0"]:
+            previous_chunks = self.get_previous_chunks(chapter_name, section_name)
+        previous_context = self.format_previous_chunks(previous_chunks)
+        
+        # Clean the current text
         cleaned_text = self.clean_text(text)
         
-        return f"""Transform this text into a well-written article passage.
+        return f"""You will receive a passage of text. Your task is:
+1. Read and understand the main ideas or concepts in it.
+2. Summarize or note these core points *internally* (scratchpad).
+3. Then, write a brand-new paragraph (or paragraphs) that:
+   - Conveys the underlying ideas in your own words.
+   - Does NOT copy or simply rephrase any sentences or examples from the original text.
+   - If the original text uses a specific example, either skip it or create a fresh example of your own.
+   - Focus on generating new content that captures the concept but does not reuse wording.
+
+Instructions:
+- Avoid direct or partial quotations from the given text.
+- Do not replicate the structure or examples; provide your own unique approach or explanation.
+- Incorporate ideas from previous sections only if needed for continuity, but do not repeat them verbatim.
 
 Chapter: {chapter_name}
 Section: {section_name}
+Section Number: {section_number}{previous_context}
 
-Input Text:
+Current Text to Analyze:
 {cleaned_text}
 
-Please write a clear, well-organized paragraph that explains these concepts in a natural, flowing way. 
-Focus on accuracy and clarity while maintaining an academic tone."""
+[System/Instruction to the AI Model]:
+Follow these steps meticulously. 
+In your final answer, present only the new piece of writing. 
+Do not show intermediate notes or mention the scratchpad. 
+Ensure it is an original creation inspired by the text, not a rewrite."""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
@@ -166,18 +248,22 @@ Focus on accuracy and clarity while maintaining an academic tone."""
                         print(f"Skipping section {i} - No content after cleaning")
                         continue
                     
-                    # Generate article
+                    # Generate prompt with context awareness
                     prompt = self.generate_prompt(
                         text=cleaned_text,
                         chapter_name=chapter_name,
-                        section_name=section_name
+                        section_name=section_name,
+                        section_number=section_number
                     )
                     
+                    # Build prompt chain
                     chat_prompt = ChatPromptTemplate.from_template(prompt)
                     chain = chat_prompt | self.llm
+                    
+                    # Run LLM with the prompt
                     response = chain.invoke({"text": cleaned_text}).content
                     
-                    # Save article in JSON format
+                    # Save the newly generated passage
                     article_data = {
                         "chapter_name": chapter_name,
                         "chapter_id": chapter_id,
