@@ -1,3 +1,10 @@
 .venv
 .env
 *.json
+sitemap.txt
+parse-txt.py
+extracted_urls.txt
+*.txt
+article
+download.py
+*.md

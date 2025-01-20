@@ -6,12 +6,13 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from datetime import datetime
+import re
 
 # Load environment variables
 load_dotenv()
 
 class ConversationGenerator:
-    def __init__(self, model_name: str = "gpt-4o", temperature: float = 1.0):
+    def __init__(self, model_name: str = "gpt-4o-mini-2024-07-18", temperature: float = 1.0):
         """Initialize the conversation generator."""
         self.llm = ChatOpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
@@ -40,10 +41,32 @@ class ConversationGenerator:
         self._save_json()
 
     def clean_text(self, text: str) -> str:
-        """Clean and format the text."""
-        # Remove multiple newlines and extra spaces
-        text = ' '.join(text.split())
-        return text
+        """Clean and format the text by removing special characters and formatting."""
+        try:
+            if not text:
+                return ""
+            
+            # Convert to string and replace problematic characters
+            text = str(text)
+            text = text.replace('{', '').replace('}', '')
+            text = text.replace('[', '').replace(']', '')
+            text = text.replace('\\', '')
+            text = text.replace('`', '')
+            text = text.replace('|', '')
+            
+            # Remove other special characters
+            text = re.sub(r'[^\w\s\.,;:!?"\'-]', ' ', text)
+            
+            # Remove control characters
+            text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', text)
+            
+            # Normalize whitespace
+            text = ' '.join(text.split())
+            
+            return text.strip()
+        except Exception as e:
+            print(f"Error cleaning text: {str(e)}")
+            return str(text)
 
     def format_name(self, name: str) -> str:
         """Format chapter or section name by removing unnecessary prefixes."""
@@ -88,49 +111,21 @@ class ConversationGenerator:
 
     def generate_prompt(self, text: str, chapter_name: str, section_name: str) -> str:
         """Generate the conversation prompt."""
-        # Clean and format names
-        chapter_name = self.format_name(chapter_name)
-        section_name = self.format_name(section_name)
+        # Clean and format names and text
+        chapter_name = self.clean_text(self.format_name(chapter_name))
+        section_name = self.clean_text(self.format_name(section_name))
+        cleaned_text = self.clean_text(text)
         
-        return f"""<instruction>
-    Transform this text into a well-written article passage.
+        return f"""Transform this text into a well-written article passage.
 
-    <context>
-    Chapter: {chapter_name}
-    Section: {section_name}
+Chapter: {chapter_name}
+Section: {section_name}
 
-    Input Text:
-    {self.clean_text(text)}
-    </context>
+Input Text:
+{cleaned_text}
 
-    <scratchpad>
-    First, identify the main points being discussed in simple, clear statements:
-    - What are the key concepts?
-    - What are the main relationships or processes described?
-    - What are the important components mentioned?
-
-    List these as simple bullet points.
-    </scratchpad>
-
-    <discussion>
-    Using the points from the scratchpad:
-    - How should these points flow together?
-    - What is the most logical order?
-    - How do these points connect to each other?
-    </discussion>
-
-    <writing_guidelines>
-    1. Write directly and clearly
-    2. Connect the points naturally
-    3. Maintain academic tone
-    4. Avoid meta-references or phrases like "in this context"
-    5. Focus on clear explanation of concepts
-    </writing_guidelines>
-
-    <output_format>
-    Write a single, clear paragraph that explains these concepts in a natural, flowing way. Use the points from the scratchpad as your foundation.
-    </output_format>
-    </instruction>"""
+Please write a clear, well-organized paragraph that explains these concepts in a natural, flowing way. 
+Focus on accuracy and clarity while maintaining an academic tone."""
 
     def process_sections(self, data: List[Dict]) -> bool:
         """Process all sections from the JSON data."""
@@ -164,16 +159,23 @@ class ConversationGenerator:
                         print(f"Skipping section {i} - No text content")
                         continue
                     
+                    # Clean the text before processing
+                    cleaned_text = self.clean_text(text)
+                    
+                    if not cleaned_text.strip():
+                        print(f"Skipping section {i} - No content after cleaning")
+                        continue
+                    
                     # Generate article
                     prompt = self.generate_prompt(
-                        text=text,
+                        text=cleaned_text,
                         chapter_name=chapter_name,
                         section_name=section_name
                     )
                     
                     chat_prompt = ChatPromptTemplate.from_template(prompt)
                     chain = chat_prompt | self.llm
-                    response = chain.invoke({"text": text}).content
+                    response = chain.invoke({"text": cleaned_text}).content
                     
                     # Save article in JSON format
                     article_data = {
