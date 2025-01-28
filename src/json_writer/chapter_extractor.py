@@ -75,8 +75,8 @@ def extract_section_text(input_file_path, output_file_path=None):
 
             # Process sections in the chapter
             for section in chapter.get('sections', []):
-                # Extract text, use extracted-text if available
-                text = section.get('extracted-text', '').strip()
+                # Extract text, use gpt-processed-text if available
+                text = section.get('gpt-processed-text', '').strip()
                 
                 # Only add non-empty text
                 if text:

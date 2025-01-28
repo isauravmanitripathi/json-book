@@ -5,7 +5,6 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from src.json_writer.chapter_extractor import extract_section_text
-from src.json_writer.write_text_openai import generate_conversations
 from src.json_writer.write_text_gemini import generate_conversations_gemini
 from src.pdf_worker import PDFGenerator
 

@@ -7,11 +7,12 @@ from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame, NextPageTemplate
-from reportlab.platypus.flowables import Flowable, KeepTogether
+from reportlab.platypus import BaseDocTemplate, PageTemplate, Frame
+from reportlab.platypus.flowables import Flowable
 from reportlab.pdfgen import canvas
 import os
 import json
+from collections import defaultdict
 
 class VerticalSpace(Flowable):
     """Custom Flowable for adding vertical space"""
@@ -192,35 +193,33 @@ class PDFGenerator:
 
         # Read JSON data
         with open(input_json_path, 'r') as file:
-            data = json.load(file)
+            sections = json.load(file)
 
-        # Process articles
+        # Create story for the PDF
         story = []
         
         # Add title page with author name
         self._add_centered_title_page(story, book_name, author_name)
 
+        # Group sections by chapter
         current_chapter = None
         
-        # Sort articles
-        articles = data['articles']
-        articles.sort(key=lambda x: (
-            x['chapter_id'] if x['chapter_id'] else x['section_number'],
-            x['section_number']
-        ))
-
-        for article in articles:
-            chapter_name = article['chapter_name'].strip()
-            section_name = article['section_name'].strip()
-            section_number = article['section_number'].strip()
-            text = article['text'].strip()
-
-            # Check if we're starting a new chapter
-            chapter_identifier = article['chapter_id'] if article['chapter_id'] else chapter_name
-            if chapter_identifier != current_chapter:
-                # Add chapter page
-                self._add_centered_chapter_page(story, article['chapter_id'], chapter_name)
-                current_chapter = chapter_identifier
+        # Sort sections by chapter_id and section_number
+        sections.sort(key=lambda x: (int(x['chapter_id']), x['section_number']))
+        
+        for section in sections:
+            chapter_id = section['chapter_id']
+            chapter_name = section['chapter_name'].strip()
+            
+            # If we're starting a new chapter, add the chapter page
+            if chapter_id != current_chapter:
+                self._add_centered_chapter_page(story, chapter_id, chapter_name)
+                current_chapter = chapter_id
+            
+            # Add section content
+            section_name = section['section_name'].strip()
+            section_number = section['section_number'].strip()
+            text = section['text'].strip()
 
             # Add section title
             full_section_title = f"{section_number}. {section_name}"
