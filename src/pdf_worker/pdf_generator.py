@@ -94,11 +94,13 @@ class PDFGenerator:
             self.styles.add(ParagraphStyle(
                 name='ChapterNumber',
                 parent=self.styles['Heading1'],
-                fontSize=24,
-                spaceAfter=10,
+                fontSize=42,  # Larger font for chapter number
+                spaceAfter=0,
                 spaceBefore=0,
                 textColor=colors.HexColor('#2E4053'),
-                alignment=1
+                alignment=1,  # Centered
+                fontName='Helvetica-Bold',
+                leading=50  # Extra line height for better spacing
             ))
 
         # Chapter Title style
@@ -106,11 +108,13 @@ class PDFGenerator:
             self.styles.add(ParagraphStyle(
                 name='CustomChapterTitle',
                 parent=self.styles['Heading1'],
-                fontSize=28,
+                fontSize=28,  # Smaller than chapter number
                 spaceAfter=0,
-                spaceBefore=10,
+                spaceBefore=0,
                 textColor=colors.HexColor('#2E4053'),
-                alignment=1
+                alignment=1,  # Centered
+                fontName='Helvetica',
+                leading=36  # Extra line height for better spacing
             ))
 
         # Section style
@@ -152,16 +156,42 @@ class PDFGenerator:
         story.append(PageBreak())
 
     def _add_centered_chapter_page(self, story, chapter_id, chapter_name):
-        """Add a vertically centered chapter page"""
-        # Add vertical space to center the chapter title
+        """Add a perfectly centered chapter page with clean layout"""
+        # Force a page break before the chapter page
+        story.append(PageBreak())
+        
+        # Center content vertically
         story.append(VerticalSpace(A4[1] * 0.4))  # Move down 40% of page height
         
-        if chapter_id:
-            story.append(Paragraph(f"Chapter {chapter_id}", self.styles['ChapterNumber']))
-            story.append(Paragraph(f"{chapter_name}", self.styles['CustomChapterTitle']))
-        else:
-            story.append(Paragraph(chapter_name, self.styles['CustomChapterTitle']))
+        # Clean up chapter name - remove any \n characters and extra spaces
+        chapter_name = ' '.join(chapter_name.replace('\n', ' ').split())
         
+        # Create chapter styles with perfect centering
+        chapter_number_style = ParagraphStyle(
+            'ChapterNumber',
+            parent=self.styles['ChapterNumber'],
+            alignment=1,  # Center alignment
+            spaceBefore=0,
+            spaceAfter=30,  # Space between number and title
+        )
+        
+        chapter_title_style = ParagraphStyle(
+            'ChapterTitle',
+            parent=self.styles['CustomChapterTitle'],
+            alignment=1,  # Center alignment
+            spaceBefore=0,
+            spaceAfter=0,
+        )
+
+        # Add chapter number (if exists)
+        if chapter_id:
+            story.append(Paragraph(f"Chapter {chapter_id}", chapter_number_style))
+            if chapter_name and chapter_name.strip():
+                story.append(Paragraph(chapter_name, chapter_title_style))
+        else:
+            story.append(Paragraph(chapter_name, chapter_title_style))
+
+        # Force a page break after the chapter page
         story.append(PageBreak())
 
     def generate_pdf(self, input_json_path, book_name, author_name, output_dir='results/pdfs'):
