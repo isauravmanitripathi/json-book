@@ -1,24 +1,49 @@
 # src/pdf_worker/pdf_generator.py
 
+import os
+import json
+import re
+import markdown  # For converting markdown to HTML
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, BaseDocTemplate, PageTemplate, Frame, Flowable, Table, TableStyle
+from reportlab.platypus import (Paragraph, Spacer, PageBreak, BaseDocTemplate,
+                                PageTemplate, Frame, Flowable, Table, TableStyle)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
-import os
-import json
+
+def convert_markdown_to_rl_markup(md_text):
+    """
+    Convert markdown text to ReportLab-friendly markup.
+    This function first converts markdown to HTML then replaces
+    common HTML tags with ReportLab-friendly markup, adding <br/> tags to force new lines.
+    """
+    # Convert markdown to HTML
+    html = markdown.markdown(md_text)
+    # Convert header tags
+    html = re.sub(r'<h1>(.*?)</h1>', r'<font size="18"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+    html = re.sub(r'<h2>(.*?)</h2>', r'<font size="16"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+    html = re.sub(r'<h3>(.*?)</h3>', r'<font size="14"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+    # Convert paragraph tags: keep the text and add extra breaks
+    html = re.sub(r'<p>(.*?)</p>', r'\1<br/><br/>', html, flags=re.DOTALL)
+    # Convert list items: add a bullet and a break for each item
+    html = re.sub(r'<li>(.*?)</li>', r'• \1<br/>', html, flags=re.DOTALL)
+    # Remove unordered list tags
+    html = html.replace('<ul>', '').replace('</ul>', '')
+    # Optionally, remove ordered list tags if present
+    html = html.replace('<ol>', '').replace('</ol>', '')
+    return html
 
 class VerticalSpace(Flowable):
     """Custom Flowable for adding vertical space"""
     def __init__(self, space):
         self.space = space
-        
+
     def wrap(self, *args):
         return (0, self.space)
-        
+
     def draw(self):
         pass
 
@@ -143,11 +168,8 @@ class PDFGenerator:
     def _add_centered_chapter_page(self, story, chapter_id, chapter_name):
         """Add a redesigned, centered chapter page with a decorative table"""
         story.append(PageBreak())
-        # Add vertical space above the chapter block
         story.append(Spacer(1, A4[1] * 0.3))
-        # Compute available width based on margins (72 on each side)
         available_width = A4[0] - 2 * 72
-        # Create paragraphs for chapter number and title with white text
         if chapter_id:
             chapter_number_text = f"Chapter {chapter_id}"
         else:
@@ -168,7 +190,6 @@ class PDFGenerator:
             alignment=1,
             fontName='Helvetica'
         ))
-        # Create a table with a deep blue background that acts as the chapter block
         data = [[chapter_number_para], [chapter_title_para]]
         chapter_table = Table(data, colWidths=[available_width])
         chapter_table.setStyle(TableStyle([
@@ -183,7 +204,7 @@ class PDFGenerator:
         story.append(PageBreak())
 
     def generate_pdf(self, input_json_path, book_name, author_name, output_dir='results/pdfs'):
-        """Generate PDF from the input JSON file"""
+        """Generate PDF from the input JSON file, converting markdown to ReportLab-friendly markup for better formatting"""
         safe_filename = "".join(x for x in book_name if x.isalnum() or x in (' ', '-', '_')).rstrip()
         output_pdf_path = os.path.join(output_dir, f"{safe_filename}.pdf")
         
@@ -225,10 +246,12 @@ class PDFGenerator:
             section_name = section['section_name'].strip()
             section_number = section['section_number'].strip()
             text = section['text'].strip()
-
+            
             full_section_title = f"{section_number}. {section_name}"
             story.append(Paragraph(full_section_title, self.styles['CustomSectionTitle']))
-            story.append(Paragraph(text, self.styles['CustomBodyText']))
+            # Convert markdown text to ReportLab markup for proper newlines and formatting
+            rl_text = convert_markdown_to_rl_markup(text)
+            story.append(Paragraph(rl_text, self.styles['CustomBodyText']))
             story.append(Spacer(1, 20))
 
         doc.build(story, canvasmaker=PageNumCanvas)
