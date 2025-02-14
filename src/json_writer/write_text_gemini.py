@@ -10,7 +10,7 @@ from datetime import datetime
 load_dotenv()
 
 class GeminiGenerator:
-    def __init__(self, model_name: str = "gemini-1.5-flash-8b", temperature: float = 1.0):
+    def __init__(self, model_name: str = "gemini-1.5-flash-8b", temperature: float = 0.3):
         """Initialize the Gemini generator."""
         self.llm = ChatGoogleGenerativeAI(
             model=model_name,
@@ -125,41 +125,11 @@ class GeminiGenerator:
 
         previous_context = self.format_previous_chunks(previous_chunks)
 
-        return f"""Read and understand this text carefully, then:
-1. Identify what's actually being explained or taught in the *current* text.
-2. Determine the main ideas that matter in each paragraph.
-3. Avoid repeating information that has already been established in the previous sections.
-   Only extract new or additional points that build on the previous context.
-
-[System/Instruction to the AI Model]:
-You will receive the current text along with context from previous sections. Follow these steps in order:
-
-1. **Paragraph-by-Paragraph Understanding**:
-   - Break the *current* text into paragraphs.
-   - For each paragraph, figure out the key points or ideas, ignoring any repeated or irrelevant details.
-   - Consider the context from the previous sections so you don't re-list points that were already covered.
-
-2. **Enrich with Relevant Context**:
-   - If there's an opportunity to deepen or clarify the topic based on what was covered before, do so.
-   - Only add new insights or angles. Do not repeat facts that appeared previously unless crucial to understanding.
-
-3. **Key Points Extraction**:
-   - Focus on the *new and essential* ideas introduced by the current text.
-   - Make sure each bullet point truly adds value beyond what's been stated.
-   - Skip examples, definitions, or overly detailed exposition unless they significantly expand understanding.
-   
-Chapter: {chapter_name}
-Section: {section_name}
-Section Number: {section_number}{previous_context}
+        return f"""You are an information organizers. You are taked with proper formatting of this text. Arrange it nicely, with bullet points and proper headings. Don't use headings such as introduction or conclusion. Don't delete or add any other information keep what is there. just format it properly.
 
 Current Text to Analyze:
 {self.clean_text(text)}
-
-**Output Format**:
-- Provide only concise, bulleted points.
-- Each point should highlight something new or essential.
-- Do not include introductions, summaries, or explanatory text.
-- Avoid re-stating points from previous sections or from the current text if already covered."""
+"""
 
     def save_article(self, article_data: Dict) -> bool:
         """Save a new article entry to the output JSON."""
