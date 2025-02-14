@@ -25,7 +25,7 @@ def extract_section_text(input_file_path, output_file_path=None):
                             "code_images": [],
                             "status": <string>,
                             "errors": [],
-                            "extracted-text": <string>,
+                            "gpt-processed-text": <string>,
                             "extracted-code": <string>
                         }
                     ]
@@ -34,7 +34,7 @@ def extract_section_text(input_file_path, output_file_path=None):
         }
     }
     
-    For each section, the function extracts the "extracted-text" and creates an output dictionary
+    For each section, the function extracts the "gpt-processed-text" and creates an output dictionary
     with the following keys: chapter_name, chapter_id, section_number (a combination of chapter_id
     and section_id), section_name, and text.
     
@@ -76,7 +76,7 @@ def extract_section_text(input_file_path, output_file_path=None):
         chapter_name = chapter.get("chapter_name", "Unnamed Chapter")
         chapter_id = str(chapter.get("chapter_id", ""))
         for section in chapter.get("sections", []):
-            text = section.get("extracted-text", "").strip()
+            text = section.get("gpt-processed-text", "").strip()
             if text:
                 section_id = section.get("section_id", "")
                 section_number = f"{chapter_id}.{section_id}"

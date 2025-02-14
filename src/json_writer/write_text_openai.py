@@ -164,13 +164,14 @@ class ConversationGenerator:
     def generate_prompt(self, text: str, chapter_name: str, section_name: str,
                         section_number: str = "") -> str:
         """
-        Generate a conversation prompt that instructs the model to:
-        1. Identify main points and explain them to a beginner in an advanced topic.
-        2. Use an accessible style with varied sentence structure (avoid rewriting the original text).
-        3. Provide new or improved examples if needed, not existing ones.
-        4. Avoid repeating prior sections' content.
+        Generate a detailed article prompt instructing the model to:
+        1. Read and fully understand the provided text, regardless of its format.
+        2. Write a long, detailed article in proper markdown format.
+        3. Cover every single detail mentioned in the text and expand upon it.
+        4. Provide additional context and relevant information as needed.
+        5. Tailor the explanation for an expert audience.
         """
-        # Clean and format names
+        # Clean and format the chapter and section names
         chapter_name = self.clean_text(self.format_name(chapter_name))
         section_name = self.clean_text(self.format_name(section_name))
         
@@ -180,37 +181,21 @@ class ConversationGenerator:
             previous_chunks = self.get_previous_chunks(chapter_name, section_name)
         previous_context = self.format_previous_chunks(previous_chunks)
         
-        # Clean the current text
+        # Clean the current text to remove any unwanted characters
         cleaned_text = self.clean_text(text)
         
-        return f"""You are explaining an advanced topic to someone with minimal background. 
-You are currently explaining Chapter: '{chapter_name}', Section: '{section_name}'.
-Understanding this context is crucial - please ensure your explanation aligns with what would be expected in this specific chapter and section.
-Focus on clarity, but do not copy or rewrite the text exactly as given.
+        return f"""You are provided with a piece of text which can be of any format—be it bullet points, paragraphs, or a mix of both. Your first task is to thoroughly read and understand the text and identify the underlying subject matter and details it conveys. After gaining a clear comprehension of the material, you are to write a long, detailed article in proper markdown format.
 
-Your objectives:
-1. Identify the main points from the current text.
-2. Re-express these ideas with a fresh structure and vocabulary.
-3. If the text has specific examples, replace them with new, more realistic ones.
-4. Maintain an approachable, beginner-friendly tone.
-5. Skip or remove any content already discussed in the previous sections.
+The article must be comprehensive and should include an introduction, detailed analysis, and a conclusion or summary where applicable. Every detail mentioned in the original text must be covered and elaborated upon. It is essential that you add relevant additional information, context, and insights to expand upon the given content. Your explanation should be aimed at an expert audience, using precise language and technical terminology where appropriate. Structure your response with proper markdown elements such as headings, subheadings, and lists if needed, ensuring that it is both clear and well-organized.
+
+You are addressing a topic from Chapter: '{chapter_name}', Section: '{section_name}'. The current text to analyze is presented below. Avoid repeating any information that might have been covered in previous sections, as indicated by the context provided.
 
 {previous_context}
 Current Text to Analyze:
 {cleaned_text}
 
 [System/Instruction to the AI Model]:
-- First, read the text and mentally note key ideas or steps.
-- Then compose a new explanation using different language and sentence patterns.
-- Imagine you are guiding a novice through a complex idea, so simplify but keep it factually accurate.
-- Do NOT repeat your earlier writing from previous sections, and do NOT lift any direct phrasing from the current text.
-- If examples are present in the text, replace them with newly invented, realistic examples, or skip them if they don't serve a purpose.
-
-Final Output Requirements:
-- Write in paragraph form, suitable for a beginner audience.
-- Use your own wording and unique structure.
-- Avoid summarizing or rewriting verbatim.
-- Ensure continuity if relevant, but do not duplicate previously generated material.
+First, analyze the provided text carefully to extract all key points and details. Then, compose a detailed markdown article that explains the subject matter comprehensively. Ensure that every aspect of the text is discussed, enriched with additional context and insights, and presented in a clear and structured manner suitable for an expert audience.
 """
 
     def process_sections(self, data: List[Dict]) -> bool:
