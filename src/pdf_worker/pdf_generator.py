@@ -122,7 +122,7 @@ class MyDocTemplate(BaseDocTemplate):
 class PDFGenerator:
     def __init__(self):
         # Register custom font if needed
-        font_path = os.path.join('fonts', 'Jersey15-Regular.ttf')
+        font_path = os.path.join('fonts', 'Alegreya-Italic.ttf')
         if os.path.exists(font_path):
             pdfmetrics.registerFont(TTFont('Jersey', font_path))
 
