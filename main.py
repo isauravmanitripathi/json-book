@@ -7,7 +7,7 @@ from rich.table import Table
 from rich.prompt import Prompt
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_gemini import generate_conversations_gemini
-from src.pdf_worker import PDFGenerator
+from src.pdf_worker.core import PDFGenerator
 
 def main():
     """Main entry point for the application."""

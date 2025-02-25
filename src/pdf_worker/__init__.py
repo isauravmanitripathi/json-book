@@ -1,1 +1,2 @@
-from .pdf_generator import PDFGenerator
+# Import main classes for easy access
+from .core import PDFGenerator

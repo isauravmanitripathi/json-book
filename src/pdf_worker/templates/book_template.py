@@ -1,0 +1,169 @@
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4, LETTER, LEGAL
+from reportlab.platypus import Frame, PageTemplate
+from reportlab.platypus.tableofcontents import TableOfContents
+from reportlab.platypus.doctemplate import BaseDocTemplate
+from reportlab.pdfgen import canvas
+
+class PageNumCanvas(canvas.Canvas):
+    """Canvas that draws page numbers."""
+    def __init__(self, *args, **kwargs):
+        self.page_number_settings = kwargs.pop('page_number_settings', {})
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+        
+    def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+        
+    def save(self):
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            # Get settings from style
+            show_page_numbers = self.page_number_settings.get('show', True)
+            start_page = self.page_number_settings.get('start_page', 2)
+            
+            if show_page_numbers and self._pageNumber >= start_page:
+                self.draw_page_number(num_pages)
+            canvas.Canvas.showPage(self)
+        canvas.Canvas.save(self)
+        
+    def draw_page_number(self, page_count):
+        # Get settings from style
+        font_name = self.page_number_settings.get('font', 'Helvetica')
+        font_size = self.page_number_settings.get('size', 9)
+        position = self.page_number_settings.get('position', 'bottom-right')
+        format_string = self.page_number_settings.get('format', '{current} of {total}')
+        
+        # Set font
+        self.setFont(font_name, font_size)
+        
+        # Format the text
+        text = format_string.format(current=self._pageNumber, total=page_count)
+        
+        # Position the text based on the specified position
+        if position == 'bottom-right':
+            self.drawRightString(self._pagesize[0] - 30, 30, text)
+        elif position == 'bottom-center':
+            self.drawCentredString(self._pagesize[0] / 2, 30, text)
+        elif position == 'bottom-left':
+            self.drawString(30, 30, text)
+        elif position == 'top-right':
+            self.drawRightString(self._pagesize[0] - 30, self._pagesize[1] - 30, text)
+        elif position == 'top-center':
+            self.drawCentredString(self._pagesize[0] / 2, self._pagesize[1] - 30, text)
+        elif position == 'top-left':
+            self.drawString(30, self._pagesize[1] - 30, text)
+
+class BookTemplate(BaseDocTemplate):
+    """Custom document template with table of contents for book layouts."""
+    def __init__(self, filename, style_config=None, **kwargs):
+        # Get page settings from style config
+        self.style_config = style_config or {}
+        page_config = self.style_config.get('page', {})
+        
+        # Get margins
+        margins = page_config.get('margins', {'left': 72, 'right': 72, 'top': 72, 'bottom': 72})
+        
+        # Get page size
+        page_size_name = page_config.get('size', 'A4')
+        page_size = self._get_page_size(page_size_name)
+        
+        # Initialize base document template
+        super().__init__(
+            filename,
+            pagesize=page_size,
+            rightMargin=margins.get('right', 72),
+            leftMargin=margins.get('left', 72),
+            topMargin=margins.get('top', 72),
+            bottomMargin=margins.get('bottom', 72),
+            **kwargs
+        )
+        
+        self.allowSplitting = 1
+        self.toc = TableOfContents()
+        
+        # Configure TOC based on settings
+        toc_settings = self.style_config.get('table_of_contents', {})
+        self._configure_toc(toc_settings)
+        
+        # Set up page template
+        frame = Frame(self.leftMargin, self.bottomMargin, self.width, self.height, id='normal')
+        template = PageTemplate(id='main', frames=frame)
+        self.addPageTemplates([template])
+    
+    def _get_page_size(self, size_name):
+        """Get page size from name."""
+        size_map = {
+            'A4': A4,
+            'LETTER': LETTER,
+            'LEGAL': LEGAL
+        }
+        return size_map.get(size_name.upper(), A4)
+    
+    def _configure_toc(self, toc_settings):
+        """Configure the table of contents styles."""
+        from reportlab.lib.styles import ParagraphStyle
+        
+        # If no TOC settings, use defaults
+        if not toc_settings:
+            self.toc.levelStyles = [
+                ParagraphStyle(name='TOCHeading1', fontSize=12, leftIndent=20, leading=14),
+                ParagraphStyle(name='TOCHeading2', fontSize=10, leftIndent=40, leading=12),
+            ]
+            return
+            
+        # Configure TOC level styles from settings
+        level_styles = toc_settings.get('level_styles', [])
+        if level_styles:
+            self.toc.levelStyles = []
+            for i, level_style in enumerate(level_styles):
+                style = ParagraphStyle(
+                    name=f'TOCHeading{i+1}',
+                    fontSize=level_style.get('font_size', 12 - i),
+                    leftIndent=level_style.get('indent', 20 + i*20),
+                    leading=level_style.get('leading', 14 - i*2),
+                    fontName=level_style.get('font_name', 'Helvetica')
+                )
+                
+                # Apply italic if specified
+                if level_style.get('italic', False):
+                    if '-Italic' not in style.fontName:
+                        style.fontName = style.fontName + '-Italic'
+                
+                # Apply text color
+                if 'text_color' in level_style:
+                    style.textColor = self._parse_color(level_style.get('text_color'))
+                
+                self.toc.levelStyles.append(style)
+    
+    def _parse_color(self, color_value):
+        """Parse color from string or hex value."""
+        if isinstance(color_value, str):
+            if color_value.startswith('#'):
+                return colors.HexColor(color_value)
+            else:
+                return getattr(colors, color_value, colors.black)
+        return colors.black
+        
+    def afterFlowable(self, flowable):
+        """Adds entries to the table of contents."""
+        if hasattr(flowable, 'style') and hasattr(flowable, 'getPlainText'):
+            style_name = flowable.style.name
+            text = flowable.getPlainText()
+            
+            # Add chapter and section titles to TOC
+            if style_name == 'ChapterTitleStyle':
+                self.notify('TOCEntry', (0, text, self.page))
+            elif style_name == 'CustomSectionTitle':
+                self.notify('TOCEntry', (1, text, self.page))
+                
+    def build(self, flowables, **kwargs):
+        """Build the document with page numbers from style config."""
+        page_number_settings = self.style_config.get('page_numbers', {})
+        super().build(
+            flowables, 
+            canvasmaker=lambda *args, **kw: PageNumCanvas(*args, page_number_settings=page_number_settings, **kw),
+            **kwargs
+        )
