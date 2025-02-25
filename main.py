@@ -4,6 +4,7 @@ import sys
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
+from rich.prompt import Prompt
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_gemini import generate_conversations_gemini
 from src.pdf_worker import PDFGenerator
@@ -26,11 +27,12 @@ def main():
     table.add_row("2", "Generate Articles with OpenAI")
     table.add_row("3", "Generate Articles with Gemini")
     table.add_row("4", "Generate PDF from JSON")
-    table.add_row("5", "Exit")
+    table.add_row("5", "List Available PDF Styles")
+    table.add_row("6", "Exit")
     console.print(table)
 
     while True:
-        choice = console.input("[bold blue]Enter your choice (1-5): [/bold blue]").strip()
+        choice = console.input("[bold blue]Enter your choice (1-6): [/bold blue]").strip()
 
         if choice == '1':
             # Extract chapter text option
@@ -66,6 +68,7 @@ def main():
                 continue
 
             try:
+                from src.json_writer.write_text_openai import generate_conversations
                 with console.status("[bold green]Generating articles with OpenAI...", spinner="dots"):
                     result = generate_conversations(file_path)
                 
@@ -114,14 +117,50 @@ def main():
             if not author_name:
                 console.print("[bold red]Author name cannot be empty. Please try again.[/bold red]")
                 continue
+            
+            # Initialize the PDF Generator to get available styles
+            pdf_generator = PDFGenerator()
+            style_names = pdf_generator.style_manager.get_style_names()
+            
+            if not style_names:
+                console.print("[bold yellow]No style templates found. Using default style.[/bold yellow]")
+                style_name = "classic"
+            else:
+                # Create a table to show available styles
+                style_table = Table(title="Available Style Templates")
+                style_table.add_column("Number", style="dim")
+                style_table.add_column("Style Name", style="cyan")
+                style_table.add_column("Description", style="green")
+                
+                for i, name in enumerate(style_names, 1):
+                    # Try to get description from style
+                    try:
+                        style_config = pdf_generator.style_manager.load_style(name)
+                        description = style_config.get('description', 'No description available')
+                    except Exception as e:
+                        description = 'No description available'
+                        print(f"Error loading style for description: {e}")
+                    
+                    style_table.add_row(str(i), name, description)
+                
+                console.print(style_table)
+                
+                # Prompt for style selection
+                style_choice = Prompt.ask(
+                    "[bold blue]Select a style by number[/bold blue]",
+                    choices=[str(i) for i in range(1, len(style_names) + 1)],
+                    default="1"
+                )
+                
+                style_name = style_names[int(style_choice) - 1]
+                console.print(f"[bold green]Selected style: {style_name}[/bold green]")
 
             # Ensure results/pdfs directory exists
             os.makedirs('results/pdfs', exist_ok=True)
 
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
-                    pdf_generator = PDFGenerator()
-                    result = pdf_generator.generate_pdf(file_path, book_name, author_name)
+                    result = pdf_generator.generate_pdf(file_path, book_name, author_name, style_name)
                 
                 if result:
                     console.print("[bold green]PDF generated successfully![/bold green]")
@@ -130,12 +169,56 @@ def main():
                 console.print(f"[bold red]Error generating PDF: {str(e)}[/bold red]")
         
         elif choice == '5':
+            # List available PDF styles
+            try:
+                pdf_generator = PDFGenerator()
+                style_names = pdf_generator.style_manager.get_style_names()
+                
+                if not style_names:
+                    console.print("[bold yellow]No style templates found. Creating default style...[/bold yellow]")
+                    pdf_generator.style_manager._create_default_style()
+                    style_names = pdf_generator.style_manager.get_style_names()
+                    if not style_names:
+                        console.print("[bold red]Failed to create default style.[/bold red]")
+                        continue
+                
+                # Create a table to show available styles
+                style_table = Table(title="Available Style Templates")
+                style_table.add_column("Style Name", style="cyan")
+                style_table.add_column("Description", style="green")
+                
+                for name in style_names:
+                    # Try to get description from style
+                    try:
+                        style_config = pdf_generator.style_manager.load_style(name)
+                        description = style_config.get('description', 'No description available')
+                    except Exception as e:
+                        description = 'No description available'
+                        print(f"Error loading style for description: {e}")
+                    
+                    style_table.add_row(name, description)
+                
+                console.print(style_table)
+                
+                # Provide instructions for adding new styles
+                console.print(Panel.fit(
+                    "[bold cyan]How to Add New Styles[/bold cyan]\n"
+                    "[dim]1. Create a JSON or YAML file in the 'styles' directory\n"
+                    "2. Follow the template format of existing styles\n"
+                    "3. Define all required style properties\n"
+                    "4. The style will automatically appear in this list[/dim]",
+                    border_style="blue"
+                ))
+            except Exception as e:
+                console.print(f"[bold red]Error listing styles: {str(e)}[/bold red]")
+        
+        elif choice == '6':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
             break
         
         else:
-            console.print("[bold red]Invalid choice. Please select 1-5.[/bold red]")
+            console.print("[bold red]Invalid choice. Please select 1-6.[/bold red]")
 
 if __name__ == "__main__":
     main()
