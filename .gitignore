@@ -8,3 +8,4 @@ extracted_urls.txt
 article
 download.py
 *.md
+*.pdf

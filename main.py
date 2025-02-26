@@ -118,6 +118,16 @@ def main():
                 console.print("[bold red]Author name cannot be empty. Please try again.[/bold red]")
                 continue
             
+            # Ask about multi-part PDF generation
+            enable_multipart = console.input("[bold blue]Generate multi-part PDFs for large books? (y/n): [/bold blue]").strip().lower() == 'y'
+            
+            max_pages = 600  # Default
+            if enable_multipart:
+                max_pages_input = console.input("[bold blue]Maximum pages per part (default 600): [/bold blue]").strip()
+                if max_pages_input and max_pages_input.isdigit():
+                    max_pages = int(max_pages_input)
+                console.print(f"[bold cyan]Book will be split if it exceeds {max_pages} pages[/bold cyan]")
+            
             # Initialize the PDF Generator to get available styles
             pdf_generator = PDFGenerator()
             style_names = pdf_generator.style_manager.get_style_names()
@@ -160,11 +170,28 @@ def main():
 
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
-                    result = pdf_generator.generate_pdf(file_path, book_name, author_name, style_name)
+                    if enable_multipart:
+                        result = pdf_generator.generate_pdf(
+                            file_path, book_name, author_name, 
+                            style_name=style_name, 
+                            max_pages_per_part=max_pages
+                        )
+                    else:
+                        # Disable multi-part by setting a very high page limit
+                        result = pdf_generator.generate_pdf(
+                            file_path, book_name, author_name, 
+                            style_name=style_name, 
+                            max_pages_per_part=1000000
+                        )
                 
                 if result:
-                    console.print("[bold green]PDF generated successfully![/bold green]")
-                    console.print(f"[bold green]Output saved to: {result}[/bold green]")
+                    if isinstance(result, list):
+                        console.print(f"[bold green]PDF generated successfully in {len(result)} parts![/bold green]")
+                        for i, pdf_path in enumerate(result, 1):
+                            console.print(f"[bold green]Part {i} saved to: {pdf_path}[/bold green]")
+                    else:
+                        console.print("[bold green]PDF generated successfully![/bold green]")
+                        console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating PDF: {str(e)}[/bold red]")
         
