@@ -1,6 +1,8 @@
+# Updated src/pdf_worker/components/toc.py
+
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.platypus import Paragraph
+from reportlab.platypus import Paragraph, Spacer
 
 class TableOfContents:
     """Component for generating the table of contents."""
@@ -32,32 +34,20 @@ class TableOfContents:
             fontName=title_config.get('font', 'Helvetica-Bold')
         )
         
-        story.append(Paragraph(title_config.get('text', 'Table of Contents'), toc_title_style))
+        # Add the TOC title
+        toc_title_text = title_config.get('text', 'Table of Contents')
+        story.append(Paragraph(toc_title_text, toc_title_style))
         
-        # Configure TOC level styles
+        # Add some space after the title
+        story.append(Spacer(1, 10))
+        
+        # Ensure TOC has proper styles
         level_styles = toc_config.get('level_styles', [])
         if level_styles:
-            self.toc_object.levelStyles = []
-            for i, level_style in enumerate(level_styles):
-                style = ParagraphStyle(
-                    name=f'TOCHeading{i+1}',
-                    fontSize=level_style.get('font_size', 12 - i),
-                    leftIndent=level_style.get('indent', 20 + i*20),
-                    leading=level_style.get('leading', 14 - i*2),
-                    fontName=level_style.get('font_name', 'Helvetica')
-                )
-                
-                # Apply italic if specified
-                if level_style.get('italic', False):
-                    if '-Italic' not in style.fontName:
-                        style.fontName = style.fontName + '-Italic'
-                
-                # Apply text color
-                if 'text_color' in level_style:
-                    style.textColor = self._parse_color(level_style.get('text_color'))
-                
-                self.toc_object.levelStyles.append(style)
-        
+            # Configure existing TOC object (should already be configured in BookTemplate)
+            pass
+            
+        # Add the TOC object to the story
         story.append(self.toc_object)
         
     def _parse_color(self, color_value):

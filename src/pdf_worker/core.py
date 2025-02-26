@@ -1,5 +1,3 @@
-# Updated src/pdf_worker/core.py with fixes for ordering and TOC
-
 import os
 import json
 import traceback
@@ -7,13 +5,14 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import PageBreak
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase.pdfmetrics import stringWidth
+from reportlab.platypus.doctemplate import BaseDocTemplate
 
 from .style_manager import StyleManager
 from .components.title_page import TitlePage
 from .components.toc import TableOfContents
 from .components.chapter import Chapter
 from .components.section import Section
-from .templates.book_template import BookTemplate
+from .templates.book_template import BookTemplate, PageNumCanvas
 
 class PDFGenerator:
     """Generates PDF books from JSON content using style templates."""
@@ -216,7 +215,7 @@ class PDFGenerator:
         title_page.add_to_story(story)
         print(f"Added title page for {book_title}")
         
-        # Add table of contents placeholder
+        # Add table of contents placeholder - this will be populated during multiBuild
         toc = TableOfContents(style_config, doc.toc)
         toc.add_to_story(story)
         print("Added table of contents")
@@ -243,8 +242,14 @@ class PDFGenerator:
                 section = Section(style_config, section_name, section_text)
                 section.add_to_story(story)
         
-        # Build the PDF
+        # Build the PDF - use BaseDocTemplate.multiBuild directly to avoid recursion
         print(f"Building PDF for part {part_num if part_num else 1}...")
-        doc.build(story)
+        
+        # Create canvasmaker function
+        page_number_settings = style_config.get('page_numbers', {})
+        canvasmaker = lambda *args, **kw: PageNumCanvas(*args, page_number_settings=page_number_settings, **kw)
+        
+        # Call multiBuild directly from BaseDocTemplate to avoid the recursion issue
+        BaseDocTemplate.multiBuild(doc, story, canvasmaker=canvasmaker)
         
         return output_path
