@@ -8,6 +8,7 @@ from rich.prompt import Prompt
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_gemini import generate_conversations_gemini
 from src.pdf_worker.core import PDFGenerator
+from style_generator import StyleGenerator
 
 def main():
     """Main entry point for the application."""
@@ -28,11 +29,12 @@ def main():
     table.add_row("3", "Generate Articles with Gemini")
     table.add_row("4", "Generate PDF from JSON")
     table.add_row("5", "List Available PDF Styles")
-    table.add_row("6", "Exit")
+    table.add_row("6", "Create New PDF Style")
+    table.add_row("7", "Exit")
     console.print(table)
 
     while True:
-        choice = console.input("[bold blue]Enter your choice (1-6): [/bold blue]").strip()
+        choice = console.input("[bold blue]Enter your choice (1-7): [/bold blue]").strip()
 
         if choice == '1':
             # Extract chapter text option
@@ -283,12 +285,36 @@ def main():
                 console.print(f"[bold red]Error listing styles: {str(e)}[/bold red]")
         
         elif choice == '6':
+            # Create new PDF style
+            try:
+                console.print(Panel(
+                    "[bold cyan]Create New PDF Style[/bold cyan]\n"
+                    "[dim]This will guide you through creating a new style template for PDF generation.\n"
+                    "You'll be prompted for various settings related to page layout, fonts, colors, etc.\n"
+                    "The resulting style will be saved as a JSON file in the 'styles' directory.[/dim]",
+                    border_style="blue"
+                ))
+                
+                # Create style generator and run it
+                generator = StyleGenerator()
+                style_path = generator.generate_style()
+                
+                console.print(Panel(
+                    f"[bold green]Style Created Successfully![/bold green]\n"
+                    f"[dim]Your new style has been saved to: {style_path}\n"
+                    f"You can now select this style when generating PDFs.[/dim]",
+                    border_style="green"
+                ))
+            except Exception as e:
+                console.print(f"[bold red]Error creating style: {str(e)}[/bold red]")
+        
+        elif choice == '7':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
             break
         
         else:
-            console.print("[bold red]Invalid choice. Please select 1-6.[/bold red]")
+            console.print("[bold red]Invalid choice. Please select 1-7.[/bold red]")
 
 if __name__ == "__main__":
     main()
