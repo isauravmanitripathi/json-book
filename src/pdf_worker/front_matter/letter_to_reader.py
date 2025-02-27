@@ -88,7 +88,9 @@ The tone should be warm, conversational, and encouraging - more personal than th
 
 DO NOT include a title at the top (like "Letter to the Reader") - that will be added separately.
 DO NOT use generic platitudes or clichés.
-DO finish with a sign-off that includes the author's name.
+
+
+The Sign off should be natural and personal, like "Warm regards," or "With best wishes," followed by the author name or Government Exam Guru.
 """
         return prompt
     
