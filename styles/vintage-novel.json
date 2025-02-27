@@ -1,0 +1,137 @@
+{
+    "name": "Vintage Novel",
+    "description": "An elegant, timeless design with DS Zierschrift font",
+    "custom_fonts": [
+      {
+        "name": "DSZierschrift",
+        "path": "/Users/sauravtripathi/Downloads/auto-reel-video-gen/Results/test-audio/ds-zierschrift/DSZierschrift.ttf"
+      }
+    ],
+    "page": {
+      "size": "A4",
+      "margins": {
+        "left": 90,
+        "right": 90,
+        "top": 72,
+        "bottom": 72
+      }
+    },
+    "page_numbers": {
+      "show": true,
+      "format": "{current}",
+      "position": "bottom-center",
+      "font": "DSZierschrift",
+      "size": 10,
+      "start_page": 2
+    },
+    "title_page": {
+      "title": {
+        "font": "DSZierschrift",
+        "size": 38,
+        "color": "#2C3E50",
+        "alignment": "center",
+        "case": "none",
+        "spacing": "lines"
+      },
+      "author": {
+        "font": "DSZierschrift",
+        "size": 22,
+        "color": "#34495E",
+        "alignment": "center",
+        "prefix": ""
+      },
+      "spacing": {
+        "top": 0.4,
+        "between": 0.3
+      }
+    },
+    "table_of_contents": {
+      "title": {
+        "text": "Contents",
+        "font": "DSZierschrift",
+        "size": 22,
+        "alignment": "center"
+      },
+      "level_styles": [
+        {
+          "font_name": "DSZierschrift",
+          "font_size": 12,
+          "indent": 20,
+          "leading": 16,
+          "text_color": "#2C3E50"
+        },
+        {
+          "font_name": "DSZierschrift",
+          "font_size": 11,
+          "indent": 40,
+          "leading": 14,
+          "text_color": "#34495E"
+        }
+      ]
+    },
+    "chapter": {
+      "number": {
+        "prefix": "Chapter",
+        "font": "DSZierschrift",
+        "size": 18,
+        "color": "#2C3E50",
+        "alignment": "center",
+        "case": "none"
+      },
+      "title": {
+        "font": "DSZierschrift",
+        "size": 24,
+        "color": "#2C3E50",
+        "alignment": "center",
+        "case": "none"
+      },
+      "divider": {
+        "type": "dotted",
+        "width": 1,
+        "color": "#7F8C8D",
+        "spacing": {
+          "before": 12,
+          "after": 24
+        }
+      },
+      "page_break": {
+        "before": true,
+        "after": false
+      }
+    },
+    "section": {
+      "title": {
+        "font": "DSZierschrift",
+        "size": 18,
+        "color": "#2C3E50",
+        "alignment": "left",
+        "space_before": 24,
+        "space_after": 18
+      },
+      "divider": {
+        "type": "none"
+      }
+    },
+    "body_text": {
+      "font": "DSZierschrift",
+      "size": 12,
+      "leading": 18,
+      "alignment": "justified",
+      "space_after": 12,
+      "color": "#2C3E50"
+    },
+    "images": {
+      "max_width": 400,
+      "space_before": 18,
+      "space_after": 18,
+      "full_page_threshold": 0.7,
+      "full_page_break": true,
+      "caption": {
+        "font": "DSZierschrift",
+        "size": 10,
+        "leading": 14,
+        "color": "#34495E",
+        "space_after": 12
+      }
+    }
+  }
