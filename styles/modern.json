@@ -1,0 +1,112 @@
+{
+    "name": "Modern",
+    "description": "A clean, contemporary design with minimalist aesthetics",
+    "page": {
+      "size": "A4",
+      "margins": {"left": 90, "right": 90, "top": 90, "bottom": 72}
+    },
+    "fonts": [],
+    "page_numbers": {
+      "show": true,
+      "format": "{current}",
+      "position": "bottom-center",
+      "font": "Helvetica",
+      "size": 9,
+      "start_page": 1
+    },
+    "title_page": {
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 42,
+        "color": "#1A1A1A",
+        "spacing": "none",
+        "alignment": "center",
+        "case": "title"
+      },
+      "author": {
+        "font": "Helvetica",
+        "size": 18,
+        "color": "#666666",
+        "prefix": "",
+        "alignment": "center"
+      },
+      "spacing": {
+        "top": 0.4,
+        "between": 0.2
+      }
+    },
+    "table_of_contents": {
+      "title": {
+        "text": "Contents",
+        "font": "Helvetica-Bold",
+        "size": 24,
+        "alignment": "left"
+      },
+      "level_styles": [
+        {
+          "font_name": "Helvetica",
+          "font_size": 12,
+          "indent": 0,
+          "leading": 16,
+          "text_color": "#000000"
+        },
+        {
+          "font_name": "Helvetica",
+          "font_size": 10,
+          "indent": 20,
+          "leading": 14,
+          "text_color": "#333333"
+        }
+      ]
+    },
+    "chapter": {
+      "number": {
+        "prefix": "",
+        "font": "Helvetica-Bold",
+        "size": 50,
+        "color": "#1A1A1A",
+        "alignment": "left",
+        "case": "none"
+      },
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 28,
+        "color": "#1A1A1A",
+        "alignment": "left",
+        "case": "title"
+      },
+      "divider": {
+        "type": "solid",
+        "width": 2,
+        "color": "#1A1A1A",
+        "spacing": {"before": 10, "after": 20}
+      },
+      "page_break": {
+        "before": true,
+        "after": false
+      }
+    },
+    "section": {
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 14,
+        "color": "#1A1A1A",
+        "alignment": "left",
+        "space_before": 30,
+        "space_after": 12
+      },
+      "divider": {
+        "type": "none",
+        "width": 0,
+        "color": "#000000",
+        "spacing": {"before": 0, "after": 0}
+      }
+    },
+    "body_text": {
+      "font": "Helvetica",
+      "size": 10,
+      "leading": 14,
+      "alignment": "justified",
+      "space_after": 10
+    }
+  }

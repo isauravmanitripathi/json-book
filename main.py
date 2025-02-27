@@ -14,6 +14,13 @@ def main():
     """Main entry point for the application."""
     console = Console()
     
+    # Ensure fonts directory exists
+    fonts_dir = 'fonts'
+    if not os.path.exists(fonts_dir):
+        os.makedirs(fonts_dir, exist_ok=True)
+        console.print(f"[bold yellow]Created fonts directory: {fonts_dir}[/bold yellow]")
+        console.print("[dim]Place your .ttf font files in this directory to use custom fonts.[/dim]")
+    
     console.print(Panel.fit(
         "[bold cyan]Text Processing Utility[/bold cyan]\n"
         "[dim]Choose an option to process your text[/dim]",
@@ -153,17 +160,28 @@ def main():
                 style_table.add_column("Number", style="dim")
                 style_table.add_column("Style Name", style="cyan")
                 style_table.add_column("Description", style="green")
+                style_table.add_column("Custom Fonts", style="yellow")  # Add this column
                 
                 for i, name in enumerate(style_names, 1):
-                    # Try to get description from style
+                    # Try to get description and custom fonts from style
                     try:
                         style_config = pdf_generator.style_manager.load_style(name)
                         description = style_config.get('description', 'No description available')
+                        
+                        # Check for custom fonts
+                        custom_fonts = style_config.get('custom_fonts', [])
+                        if custom_fonts:
+                            font_names = [f"{font.get('name', 'Unknown')}" for font in custom_fonts]
+                            fonts_info = ", ".join(font_names)
+                        else:
+                            fonts_info = "None"
+                            
                     except Exception as e:
                         description = 'No description available'
+                        fonts_info = 'Unknown'
                         print(f"Error loading style for description: {e}")
                     
-                    style_table.add_row(str(i), name, description)
+                    style_table.add_row(str(i), name, description, fonts_info)
                 
                 console.print(style_table)
                 
@@ -231,6 +249,7 @@ def main():
                 style_table.add_column("Style Name", style="cyan")
                 style_table.add_column("Description", style="green")
                 style_table.add_column("Image Support", style="magenta")
+                style_table.add_column("Custom Fonts", style="yellow")  # Add this column
                 
                 for name in style_names:
                     # Try to get description from style
@@ -242,14 +261,34 @@ def main():
                         has_image_config = 'images' in style_config
                         image_support = "[green]✓[/green]" if has_image_config else "[yellow]Limited[/yellow]"
                         
+                        # Check for custom fonts
+                        custom_fonts = style_config.get('custom_fonts', [])
+                        if custom_fonts:
+                            font_names = [font.get('name', 'Unknown') for font in custom_fonts]
+                            fonts_info = f"[green]{', '.join(font_names)}[/green]"
+                        else:
+                            fonts_info = "[dim]None[/dim]"
+                        
                     except Exception as e:
                         description = 'No description available'
                         image_support = "[red]Unknown[/red]"
+                        fonts_info = "[red]Unknown[/red]"
                         print(f"Error loading style for description: {e}")
                     
-                    style_table.add_row(name, description, image_support)
+                    style_table.add_row(name, description, image_support, fonts_info)
                 
                 console.print(style_table)
+                
+                # List available fonts in fonts directory
+                fonts_dir = 'fonts'
+                if os.path.exists(fonts_dir) and os.listdir(fonts_dir):
+                    font_files = [f for f in os.listdir(fonts_dir) if f.lower().endswith('.ttf')]
+                    if font_files:
+                        console.print(Panel.fit(
+                            f"[bold cyan]Available Font Files in '{fonts_dir}' Directory[/bold cyan]\n"
+                            f"[dim]{', '.join(font_files)}[/dim]",
+                            border_style="green"
+                        ))
                 
                 # Provide instructions for adding new styles
                 console.print(Panel.fit(
@@ -260,6 +299,23 @@ def main():
                     "4. To support images, add an 'images' section to your style\n"
                     "5. The style will automatically appear in this list[/dim]",
                     border_style="blue"
+                ))
+                
+                # Show custom font configuration hint
+                console.print(Panel.fit(
+                    "[bold cyan]Custom Font Configuration[/bold cyan]\n"
+                    "[dim]To use custom fonts in your PDFs, add a 'custom_fonts' section to your style:\n\n"
+                    "\"custom_fonts\": [\n"
+                    "    {\n"
+                    "        \"name\": \"MyFont\",\n"
+                    "        \"path\": \"MyFont-Regular.ttf\",\n"
+                    "        \"bold_path\": \"MyFont-Bold.ttf\",\n"
+                    "        \"italic_path\": \"MyFont-Italic.ttf\"\n"
+                    "    }\n"
+                    "]\n\n"
+                    "Then reference the font name in any style element:\n"
+                    "\"body_text\": { \"font\": \"MyFont\", ... }[/dim]",
+                    border_style="yellow"
                 ))
                 
                 # Show image configuration hint
@@ -294,6 +350,17 @@ def main():
                     "The resulting style will be saved as a JSON file in the 'styles' directory.[/dim]",
                     border_style="blue"
                 ))
+                
+                # List available font files in fonts directory
+                fonts_dir = 'fonts'
+                if os.path.exists(fonts_dir) and os.listdir(fonts_dir):
+                    font_files = [f for f in os.listdir(fonts_dir) if f.lower().endswith('.ttf')]
+                    if font_files:
+                        console.print(Panel.fit(
+                            f"[bold cyan]Available Font Files in '{fonts_dir}' Directory[/bold cyan]\n"
+                            f"[dim]{', '.join(font_files)}[/dim]",
+                            border_style="green"
+                        ))
                 
                 # Create style generator and run it
                 generator = StyleGenerator()

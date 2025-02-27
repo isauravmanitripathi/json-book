@@ -27,6 +27,43 @@ class StyleGenerator:
         self.style["description"] = Prompt.ask("[bold]Enter a description[/bold]", 
                                           default="Custom style template")
         
+        # Custom fonts
+        include_custom_fonts = Confirm.ask("[bold]Do you want to include custom fonts?[/bold]", default=False)
+        if include_custom_fonts:
+            self.style["custom_fonts"] = []
+            while True:
+                font_name = Prompt.ask("[bold]Enter font name (as you want to reference it)[/bold]")
+                
+                use_custom_file = Confirm.ask("[bold]Do you want to use a custom TTF file?[/bold]", default=True)
+                if use_custom_file:
+                    font_path = Prompt.ask("[bold]Enter path to .ttf font file[/bold] (relative to 'fonts' directory or absolute path)")
+                    
+                    font_def = {
+                        "name": font_name,
+                        "path": font_path
+                    }
+                    
+                    # Ask for bold, italic, bold-italic variants
+                    if Confirm.ask("[bold]Do you have a bold variant for this font?[/bold]", default=False):
+                        font_def["bold_path"] = Prompt.ask("[bold]Enter path to bold variant .ttf file[/bold]")
+                        
+                    if Confirm.ask("[bold]Do you have an italic variant for this font?[/bold]", default=False):
+                        font_def["italic_path"] = Prompt.ask("[bold]Enter path to italic variant .ttf file[/bold]")
+                        
+                    if Confirm.ask("[bold]Do you have a bold-italic variant for this font?[/bold]", default=False):
+                        font_def["bold_italic_path"] = Prompt.ask("[bold]Enter path to bold-italic variant .ttf file[/bold]")
+                else:
+                    # Using a standard font but with a custom name reference
+                    font_def = {
+                        "name": font_name
+                    }
+                    self.console.print(f"[dim]Note: '{font_name}' will reference a standard font.[/dim]")
+                
+                self.style["custom_fonts"].append(font_def)
+                
+                if not Confirm.ask("[bold]Add another custom font?[/bold]", default=False):
+                    break
+        
         # Page settings
         self.style["page"] = {}
         self.style["page"]["size"] = Prompt.ask(
@@ -265,10 +302,23 @@ class StyleGenerator:
         """Get font settings from user input."""
         self.console.print(f"[bold]{label} Settings[/bold]")
         
+        # Get available custom fonts
+        custom_fonts = []
+        if "custom_fonts" in self.style:
+            custom_fonts = [font_def.get("name") for font_def in self.style["custom_fonts"] if "name" in font_def]
+        
+        # Standard fonts + any custom fonts
+        available_fonts = ["Helvetica", "Helvetica-Bold", "Times-Roman", "Times-Bold", "Courier", "Courier-Bold"]
+        available_fonts.extend(custom_fonts)
+        
+        # If custom fonts are defined, show a message about them
+        if custom_fonts:
+            self.console.print(f"[dim]Custom fonts available: {', '.join(custom_fonts)}[/dim]")
+        
         settings = {
             "font": Prompt.ask(
                 "[bold]Font[/bold]",
-                choices=["Helvetica", "Helvetica-Bold", "Times-Roman", "Times-Bold", "Courier", "Courier-Bold"],
+                choices=available_fonts,
                 default=default_font
             ),
             "size": IntPrompt.ask("[bold]Font size[/bold]", default=default_size),

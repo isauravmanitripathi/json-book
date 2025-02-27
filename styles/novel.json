@@ -1,0 +1,114 @@
+{
+    "name": "ClassicNovel",
+    "description": "Elegant typography and layout inspired by classic literary works",
+    "page": {
+      "size": "A4",
+      "margins": {"left": 90, "right": 90, "top": 72, "bottom": 72}
+    },
+    "fonts": [],
+    "page_numbers": {
+      "show": true,
+      "format": "{current}",
+      "position": "bottom-center",
+      "font": "Times-Roman",
+      "size": 10,
+      "start_page": 1
+    },
+    "title_page": {
+      "title": {
+        "font": "Times-Bold",
+        "size": 30,
+        "color": "#2B2B2B",
+        "spacing": "lines",
+        "alignment": "center",
+        "case": "title"
+      },
+      "author": {
+        "font": "Times-Italic",
+        "size": 18,
+        "color": "#4A4A4A",
+        "prefix": "by",
+        "alignment": "center"
+      },
+      "spacing": {
+        "top": 0.4,
+        "between": 0.1
+      }
+    },
+    "table_of_contents": {
+      "title": {
+        "text": "Contents",
+        "font": "Times-Roman",
+        "size": 18,
+        "alignment": "center"
+      },
+      "level_styles": [
+        {
+          "font_name": "Times-Roman",
+          "font_size": 12,
+          "indent": 0,
+          "leading": 18,
+          "text_color": "#000000"
+        },
+        {
+          "font_name": "Times-Italic",
+          "font_size": 11,
+          "indent": 20,
+          "leading": 16,
+          "text_color": "#444444",
+          "italic": true
+        }
+      ]
+    },
+    "chapter": {
+      "number": {
+        "prefix": "Chapter",
+        "font": "Times-Roman",
+        "size": 14,
+        "color": "#000000",
+        "alignment": "center",
+        "case": "title"
+      },
+      "title": {
+        "font": "Times-Bold",
+        "size": 24,
+        "color": "#2B2B2B",
+        "alignment": "center",
+        "case": "title"
+      },
+      "divider": {
+        "type": "none",
+        "width": 0,
+        "color": "#000000",
+        "spacing": {"before": 0, "after": 30}
+      },
+      "page_break": {
+        "before": true,
+        "after": false
+      }
+    },
+    "section": {
+      "title": {
+        "font": "Times-Italic",
+        "size": 14,
+        "color": "#333333",
+        "alignment": "center",
+        "space_before": 20,
+        "space_after": 15
+      },
+      "divider": {
+        "type": "none",
+        "width": 0,
+        "color": "#000000",
+        "spacing": {"before": 0, "after": 0}
+      }
+    },
+    "body_text": {
+      "font": "Times-Roman",
+      "size": 11,
+      "leading": 16,
+      "alignment": "justified",
+      "space_after": 12,
+      "first_line_indent": 18
+    }
+  }

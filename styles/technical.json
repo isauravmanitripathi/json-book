@@ -1,0 +1,126 @@
+{
+  "name": "Technical",
+  "description": "A practical style optimized for technical documentation",
+  "page": {
+    "size": "A4",
+    "margins": {"left": 72, "right": 72, "top": 72, "bottom": 72}
+  },
+  "fonts": [],
+  "page_numbers": {
+    "show": true,
+    "format": "Page {current} of {total}",
+    "position": "bottom-right",
+    "font": "Courier",
+    "size": 9,
+    "start_page": 1
+  },
+  "title_page": {
+    "title": {
+      "font": "Courier-Bold",
+      "size": 24,
+      "color": "#000000",
+      "spacing": "none",
+      "alignment": "center",
+      "case": "upper"
+    },
+    "author": {
+      "font": "Courier",
+      "size": 14,
+      "color": "#000000",
+      "prefix": "Author:",
+      "alignment": "center"
+    },
+    "spacing": {
+      "top": 0.4,
+      "between": 0.2
+    }
+  },
+  "table_of_contents": {
+    "title": {
+      "text": "TABLE OF CONTENTS",
+      "font": "Courier-Bold",
+      "size": 14,
+      "alignment": "center"
+    },
+    "level_styles": [
+      {
+        "font_name": "Courier",
+        "font_size": 12,
+        "indent": 0,
+        "leading": 16,
+        "text_color": "#000000"
+      },
+      {
+        "font_name": "Courier",
+        "font_size": 10,
+        "indent": 20,
+        "leading": 16,
+        "text_color": "#000000"
+      }
+    ]
+  },
+  "chapter": {
+    "number": {
+      "prefix": "Chapter",
+      "font": "Courier-Bold",
+      "size": 14,
+      "color": "#000000",
+      "alignment": "left",
+      "case": "upper"
+    },
+    "title": {
+      "font": "Courier-Bold",
+      "size": 18,
+      "color": "#000000",
+      "alignment": "left",
+      "case": "upper"
+    },
+    "divider": {
+      "type": "solid",
+      "width": 1,
+      "color": "#000000",
+      "spacing": {"before": 6, "after": 12}
+    },
+    "page_break": {
+      "before": true,
+      "after": false
+    }
+  },
+  "section": {
+    "title": {
+      "font": "Courier-Bold",
+      "size": 14,
+      "color": "#000000",
+      "alignment": "left",
+      "space_before": 24,
+      "space_after": 12
+    },
+    "divider": {
+      "type": "none",
+      "width": 0,
+      "color": "#000000",
+      "spacing": {"before": 0, "after": 0}
+    }
+  },
+  "body_text": {
+    "font": "Courier",
+    "size": 10,
+    "leading": 14,
+    "alignment": "left",
+    "space_after": 10
+  },
+  "images": {
+    "max_width": 450,
+    "space_before": 16,
+    "space_after": 16,
+    "full_page_threshold": 0.75,
+    "full_page_break": true,
+    "caption": {
+      "font": "Courier-Italic",
+      "size": 9,
+      "leading": 11,
+      "color": "#000000",
+      "space_after": 14
+    }
+  }
+}

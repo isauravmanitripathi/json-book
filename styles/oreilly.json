@@ -1,0 +1,126 @@
+{
+    "name": "O'Reilly",
+    "description": "Technical documentation style inspired by O'Reilly programming books",
+    "page": {
+      "size": "A4",
+      "margins": {"left": 72, "right": 72, "top": 72, "bottom": 72}
+    },
+    "fonts": [],
+    "page_numbers": {
+      "show": true,
+      "format": "Page {current}",
+      "position": "bottom-center",
+      "font": "Helvetica",
+      "size": 9,
+      "start_page": 1
+    },
+    "title_page": {
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 28,
+        "color": "#000000",
+        "spacing": "none",
+        "alignment": "center",
+        "case": "upper"
+      },
+      "author": {
+        "font": "Helvetica",
+        "size": 16,
+        "color": "#000000",
+        "prefix": "By",
+        "alignment": "center"
+      },
+      "spacing": {
+        "top": 0.4,
+        "between": 0.2
+      }
+    },
+    "table_of_contents": {
+      "title": {
+        "text": "CONTENTS",
+        "font": "Helvetica-Bold",
+        "size": 16,
+        "alignment": "center"
+      },
+      "level_styles": [
+        {
+          "font_name": "Helvetica-Bold",
+          "font_size": 12,
+          "indent": 0,
+          "leading": 16,
+          "text_color": "#000000"
+        },
+        {
+          "font_name": "Helvetica",
+          "font_size": 11,
+          "indent": 20,
+          "leading": 14,
+          "text_color": "#333333"
+        }
+      ]
+    },
+    "chapter": {
+      "number": {
+        "prefix": "Chapter",
+        "font": "Helvetica-Bold",
+        "size": 16,
+        "color": "#000000",
+        "alignment": "left",
+        "case": "none"
+      },
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 24,
+        "color": "#000000",
+        "alignment": "left",
+        "case": "title"
+      },
+      "divider": {
+        "type": "solid",
+        "width": 1,
+        "color": "#000000",
+        "spacing": {"before": 6, "after": 12}
+      },
+      "page_break": {
+        "before": true,
+        "after": false
+      }
+    },
+    "section": {
+      "title": {
+        "font": "Helvetica-Bold",
+        "size": 14,
+        "color": "#000000",
+        "alignment": "left",
+        "space_before": 18,
+        "space_after": 12
+      },
+      "divider": {
+        "type": "none",
+        "width": 0,
+        "color": "#000000",
+        "spacing": {"before": 0, "after": 0}
+      }
+    },
+    "body_text": {
+      "font": "Helvetica",
+      "size": 10,
+      "leading": 14,
+      "alignment": "justified",
+      "space_after": 10
+    },
+    "images": {
+      "max_width": 450,
+      "space_before": 10,
+      "space_after": 10,
+      "full_page_threshold": 0.7,
+      "full_page_break": false,
+      "caption": {
+        "font": "Helvetica",
+        "size": 9,
+        "leading": 11,
+        "color": "#000000",
+        "space_after": 10
+      }
+    }
+  }

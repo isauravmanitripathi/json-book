@@ -1,0 +1,148 @@
+{
+  "name": "VintageNovel",
+  "description": "An elegant vintage style for novel or classic book formatting",
+  "custom_fonts": [
+    {
+      "name": "Playfair",
+      "path": "/Users/sauravtripathi/Downloads/auto-reel-video-gen/Results/test-audio/playfair-display/PlayfairDisplay-Regular.ttf"
+    },
+    {
+      "name": "MerriweatherSerif",
+      "path": "/Users/sauravtripathi/Downloads/auto-reel-video-gen/Results/test-audio/merriweather/Merriweather-Light.ttf"
+    },
+    {
+      "name": "Cinzel",
+      "path": "/Users/sauravtripathi/Downloads/auto-reel-video-gen/Results/test-audio/Cinzel Family/Cinzel/Cinzel-Regular.ttf"
+    },
+    {
+      "name": "LibreBaskerville",
+      "path": "/Users/sauravtripathi/Downloads/auto-reel-video-gen/Results/test-audio/libre-baskerville/LibreBaskerville-Regular.ttf"
+    }
+  ],
+  "page": {
+    "size": "A5",
+    "margins": {
+      "left": 60,
+      "right": 50,
+      "top": 60,
+      "bottom": 60
+    }
+  },
+  "page_numbers": {
+    "show": true,
+    "format": "{current}",
+    "position": "bottom-center",
+    "font": "LibreBaskerville",
+    "size": 10,
+    "start_page": 2
+  },
+  "title_page": {
+    "title": {
+      "font": "Cinzel",
+      "size": 28,
+      "color": "#2D2D2D",
+      "spacing": "none",
+      "alignment": "center",
+      "case": "none"
+    },
+    "author": {
+      "font": "Playfair",
+      "size": 16,
+      "color": "#2D2D2D",
+      "prefix": "by",
+      "alignment": "center"
+    },
+    "spacing": {
+      "top": 0.4,
+      "between": 0.1
+    }
+  },
+  "table_of_contents": {
+    "title": {
+      "text": "Contents",
+      "font": "Cinzel",
+      "size": 18,
+      "alignment": "center"
+    },
+    "level_styles": [
+      {
+        "font_name": "MerriweatherSerif",
+        "font_size": 12,
+        "indent": 20,
+        "leading": 18,
+        "text_color": "#2D2D2D"
+      }
+    ]
+  },
+  "chapter": {
+    "number": {
+      "prefix": "Chapter",
+      "font": "Cinzel",
+      "size": 14,
+      "color": "#2D2D2D",
+      "alignment": "center",
+      "case": "none"
+    },
+    "title": {
+      "font": "Cinzel",
+      "size": 20,
+      "color": "#2D2D2D",
+      "alignment": "center",
+      "case": "none"
+    },
+    "divider": {
+      "type": "solid",
+      "width": 1,
+      "color": "#B0B0B0",
+      "spacing": {
+        "before": 8,
+        "after": 24
+      }
+    },
+    "page_break": {
+      "before": true,
+      "after": false
+    }
+  },
+  "section": {
+    "title": {
+      "font": "Playfair",
+      "size": 14,
+      "color": "#2D2D2D",
+      "alignment": "center",
+      "space_before": 24,
+      "space_after": 18
+    },
+    "divider": {
+      "type": "none",
+      "width": 0,
+      "color": "#000000",
+      "spacing": {
+        "before": 0,
+        "after": 0
+      }
+    }
+  },
+  "body_text": {
+    "font": "LibreBaskerville",
+    "size": 11,
+    "leading": 16,
+    "alignment": "justified",
+    "space_after": 12,
+    "color": "#1A1A1A"
+  },
+  "images": {
+    "max_width": 350,
+    "space_before": 24,
+    "space_after": 16,
+    "full_page_threshold": 0.7,
+    "full_page_break": true,
+    "caption": {
+      "font": "LibreBaskerville",
+      "size": 9,
+      "leading": 12,
+      "color": "#4A4A4A",
+      "space_after": 16
+    }
+  }
+}

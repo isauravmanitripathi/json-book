@@ -1,6 +1,8 @@
 import os
 import json
 import yaml
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 class StyleManager:
     """Manages PDF style templates."""
@@ -70,6 +72,7 @@ class StyleManager:
                 "margins": {"left": 72, "right": 72, "top": 72, "bottom": 72}
             },
             "fonts": [],
+            "custom_fonts": [],
             "page_numbers": {
                 "show": True,
                 "format": "{current} of {total}",
@@ -146,8 +149,8 @@ class StyleManager:
                     "spacing": {"before": 6, "after": 12}
                 },
                 "page_break": {
-                    "before": true,
-                    "after": true
+                    "before": True,
+                    "after": True
                 }
             },
             "section": {
@@ -178,7 +181,7 @@ class StyleManager:
                 "space_before": 12,
                 "space_after": 12,
                 "full_page_threshold": 0.8,
-                "full_page_break": true,
+                "full_page_break": True,
                 "caption": {
                     "font": "Helvetica-Italic",
                     "size": 10,
@@ -208,7 +211,7 @@ class StyleManager:
             "space_before": 18,
             "space_after": 18,
             "full_page_threshold": 0.7,
-            "full_page_break": true,
+            "full_page_break": True,
             "caption": {
                 "font": "Helvetica-Italic",
                 "size": 9,
@@ -242,14 +245,15 @@ class StyleManager:
             raise ValueError(f"No valid style found for '{style_name}'")
         
         try:
-            if file_path.endswith('.json'):
-                with open(file_path, 'r') as f:
-                    return json.load(f)
-            elif file_path.endswith(('.yaml', '.yml')):
-                with open(file_path, 'r') as f:
-                    return yaml.safe_load(f)
-            else:
-                raise ValueError(f"Unsupported file format: {file_path}")
+            # Load style from file
+            style_config = self._load_style_file(file_path)
+            
+            # Register custom fonts if defined
+            if 'custom_fonts' in style_config:
+                self._register_custom_fonts(style_config['custom_fonts'])
+                
+            return style_config
+                
         except Exception as e:
             print(f"Error loading style {style_name}: {str(e)}")
             # As a fallback, create an in-memory default style
@@ -259,6 +263,7 @@ class StyleManager:
                 "description": "Default fallback style",
                 "page": {"size": "A4", "margins": {"left": 72, "right": 72, "top": 72, "bottom": 72}},
                 "fonts": [],
+                "custom_fonts": [],
                 "page_numbers": {"show": True, "format": "{current}", "position": "bottom-right", "font": "Helvetica", "size": 9},
                 "title_page": {
                     "title": {"font": "Helvetica-Bold", "size": 24, "color": "#000000", "spacing": "none", "alignment": "center", "case": "none"},
@@ -294,3 +299,92 @@ class StyleManager:
                     }
                 }
             }
+
+    def _load_style_file(self, file_path):
+        """Load style data from a file."""
+        if file_path.endswith('.json'):
+            with open(file_path, 'r') as f:
+                return json.load(f)
+        elif file_path.endswith(('.yaml', '.yml')):
+            with open(file_path, 'r') as f:
+                return yaml.safe_load(f)
+        else:
+            raise ValueError(f"Unsupported file format: {file_path}")
+            
+    def _register_custom_fonts(self, custom_fonts):
+        """Register custom fonts with ReportLab."""
+        if not isinstance(custom_fonts, list):
+            print("Warning: custom_fonts must be a list, skipping font registration")
+            return
+            
+        fonts_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'fonts')
+        
+        for font_def in custom_fonts:
+            try:
+                # Get font properties
+                font_name = font_def.get('name')
+                font_path = font_def.get('path')
+                
+                if not font_name:
+                    print(f"Warning: Font definition missing name: {font_def}")
+                    continue
+                    
+                if not font_path:
+                    print(f"Warning: No path specified for font '{font_name}'. Using as a standard font.")
+                    continue
+                
+                # Check if path is absolute or relative
+                if not os.path.isabs(font_path):
+                    # If relative, assume it's relative to the fonts directory
+                    font_path = os.path.join(fonts_dir, font_path)
+                
+                # Check if font file exists
+                if not os.path.exists(font_path):
+                    print(f"Warning: Font file not found: {font_path}")
+                    continue
+                
+                # Register the font with ReportLab
+                pdfmetrics.registerFont(TTFont(font_name, font_path))
+                print(f"Registered custom font: {font_name} from {font_path}")
+                
+                # Register bold, italic, and bold-italic variants if specified
+                for variant in ['bold', 'italic', 'bold_italic']:
+                    variant_path = font_def.get(f'{variant}_path')
+                    if variant_path:
+                        # Check if path is absolute or relative
+                        if not os.path.isabs(variant_path):
+                            variant_path = os.path.join(fonts_dir, variant_path)
+                        
+                        # Determine variant name
+                        if variant == 'bold':
+                            variant_name = f"{font_name}-Bold"
+                        elif variant == 'italic':
+                            variant_name = f"{font_name}-Italic"
+                        else:  # bold_italic
+                            variant_name = f"{font_name}-BoldItalic"
+                        
+                        # Register the variant
+                        if os.path.exists(variant_path):
+                            pdfmetrics.registerFont(TTFont(variant_name, variant_path))
+                            print(f"Registered font variant: {variant_name} from {variant_path}")
+                        else:
+                            print(f"Warning: Font variant file not found: {variant_path}")
+                
+                # Register font family if variants are available
+                if (font_def.get('bold_path') or font_def.get('italic_path') or font_def.get('bold_italic_path')):
+                    family_dict = {
+                        'normal': font_name,
+                    }
+                    
+                    if font_def.get('bold_path'):
+                        family_dict['bold'] = f"{font_name}-Bold"
+                    if font_def.get('italic_path'):
+                        family_dict['italic'] = f"{font_name}-Italic"
+                    if font_def.get('bold_italic_path'):
+                        family_dict['boldItalic'] = f"{font_name}-BoldItalic"
+                    
+                    pdfmetrics.registerFontFamily(font_name, **family_dict)
+                    print(f"Registered font family: {font_name}")
+                
+            except Exception as e:
+                print(f"Error registering custom font: {str(e)}")
