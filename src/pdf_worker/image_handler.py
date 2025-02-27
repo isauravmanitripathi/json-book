@@ -1,10 +1,11 @@
 from reportlab.lib.units import inch
-from reportlab.platypus import Image, Paragraph, Spacer, KeepTogether
+from reportlab.platypus import Image, Paragraph, Spacer, KeepTogether, CondPageBreak
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 import os
 from PIL import Image as PILImage
 import logging
+import re
 
 class ImageHandler:
     """Handles image processing and integration into PDFs."""
@@ -25,12 +26,23 @@ class ImageHandler:
         # Get image style settings or use defaults
         self.image_style = self.style_config.get('images', {})
         
-        # Create caption style
+        # Create caption style - use a safe font that's definitely available
         body_config = self.style_config.get('body_text', {})
-        # In the ImageHandler.__init__ method, modify the caption_style creation:
+        caption_font = self.image_style.get('caption', {}).get('font', 'Helvetica')
+        
+        # Ensure we use a standard font that will be available
+        if "italic" in caption_font.lower() and not caption_font.endswith("-Italic"):
+            # If italic is requested but not in standard format, use a standard italic font
+            caption_font = "Helvetica-Italic"
+        elif caption_font not in ['Helvetica', 'Helvetica-Bold', 'Helvetica-Italic', 
+                                  'Times-Roman', 'Times-Bold', 'Times-Italic', 
+                                  'Courier', 'Courier-Bold', 'Courier-Italic']:
+            # Default to a safe font if an unsupported font is requested
+            caption_font = "Helvetica"
+            
         self.caption_style = ParagraphStyle(
             name='ImageCaption',
-            fontName=self.image_style.get('caption', {}).get('font', 'Helvetica'), # Remove -Italic
+            fontName=caption_font,
             fontSize=self.image_style.get('caption', {}).get('size', body_config.get('size', 10)),
             leading=self.image_style.get('caption', {}).get('leading', body_config.get('leading', 12)),
             textColor=self._parse_color(self.image_style.get('caption', {}).get('color', '#333333')),
@@ -128,13 +140,23 @@ class ImageHandler:
                 
                 caption_paragraph = Paragraph(caption_text, self.caption_style)
                 
+                # Reduce spacing before and after image to minimize empty space
+                # Use smaller spaces for inline images, larger for full-page ones
+                space_before = self.image_style.get('space_before', 12)
+                space_after = self.image_style.get('space_after', 12)
+                
+                if not is_full_page:
+                    # Reduce spacing for inline images to avoid excessive whitespace
+                    space_before = max(6, space_before // 2)
+                    space_after = max(6, space_after // 2)
+                
                 # Group image and caption together
                 image_group = [
-                    Spacer(1, self.image_style.get('space_before', 12)),
+                    Spacer(1, space_before),
                     reportlab_image,
-                    Spacer(1, 6),
+                    Spacer(1, 4),  # Reduced space between image and caption
                     caption_paragraph,
-                    Spacer(1, self.image_style.get('space_after', 12))
+                    Spacer(1, space_after)
                 ]
                 
                 # For full-page images, we might want to page break before and after
@@ -154,7 +176,7 @@ class ImageHandler:
     
     def distribute_images(self, text, image_flowables, body_text_style):
         """
-        Distribute images within text paragraphs.
+        Distribute images within text paragraphs and break long paragraphs.
         
         Args:
             text (str): The section text
@@ -165,29 +187,29 @@ class ImageHandler:
             list: Combined list of text and image flowables
         """
         if not image_flowables:
-            return [Paragraph(text, body_text_style)]
+            # Even if there are no images, we should still break up long paragraphs
+            return self._break_long_paragraphs(text, body_text_style)
         
-        # Split text into paragraphs
-        paragraphs = text.split('\n\n')
-        if len(paragraphs) == 1:
-            # If there's only one paragraph, split by sentences to create more insertion points
-            import re
-            # Split by sentence-ending punctuation followed by space or newline
-            sentences = re.split(r'([.!?])\s+', text)
-            # Recombine sentences to keep the ending punctuation
-            paragraphs = []
-            for i in range(0, len(sentences), 2):
-                if i+1 < len(sentences):
-                    paragraphs.append(sentences[i] + sentences[i+1])
-                else:
-                    paragraphs.append(sentences[i])
+        # First, break the text into better paragraphs
+        paragraphs = self._split_into_paragraphs(text)
         
+        # Make sure we don't have paragraphs that are too long
+        all_paragraphs = []
+        for p in paragraphs:
+            all_paragraphs.extend(self._break_long_paragraph(p))
+            
         # Create paragraph flowables
-        para_flowables = [Paragraph(p, body_text_style) for p in paragraphs if p.strip()]
+        para_flowables = [Paragraph(p, body_text_style) for p in all_paragraphs if p.strip()]
         
-        # For single image, add it at the end of text
+        # For single image, place it at an optimal position (not necessarily at the end)
         if len(image_flowables) == 1:
-            combined = para_flowables + image_flowables
+            if len(para_flowables) <= 2:
+                # If there are only 1-2 paragraphs, put the image at the end
+                combined = para_flowables + image_flowables
+            else:
+                # Otherwise, place it after approximately 1/3 of the paragraphs
+                insert_pos = max(1, len(para_flowables) // 3)
+                combined = para_flowables[:insert_pos] + image_flowables + para_flowables[insert_pos:]
             return combined
         
         # For multiple images, distribute them between paragraphs
@@ -196,21 +218,17 @@ class ImageHandler:
         # Calculate spacing between images
         if len(para_flowables) >= len(image_flowables):
             # We have enough paragraphs to space out images
-            spacing = max(1, len(para_flowables) // (len(image_flowables) + 1))
+            paragraph_chunks = self._divide_paragraphs(para_flowables, len(image_flowables))
             
-            # Place images after selected paragraphs
-            img_index = 0
-            for i, para in enumerate(para_flowables):
-                combined.append(para)
-                
-                # Add image after certain paragraphs
-                if img_index < len(image_flowables) and (i + 1) % spacing == 0:
-                    combined.append(image_flowables[img_index])
-                    img_index += 1
-            
-            # Add any remaining images at the end
-            combined.extend(image_flowables[img_index:])
-            
+            # Interleave paragraph chunks and images
+            for i, chunk in enumerate(paragraph_chunks):
+                combined.extend(chunk)
+                if i < len(image_flowables):
+                    combined.append(image_flowables[i])
+                    
+            # Add any remaining paragraph chunks
+            if len(paragraph_chunks) > len(image_flowables):
+                combined.extend(paragraph_chunks[-1])
         else:
             # More images than paragraphs, alternate paragraph-image
             for i in range(max(len(para_flowables), len(image_flowables))):
@@ -220,3 +238,98 @@ class ImageHandler:
                     combined.append(image_flowables[i])
         
         return combined
+    
+    def _split_into_paragraphs(self, text):
+        """Split text into better paragraph chunks based on content analysis."""
+        # First, split by any double newlines that already exist
+        initial_paragraphs = text.split('\n\n')
+        
+        if len(initial_paragraphs) > 1:
+            return initial_paragraphs
+            
+        # If there's only one paragraph, try to split it more intelligently
+        # Split on single newlines as a start
+        paragraphs = text.split('\n')
+        
+        if len(paragraphs) > 1:
+            return paragraphs
+            
+        # If we still have just one paragraph, try to break by sentences at reasonable intervals
+        return self._break_long_paragraph(text)
+    
+    def _break_long_paragraph(self, text, max_length=800):
+        """Break a long paragraph into smaller manageable pieces."""
+        if len(text) <= max_length:
+            return [text]
+            
+        # Split by sentences (look for period, question mark, or exclamation mark followed by a space)
+        sentence_endings = [m.start() for m in re.finditer(r'[.!?]\s+', text)]
+        
+        if not sentence_endings:
+            # If we can't find sentence boundaries, just break by length
+            chunks = []
+            for i in range(0, len(text), max_length):
+                chunks.append(text[i:i+max_length])
+            return chunks
+        
+        # Group sentences into chunks of appropriate length
+        chunks = []
+        start_idx = 0
+        current_length = 0
+        
+        for end_idx in sentence_endings:
+            sentence_length = (end_idx + 2) - start_idx  # +2 to include the period and space
+            
+            if current_length + sentence_length > max_length:
+                # This sentence would make the chunk too long, so start a new chunk
+                chunks.append(text[start_idx:end_idx+2].strip())
+                start_idx = end_idx + 2
+                current_length = 0
+            else:
+                current_length += sentence_length
+        
+        # Add any remaining text
+        if start_idx < len(text):
+            chunks.append(text[start_idx:].strip())
+            
+        return chunks
+    
+    def _break_long_paragraphs(self, text, body_text_style):
+        """Break long text into paragraphs and convert to flowables."""
+        paragraphs = self._split_into_paragraphs(text)
+        
+        # Break any paragraphs that are still too long
+        all_paragraphs = []
+        for p in paragraphs:
+            all_paragraphs.extend(self._break_long_paragraph(p))
+            
+        # Convert to paragraph flowables
+        return [Paragraph(p, body_text_style) for p in all_paragraphs if p.strip()]
+    
+    def _divide_paragraphs(self, paragraphs, num_divisions):
+        """Divide paragraphs into approximately equal chunks."""
+        if num_divisions <= 1:
+            return [paragraphs]
+            
+        chunk_size = max(1, len(paragraphs) // num_divisions)
+        chunks = []
+        
+        for i in range(0, len(paragraphs), chunk_size):
+            chunks.append(paragraphs[i:i+chunk_size])
+            
+        # If we didn't get enough chunks, combine some of the smaller ones
+        if len(chunks) > num_divisions:
+            while len(chunks) > num_divisions:
+                # Find the smallest chunk
+                smallest_idx = min(range(len(chunks)), key=lambda i: len(chunks[i]))
+                
+                # If it's the last chunk, combine it with the second-to-last
+                if smallest_idx == len(chunks) - 1:
+                    chunks[smallest_idx-1].extend(chunks[smallest_idx])
+                    chunks.pop()
+                else:
+                    # Otherwise combine it with the next chunk
+                    chunks[smallest_idx].extend(chunks[smallest_idx+1])
+                    chunks.pop(smallest_idx+1)
+        
+        return chunks

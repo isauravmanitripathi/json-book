@@ -108,68 +108,22 @@ class Section:
                 # Process images
                 image_flowables = self.image_handler.process_section_images(self.section_data, body_style)
                 
-                # Distribute images within text
+                # Distribute images within text with improved paragraph breaking
                 combined_flowables = self.image_handler.distribute_images(rl_text, image_flowables, body_style)
                 
                 # Add all flowables to story
                 for flowable in combined_flowables:
                     story.append(flowable)
             else:
-                # No images, just add text normally
-                # Break the text into smaller paragraphs to avoid issues with very long content
-                max_paragraph_length = 10000  # Maximum safe paragraph length
-                
-                # Split text by paragraphs (double newlines)
-                paragraphs = rl_text.split('<br/><br/>')
-                
-                for p in paragraphs:
-                    if not p.strip():
-                        continue  # Skip empty paragraphs
-                        
-                    # If paragraph is too long, split it further
-                    if len(p) > max_paragraph_length:
-                        # Split by single newlines or sentences
-                        chunks = p.split('<br/>') if '<br/>' in p else re.split(r'(?<=[.!?]) +', p)
-                        current_chunk = ""
-                        
-                        for chunk in chunks:
-                            if len(current_chunk) + len(chunk) < max_paragraph_length:
-                                if current_chunk:
-                                    current_chunk += ' ' + chunk
-                                else:
-                                    current_chunk = chunk
-                            else:
-                                if current_chunk:
-                                    try:
-                                        story.append(Paragraph(current_chunk, body_style))
-                                    except:
-                                        # If fails, try a simpler version
-                                        story.append(Paragraph(
-                                            self._clean_text_for_reportlab(current_chunk), 
-                                            body_style
-                                        ))
-                                current_chunk = chunk
-                        
-                        # Add the last chunk if any
-                        if current_chunk:
-                            try:
-                                story.append(Paragraph(current_chunk, body_style))
-                            except:
-                                story.append(Paragraph(
-                                    self._clean_text_for_reportlab(current_chunk), 
-                                    body_style
-                                ))
-                    else:
-                        # Add paragraph directly if it's not too long
-                        try:
-                            story.append(Paragraph(p, body_style))
-                        except:
-                            story.append(Paragraph(
-                                self._clean_text_for_reportlab(p), 
-                                body_style
-                            ))
-                        
-                story.append(Spacer(1, body_config.get('space_after', 12)))
+                # No images, just add text with improved paragraph breaking
+                # Use the image handler to break long paragraphs even without images
+                if self.image_handler:
+                    paragraph_flowables = self.image_handler._break_long_paragraphs(rl_text, body_style)
+                    for para in paragraph_flowables:
+                        story.append(para)
+                else:
+                    # Fallback to old method if image handler is not available
+                    self._add_text_with_paragraph_breaks(story, rl_text, body_style, body_config)
             
         except Exception as e:
             print(f"Error adding section text: {str(e)}")
@@ -190,6 +144,83 @@ class Section:
                 story.append(Paragraph(clean_text, simple_style))
             except:
                 print("Could not add even simplified text")
+    
+    def _add_text_with_paragraph_breaks(self, story, text, body_style, body_config):
+        """Add text to story with better paragraph breaking."""
+        # Break the text into smaller paragraphs to avoid issues with very long content
+        max_paragraph_length = 800  # Smaller for readability
+        
+        # Split text by paragraphs (double newlines)
+        paragraphs = text.split('<br/><br/>')
+        
+        # If we only have one paragraph and it's long, try to break it up
+        if len(paragraphs) == 1 and len(paragraphs[0]) > max_paragraph_length:
+            # Try to break by logical sentence boundaries
+            sentences = re.split(r'(?<=[.!?])\s+', paragraphs[0])
+            new_paragraphs = []
+            current_paragraph = ""
+            
+            for sentence in sentences:
+                if len(current_paragraph) + len(sentence) < max_paragraph_length:
+                    current_paragraph += " " + sentence if current_paragraph else sentence
+                else:
+                    if current_paragraph:
+                        new_paragraphs.append(current_paragraph)
+                    current_paragraph = sentence
+            
+            if current_paragraph:  # Add the last paragraph
+                new_paragraphs.append(current_paragraph)
+                
+            paragraphs = new_paragraphs
+        
+        for p in paragraphs:
+            if not p.strip():
+                continue  # Skip empty paragraphs
+                
+            # If paragraph is still too long, split it further
+            if len(p) > max_paragraph_length:
+                # Split by single newlines or sentences
+                chunks = p.split('<br/>') if '<br/>' in p else re.split(r'(?<=[.!?]) +', p)
+                current_chunk = ""
+                
+                for chunk in chunks:
+                    if len(current_chunk) + len(chunk) < max_paragraph_length:
+                        if current_chunk:
+                            current_chunk += ' ' + chunk
+                        else:
+                            current_chunk = chunk
+                    else:
+                        if current_chunk:
+                            try:
+                                story.append(Paragraph(current_chunk, body_style))
+                            except:
+                                # If fails, try a simpler version
+                                story.append(Paragraph(
+                                    self._clean_text_for_reportlab(current_chunk), 
+                                    body_style
+                                ))
+                        current_chunk = chunk
+                
+                # Add the last chunk if any
+                if current_chunk:
+                    try:
+                        story.append(Paragraph(current_chunk, body_style))
+                    except:
+                        story.append(Paragraph(
+                            self._clean_text_for_reportlab(current_chunk), 
+                            body_style
+                        ))
+            else:
+                # Add paragraph directly if it's not too long
+                try:
+                    story.append(Paragraph(p, body_style))
+                except:
+                    story.append(Paragraph(
+                        self._clean_text_for_reportlab(p), 
+                        body_style
+                    ))
+                
+        story.append(Spacer(1, body_config.get('space_after', 12)))
         
     def _create_body_style(self, body_config):
         """Create and return body text style based on configuration."""
