@@ -1,5 +1,3 @@
-# Fix for src/pdf_worker/templates/book_template.py
-
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, LETTER, LEGAL
 from reportlab.platypus import Frame, PageTemplate
@@ -76,7 +74,12 @@ class BookTemplate(BaseDocTemplate):
         
         # Get page size
         page_size_name = page_config.get('size', 'A4')
-        page_size = self._get_page_size(page_size_name)
+        
+        # Handle custom page size
+        if page_size_name == 'CUSTOM' and 'width' in page_config and 'height' in page_config:
+            page_size = (page_config['width'], page_config['height'])
+        else:
+            page_size = self._get_page_size(page_size_name)
         
         # Initialize base document template
         super().__init__(
@@ -118,7 +121,12 @@ class BookTemplate(BaseDocTemplate):
             'LETTER': LETTER,
             'LEGAL': LEGAL
         }
-        return size_map.get(size_name.upper(), A4)
+        
+        if size_name.upper() in size_map:
+            return size_map[size_name.upper()]
+        
+        # For custom sizes or unsupported formats, default to A4
+        return A4
     
     def _configure_toc(self, toc_settings):
         """Configure the table of contents styles."""

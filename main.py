@@ -226,29 +226,108 @@ def main():
                 style_name = style_names[int(style_choice) - 1]
                 console.print(f"[bold green]Selected style: {style_name}[/bold green]")
             
+            # Create a table of available formats
+            format_table = Table(title="Available PDF Formats")
+            format_table.add_column("Number", style="dim")
+            format_table.add_column("Format Name", style="cyan")
+            format_table.add_column("Dimensions", style="green")
+            format_table.add_column("Description", style="yellow")
+
+            formats = [
+                {"id": 1, "name": "Current Size", "size": "A4", "width": 8.27, "height": 11.69, 
+                "description": "Current default size (A4)"},
+                {"id": 2, "name": "US Trade", "size": "CUSTOM", "width": 6, "height": 9, 
+                "description": "Standard trade paperback size"},
+                {"id": 3, "name": "US Letter", "size": "LETTER", "width": 8.5, "height": 11, 
+                "description": "Standard US letter size"},
+                {"id": 4, "name": "A4", "size": "A4", "width": 8.27, "height": 11.69, 
+                "description": "Standard A4 size"},
+            ]
+
+            for fmt in formats:
+                format_table.add_row(
+                    str(fmt["id"]),
+                    fmt["name"],
+                    f"{fmt['width']}\" × {fmt['height']}\"",
+                    fmt["description"]
+                )
+
+            console.print(format_table)
+
+            # Ask user about generating multiple formats
+            generate_multiple = console.input("[bold blue]Generate multiple PDF formats? (y/n): [/bold blue]").strip().lower() == 'y'
+
+            selected_formats = []
+
+            if generate_multiple:
+                # Ask which formats to generate
+                format_choices = console.input("[bold blue]Enter format numbers to generate (comma separated, or 'all'): [/bold blue]").strip()
+                
+                if format_choices.lower() == 'all':
+                    selected_formats = formats
+                else:
+                    try:
+                        format_ids = [int(id.strip()) for id in format_choices.split(',') if id.strip()]
+                        selected_formats = [fmt for fmt in formats if fmt["id"] in format_ids]
+                    except ValueError:
+                        console.print("[bold red]Invalid format selection. Using current size only.[/bold red]")
+                        selected_formats = [formats[0]]  # Default to current size
+            else:
+                # Just use current size
+                selected_formats = [formats[0]]
+            
             # Ensure results/pdfs directory exists
             os.makedirs('results/pdfs', exist_ok=True)
             
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
                     if enable_multipart:
-                        result = pdf_generator.generate_pdf(
-                            file_path, book_name, author_name, 
-                            style_name=style_name, 
-                            max_pages_per_part=max_pages,
-                            front_matter_options=front_matter_options,
-                            api_key=api_key
-                        )
+                        if generate_multiple:
+                            result = pdf_generator.generate_multiformat_pdf(
+                                file_path, book_name, author_name, 
+                                style_name=style_name, 
+                                max_pages_per_part=max_pages,
+                                front_matter_options=front_matter_options,
+                                api_key=api_key,
+                                formats=selected_formats
+                            )
+                        else:
+                            result = pdf_generator.generate_pdf(
+                                file_path, book_name, author_name, 
+                                style_name=style_name, 
+                                max_pages_per_part=max_pages,
+                                front_matter_options=front_matter_options,
+                                api_key=api_key
+                            )
                     else:
-                        result = pdf_generator.generate_pdf(
-                            file_path, book_name, author_name, 
-                            style_name=style_name, 
-                            max_pages_per_part=1000000,
-                            front_matter_options=front_matter_options,
-                            api_key=api_key
-                        )
+                        if generate_multiple:
+                            result = pdf_generator.generate_multiformat_pdf(
+                                file_path, book_name, author_name, 
+                                style_name=style_name, 
+                                max_pages_per_part=1000000,
+                                front_matter_options=front_matter_options,
+                                api_key=api_key,
+                                formats=selected_formats
+                            )
+                        else:
+                            result = pdf_generator.generate_pdf(
+                                file_path, book_name, author_name, 
+                                style_name=style_name, 
+                                max_pages_per_part=1000000,
+                                front_matter_options=front_matter_options,
+                                api_key=api_key
+                            )
                 
-                if result:
+                if generate_multiple:
+                    console.print(f"[bold green]PDFs generated successfully in multiple formats![/bold green]")
+                    for format_name, format_result in result.items():
+                        if isinstance(format_result, list):
+                            console.print(f"[bold green]Format: {format_name} - {len(format_result)} parts[/bold green]")
+                            for i, pdf_path in enumerate(format_result, 1):
+                                console.print(f"[bold green]  Part {i} saved to: {pdf_path}[/bold green]")
+                        else:
+                            console.print(f"[bold green]Format: {format_name} - saved to: {format_result}[/bold green]")
+                else:
                     if isinstance(result, list):
                         console.print(f"[bold green]PDF generated successfully in {len(result)} parts![/bold green]")
                         for i, pdf_path in enumerate(result, 1):
