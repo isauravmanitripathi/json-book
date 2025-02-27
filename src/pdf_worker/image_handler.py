@@ -27,9 +27,10 @@ class ImageHandler:
         
         # Create caption style
         body_config = self.style_config.get('body_text', {})
+        # In the ImageHandler.__init__ method, modify the caption_style creation:
         self.caption_style = ParagraphStyle(
             name='ImageCaption',
-            fontName=self.image_style.get('caption', {}).get('font', 'Helvetica-Italic'),
+            fontName=self.image_style.get('caption', {}).get('font', 'Helvetica'), # Remove -Italic
             fontSize=self.image_style.get('caption', {}).get('size', body_config.get('size', 10)),
             leading=self.image_style.get('caption', {}).get('leading', body_config.get('leading', 12)),
             textColor=self._parse_color(self.image_style.get('caption', {}).get('color', '#333333')),
