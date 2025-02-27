@@ -172,6 +172,20 @@ class StyleManager:
                 "leading": 14,
                 "alignment": "justified",
                 "space_after": 12
+            },
+            "images": {
+                "max_width": 450,
+                "space_before": 12,
+                "space_after": 12,
+                "full_page_threshold": 0.8,
+                "full_page_break": true,
+                "caption": {
+                    "font": "Helvetica-Italic",
+                    "size": 10,
+                    "leading": 12,
+                    "color": "#333333",
+                    "space_after": 12
+                }
             }
         }
         
@@ -184,6 +198,32 @@ class StyleManager:
             json.dump(default_style, f, indent=2)
         
         print(f"Created default style template at {default_path}")
+        
+        # Also create a modern style with different image settings
+        modern_style = default_style.copy()
+        modern_style["name"] = "Modern"
+        modern_style["description"] = "A clean, contemporary design with minimalist aesthetics"
+        modern_style["images"] = {
+            "max_width": 500,
+            "space_before": 18,
+            "space_after": 18,
+            "full_page_threshold": 0.7,
+            "full_page_break": true,
+            "caption": {
+                "font": "Helvetica-Italic",
+                "size": 9,
+                "leading": 11,
+                "color": "#666666",
+                "space_after": 14
+            }
+        }
+        
+        # Save the modern style
+        modern_path = os.path.join(self.styles_dir, 'modern.json')
+        with open(modern_path, 'w') as f:
+            json.dump(modern_style, f, indent=2)
+        
+        print(f"Created modern style template at {modern_path}")
     
     def get_style_names(self):
         """Get a list of available style names."""
@@ -239,5 +279,18 @@ class StyleManager:
                     "title": {"font": "Helvetica-Bold", "size": 14, "color": "#000000", "alignment": "left", "space_before": 12, "space_after": 6},
                     "divider": {"type": "none", "width": 0, "color": "#000000", "spacing": {"before": 0, "after": 0}}
                 },
-                "body_text": {"font": "Helvetica", "size": 12, "leading": 14, "alignment": "justified", "space_after": 12}
+                "body_text": {"font": "Helvetica", "size": 12, "leading": 14, "alignment": "justified", "space_after": 12},
+                "images": {
+                    "max_width": 450,
+                    "space_before": 12,
+                    "space_after": 12,
+                    "full_page_threshold": 0.8,
+                    "caption": {
+                        "font": "Helvetica-Italic",
+                        "size": 10,
+                        "leading": 12,
+                        "color": "#333333",
+                        "space_after": 12
+                    }
+                }
             }

@@ -5,11 +5,12 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.platypus import Paragraph, Spacer
 
 from ..flowables import DottedLineFlowable, SolidLineFlowable
+from ..image_handler import ImageHandler
 
 class Section:
     """Component for generating a document section."""
     
-    def __init__(self, style_config, section_name, section_text):
+    def __init__(self, style_config, section_name, section_text, section_data=None, image_handler=None):
         """
         Initialize section component.
         
@@ -17,10 +18,14 @@ class Section:
             style_config (dict): Style configuration
             section_name (str): Section name
             section_text (str): Section content text
+            section_data (dict, optional): Full section data including images
+            image_handler (ImageHandler, optional): Image handler instance
         """
         self.style_config = style_config
         self.section_name = section_name if section_name else ""
         self.section_text = section_text if section_text else ""
+        self.section_data = section_data or {}
+        self.image_handler = image_handler
         self.styles = getSampleStyleSheet()
         
     def add_to_story(self, story):
@@ -76,86 +81,95 @@ class Section:
         
         # Skip if no text content
         if not self.section_text:
+            # Check if there are images without text
+            if self.image_handler and self.section_data.get('images'):
+                # Create body text style for image captions
+                body_config = self.style_config.get('body_text', {})
+                body_style = self._create_body_style(body_config)
+                
+                # Process images
+                image_flowables = self.image_handler.process_section_images(self.section_data, body_style)
+                
+                # Add images to story
+                for flowable in image_flowables:
+                    story.append(flowable)
             return
             
-        # Convert markdown to ReportLab markup
         try:
+            # Convert markdown to ReportLab markup
             rl_text = self._convert_markdown_to_rl_markup(self.section_text)
             
             # Create body text style
             body_config = self.style_config.get('body_text', {})
-            alignment_map = {
-                'left': 0,
-                'center': 1,
-                'right': 2,
-                'justified': 4
-            }
-            alignment = alignment_map.get(body_config.get('alignment', 'justified'), 4)
+            body_style = self._create_body_style(body_config)
             
-            body_style = ParagraphStyle(
-                name='CustomBodyText',
-                parent=self.styles['Normal'],
-                fontSize=body_config.get('size', 12),
-                leading=body_config.get('leading', 14),
-                spaceAfter=body_config.get('space_after', 12),
-                alignment=alignment,
-                fontName=body_config.get('font', 'Helvetica')
-            )
-            
-            # Break the text into smaller paragraphs to avoid issues with very long content
-            max_paragraph_length = 10000  # Maximum safe paragraph length
-            
-            # Split text by paragraphs (double newlines)
-            paragraphs = rl_text.split('<br/><br/>')
-            
-            for p in paragraphs:
-                if not p.strip():
-                    continue  # Skip empty paragraphs
-                    
-                # If paragraph is too long, split it further
-                if len(p) > max_paragraph_length:
-                    # Split by single newlines or sentences
-                    chunks = p.split('<br/>') if '<br/>' in p else re.split(r'(?<=[.!?]) +', p)
-                    current_chunk = ""
-                    
-                    for chunk in chunks:
-                        if len(current_chunk) + len(chunk) < max_paragraph_length:
-                            if current_chunk:
-                                current_chunk += ' ' + chunk
+            # Check if there are images to process
+            if self.image_handler and self.section_data.get('images'):
+                # Process images
+                image_flowables = self.image_handler.process_section_images(self.section_data, body_style)
+                
+                # Distribute images within text
+                combined_flowables = self.image_handler.distribute_images(rl_text, image_flowables, body_style)
+                
+                # Add all flowables to story
+                for flowable in combined_flowables:
+                    story.append(flowable)
+            else:
+                # No images, just add text normally
+                # Break the text into smaller paragraphs to avoid issues with very long content
+                max_paragraph_length = 10000  # Maximum safe paragraph length
+                
+                # Split text by paragraphs (double newlines)
+                paragraphs = rl_text.split('<br/><br/>')
+                
+                for p in paragraphs:
+                    if not p.strip():
+                        continue  # Skip empty paragraphs
+                        
+                    # If paragraph is too long, split it further
+                    if len(p) > max_paragraph_length:
+                        # Split by single newlines or sentences
+                        chunks = p.split('<br/>') if '<br/>' in p else re.split(r'(?<=[.!?]) +', p)
+                        current_chunk = ""
+                        
+                        for chunk in chunks:
+                            if len(current_chunk) + len(chunk) < max_paragraph_length:
+                                if current_chunk:
+                                    current_chunk += ' ' + chunk
+                                else:
+                                    current_chunk = chunk
                             else:
+                                if current_chunk:
+                                    try:
+                                        story.append(Paragraph(current_chunk, body_style))
+                                    except:
+                                        # If fails, try a simpler version
+                                        story.append(Paragraph(
+                                            self._clean_text_for_reportlab(current_chunk), 
+                                            body_style
+                                        ))
                                 current_chunk = chunk
-                        else:
-                            if current_chunk:
-                                try:
-                                    story.append(Paragraph(current_chunk, body_style))
-                                except:
-                                    # If fails, try a simpler version
-                                    story.append(Paragraph(
-                                        self._clean_text_for_reportlab(current_chunk), 
-                                        body_style
-                                    ))
-                            current_chunk = chunk
-                    
-                    # Add the last chunk if any
-                    if current_chunk:
+                        
+                        # Add the last chunk if any
+                        if current_chunk:
+                            try:
+                                story.append(Paragraph(current_chunk, body_style))
+                            except:
+                                story.append(Paragraph(
+                                    self._clean_text_for_reportlab(current_chunk), 
+                                    body_style
+                                ))
+                    else:
+                        # Add paragraph directly if it's not too long
                         try:
-                            story.append(Paragraph(current_chunk, body_style))
+                            story.append(Paragraph(p, body_style))
                         except:
                             story.append(Paragraph(
-                                self._clean_text_for_reportlab(current_chunk), 
+                                self._clean_text_for_reportlab(p), 
                                 body_style
                             ))
-                else:
-                    # Add paragraph directly if it's not too long
-                    try:
-                        story.append(Paragraph(p, body_style))
-                    except:
-                        story.append(Paragraph(
-                            self._clean_text_for_reportlab(p), 
-                            body_style
-                        ))
-                    
-            story.append(Spacer(1, body_config.get('space_after', 12)))
+                        
+                story.append(Spacer(1, body_config.get('space_after', 12)))
             
         except Exception as e:
             print(f"Error adding section text: {str(e)}")
@@ -176,6 +190,26 @@ class Section:
                 story.append(Paragraph(clean_text, simple_style))
             except:
                 print("Could not add even simplified text")
+        
+    def _create_body_style(self, body_config):
+        """Create and return body text style based on configuration."""
+        alignment_map = {
+            'left': 0,
+            'center': 1,
+            'right': 2,
+            'justified': 4
+        }
+        alignment = alignment_map.get(body_config.get('alignment', 'justified'), 4)
+        
+        return ParagraphStyle(
+            name='CustomBodyText',
+            parent=self.styles['Normal'],
+            fontSize=body_config.get('size', 12),
+            leading=body_config.get('leading', 14),
+            spaceAfter=body_config.get('space_after', 12),
+            alignment=alignment,
+            fontName=body_config.get('font', 'Helvetica')
+        )
         
     def _parse_color(self, color_value):
         """Parse color from string or hex value."""

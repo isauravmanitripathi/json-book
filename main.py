@@ -118,6 +118,16 @@ def main():
                 console.print("[bold red]Author name cannot be empty. Please try again.[/bold red]")
                 continue
             
+            # Get images directory path
+            images_dir = console.input("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]").strip()
+            if not images_dir:
+                images_dir = 'images'
+                
+            # Create images directory if it doesn't exist
+            if not os.path.exists(images_dir):
+                console.print(f"[bold yellow]Images directory '{images_dir}' does not exist. Creating it now.[/bold yellow]")
+                os.makedirs(images_dir, exist_ok=True)
+            
             # Ask about multi-part PDF generation
             enable_multipart = console.input("[bold blue]Generate multi-part PDFs for large books? (y/n): [/bold blue]").strip().lower() == 'y'
             
@@ -129,7 +139,7 @@ def main():
                 console.print(f"[bold cyan]Book will be split if it exceeds {max_pages} pages[/bold cyan]")
             
             # Initialize the PDF Generator to get available styles
-            pdf_generator = PDFGenerator()
+            pdf_generator = PDFGenerator(image_base_path=images_dir)
             style_names = pdf_generator.style_manager.get_style_names()
             
             if not style_names:
@@ -198,7 +208,12 @@ def main():
         elif choice == '5':
             # List available PDF styles
             try:
-                pdf_generator = PDFGenerator()
+                # Allow specifying custom images directory for viewing image settings
+                images_dir = console.input("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]").strip()
+                if not images_dir:
+                    images_dir = 'images'
+                    
+                pdf_generator = PDFGenerator(image_base_path=images_dir)
                 style_names = pdf_generator.style_manager.get_style_names()
                 
                 if not style_names:
@@ -213,17 +228,24 @@ def main():
                 style_table = Table(title="Available Style Templates")
                 style_table.add_column("Style Name", style="cyan")
                 style_table.add_column("Description", style="green")
+                style_table.add_column("Image Support", style="magenta")
                 
                 for name in style_names:
                     # Try to get description from style
                     try:
                         style_config = pdf_generator.style_manager.load_style(name)
                         description = style_config.get('description', 'No description available')
+                        
+                        # Check for image support
+                        has_image_config = 'images' in style_config
+                        image_support = "[green]✓[/green]" if has_image_config else "[yellow]Limited[/yellow]"
+                        
                     except Exception as e:
                         description = 'No description available'
+                        image_support = "[red]Unknown[/red]"
                         print(f"Error loading style for description: {e}")
                     
-                    style_table.add_row(name, description)
+                    style_table.add_row(name, description, image_support)
                 
                 console.print(style_table)
                 
@@ -233,8 +255,29 @@ def main():
                     "[dim]1. Create a JSON or YAML file in the 'styles' directory\n"
                     "2. Follow the template format of existing styles\n"
                     "3. Define all required style properties\n"
-                    "4. The style will automatically appear in this list[/dim]",
+                    "4. To support images, add an 'images' section to your style\n"
+                    "5. The style will automatically appear in this list[/dim]",
                     border_style="blue"
+                ))
+                
+                # Show image configuration hint
+                console.print(Panel.fit(
+                    "[bold cyan]Image Configuration[/bold cyan]\n"
+                    "[dim]To support images in your PDFs, ensure your style includes an 'images' section:\n\n"
+                    "\"images\": {\n"
+                    "    \"max_width\": 450,\n"
+                    "    \"space_before\": 12,\n"
+                    "    \"space_after\": 12,\n"
+                    "    \"full_page_threshold\": 0.8,\n"
+                    "    \"full_page_break\": true,\n"
+                    "    \"caption\": {\n"
+                    "        \"font\": \"Helvetica-Italic\",\n"
+                    "        \"size\": 10,\n"
+                    "        \"leading\": 12,\n"
+                    "        \"color\": \"#333333\"\n"
+                    "    }\n"
+                    "}[/dim]",
+                    border_style="green"
                 ))
             except Exception as e:
                 console.print(f"[bold red]Error listing styles: {str(e)}[/bold red]")
