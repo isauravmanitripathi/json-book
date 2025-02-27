@@ -15,6 +15,7 @@ from .components.chapter import Chapter
 from .components.section import Section
 from .templates.book_template import BookTemplate, PageNumCanvas
 from .image_handler import ImageHandler
+from .front_matter_manager import FrontMatterManager
 
 class PDFGenerator:
     """Generates PDF books from JSON content using style templates."""
@@ -28,6 +29,7 @@ class PDFGenerator:
         self.style_manager = StyleManager()
         self.styles = getSampleStyleSheet()
         self.image_base_path = image_base_path
+        self.front_matter_manager = None
         
         # Set up logging
         self.logger = logging.getLogger(__name__)
@@ -39,12 +41,32 @@ class PDFGenerator:
             self.logger.setLevel(logging.INFO)
         
     def generate_pdf(self, input_json_path, book_name, author_name, style_name='classic', 
-                    output_dir='results/pdfs', max_pages_per_part=600):
+                    output_dir='results/pdfs', max_pages_per_part=600, front_matter_options=None,
+                    api_key=None):
         """
         Generate a PDF from JSON content using the specified style template.
         
         If the book exceeds max_pages_per_part, it will be split into multiple parts.
         Each part will have its own chapter numbering, TOC, etc.
+        
+        Args:
+            input_json_path (str): Path to input JSON file
+            book_name (str): Name of the book
+            author_name (str): Name of the author
+            style_name (str, optional): Style template to use.
+            output_dir (str, optional): Directory to save output PDF(s).
+            max_pages_per_part (int, optional): Maximum pages per part for multi-part PDFs.
+            front_matter_options (dict, optional): Front matter components to include.
+                - copyright (bool): Include copyright page
+                - epigraph (bool): Include epigraph
+                - preface (bool): Include preface
+                - letter_to_reader (bool): Include letter to reader
+                - introduction (bool): Include introduction
+                - other copyright info fields: year, publisher, edition, etc.
+            api_key (str, optional): Anthropic API key for front matter generation.
+            
+        Returns:
+            str or list: Path(s) to generated PDF file(s)
         """
         try:
             # Ensure output directory exists
@@ -60,6 +82,14 @@ class PDFGenerator:
             # Initialize the image handler
             image_handler = ImageHandler(style_config, self.image_base_path)
             self.logger.info(f"Initialized image handler with base path: {self.image_base_path}")
+            
+            # Initialize front matter manager if front matter options provided
+            if front_matter_options:
+                self.front_matter_manager = FrontMatterManager(style_config, api_key=api_key)
+            
+            # Store front matter options and input path for later use
+            self.front_matter_options = front_matter_options
+            self.input_json_path = input_json_path
             
             # Load content from JSON
             with open(input_json_path, 'r') as file:
@@ -247,6 +277,23 @@ class PDFGenerator:
         title_page = TitlePage(style_config, book_title, author_name)
         title_page.add_to_story(story)
         self.logger.info(f"Added title page for {book_title}")
+        
+        # Add front matter if requested
+        if self.front_matter_manager:
+            book_info = {
+                'title': book_title,
+                'author': author_name,
+                'front_matter': self.front_matter_options
+            }
+            # Add other copyright info if provided
+            if self.front_matter_options and self.front_matter_options.get('copyright', False):
+                for key in ['year', 'publisher', 'edition', 'isbn', 'copyright_holder', 'additional_info']:
+                    if key in self.front_matter_options:
+                        book_info[key] = self.front_matter_options[key]
+                        
+            # Generate and add front matter components
+            self.front_matter_manager.add_front_matter(story, book_info, self.input_json_path)
+            self.logger.info("Added front matter components")
         
         # Add table of contents placeholder - this will be populated during multiBuild
         toc = TableOfContents(style_config, doc.toc)

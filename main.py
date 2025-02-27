@@ -26,7 +26,7 @@ def main():
         "[dim]Choose an option to process your text[/dim]",
         border_style="blue"
     ))
-
+    
     # Create options table
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Option", style="dim")
@@ -39,10 +39,10 @@ def main():
     table.add_row("6", "Create New PDF Style")
     table.add_row("7", "Exit")
     console.print(table)
-
+    
     while True:
         choice = console.input("[bold blue]Enter your choice (1-7): [/bold blue]").strip()
-
+        
         if choice == '1':
             # Extract chapter text option
             file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
@@ -104,7 +104,7 @@ def main():
                     console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
-
+        
         elif choice == '4':
             # Generate PDF
             file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
@@ -131,8 +131,6 @@ def main():
             images_dir = console.input("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]").strip()
             if not images_dir:
                 images_dir = 'images'
-                
-            # Create images directory if it doesn't exist
             if not os.path.exists(images_dir):
                 console.print(f"[bold yellow]Images directory '{images_dir}' does not exist. Creating it now.[/bold yellow]")
                 os.makedirs(images_dir, exist_ok=True)
@@ -147,6 +145,45 @@ def main():
                     max_pages = int(max_pages_input)
                 console.print(f"[bold cyan]Book will be split if it exceeds {max_pages} pages[/bold cyan]")
             
+            # Ask about front matter generation
+            include_front_matter = console.input("[bold blue]Include front matter (copyright page, preface, etc.)? (y/n): [/bold blue]").strip().lower() == 'y'
+            front_matter_options = None
+            api_key = None
+            
+            if include_front_matter:
+                console.print(Panel.fit(
+                    "[bold cyan]Front Matter Options[/bold cyan]\n"
+                    "[dim]Select which front matter components to include in your book[/dim]",
+                    border_style="blue"
+                ))
+                
+                front_matter_options = {}
+                
+                if console.input("[bold blue]Include copyright page? (y/n): [/bold blue]").strip().lower() == 'y':
+                    front_matter_options['copyright'] = True
+                    front_matter_options['year'] = console.input("[bold blue]Copyright year (default: current year): [/bold blue]").strip()
+                    front_matter_options['publisher'] = console.input("[bold blue]Publisher name (default: Self-Published): [/bold blue]").strip()
+                    front_matter_options['edition'] = console.input("[bold blue]Edition (e.g., First Edition): [/bold blue]").strip()
+                    front_matter_options['isbn'] = console.input("[bold blue]ISBN (optional): [/bold blue]").strip()
+                    front_matter_options['copyright_holder'] = console.input("[bold blue]Copyright holder (default: author): [/bold blue]").strip()
+                    front_matter_options['additional_info'] = console.input("[bold blue]Additional copyright information: [/bold blue]").strip()
+                
+                if console.input("[bold blue]Include epigraph (quote or short poem)? (y/n): [/bold blue]").strip().lower() == 'y':
+                    front_matter_options['epigraph'] = True
+                
+                if console.input("[bold blue]Include preface? (y/n): [/bold blue]").strip().lower() == 'y':
+                    front_matter_options['preface'] = True
+                
+                if console.input("[bold blue]Include letter to the reader? (y/n): [/bold blue]").strip().lower() == 'y':
+                    front_matter_options['letter_to_reader'] = True
+                
+                if console.input("[bold blue]Include introduction? (y/n): [/bold blue]").strip().lower() == 'y':
+                    front_matter_options['introduction'] = True
+                
+                api_key = console.input("[bold blue]Enter Anthropic API key (or leave blank to use ANTHROPIC_API_KEY from environment): [/bold blue]").strip()
+                
+                console.print("[bold green]Front matter options configured![/bold green]")
+            
             # Initialize the PDF Generator to get available styles
             pdf_generator = PDFGenerator(image_base_path=images_dir)
             style_names = pdf_generator.style_manager.get_style_names()
@@ -155,27 +192,22 @@ def main():
                 console.print("[bold yellow]No style templates found. Using default style.[/bold yellow]")
                 style_name = "classic"
             else:
-                # Create a table to show available styles
                 style_table = Table(title="Available Style Templates")
                 style_table.add_column("Number", style="dim")
                 style_table.add_column("Style Name", style="cyan")
                 style_table.add_column("Description", style="green")
-                style_table.add_column("Custom Fonts", style="yellow")  # Add this column
+                style_table.add_column("Custom Fonts", style="yellow")
                 
                 for i, name in enumerate(style_names, 1):
-                    # Try to get description and custom fonts from style
                     try:
                         style_config = pdf_generator.style_manager.load_style(name)
                         description = style_config.get('description', 'No description available')
-                        
-                        # Check for custom fonts
                         custom_fonts = style_config.get('custom_fonts', [])
                         if custom_fonts:
                             font_names = [f"{font.get('name', 'Unknown')}" for font in custom_fonts]
                             fonts_info = ", ".join(font_names)
                         else:
                             fonts_info = "None"
-                            
                     except Exception as e:
                         description = 'No description available'
                         fonts_info = 'Unknown'
@@ -185,7 +217,6 @@ def main():
                 
                 console.print(style_table)
                 
-                # Prompt for style selection
                 style_choice = Prompt.ask(
                     "[bold blue]Select a style by number[/bold blue]",
                     choices=[str(i) for i in range(1, len(style_names) + 1)],
@@ -194,24 +225,27 @@ def main():
                 
                 style_name = style_names[int(style_choice) - 1]
                 console.print(f"[bold green]Selected style: {style_name}[/bold green]")
-
+            
             # Ensure results/pdfs directory exists
             os.makedirs('results/pdfs', exist_ok=True)
-
+            
             try:
                 with console.status("[bold green]Generating PDF...", spinner="dots"):
                     if enable_multipart:
                         result = pdf_generator.generate_pdf(
                             file_path, book_name, author_name, 
                             style_name=style_name, 
-                            max_pages_per_part=max_pages
+                            max_pages_per_part=max_pages,
+                            front_matter_options=front_matter_options,
+                            api_key=api_key
                         )
                     else:
-                        # Disable multi-part by setting a very high page limit
                         result = pdf_generator.generate_pdf(
                             file_path, book_name, author_name, 
                             style_name=style_name, 
-                            max_pages_per_part=1000000
+                            max_pages_per_part=1000000,
+                            front_matter_options=front_matter_options,
+                            api_key=api_key
                         )
                 
                 if result:
@@ -228,7 +262,6 @@ def main():
         elif choice == '5':
             # List available PDF styles
             try:
-                # Allow specifying custom images directory for viewing image settings
                 images_dir = console.input("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]").strip()
                 if not images_dir:
                     images_dir = 'images'
@@ -244,31 +277,24 @@ def main():
                         console.print("[bold red]Failed to create default style.[/bold red]")
                         continue
                 
-                # Create a table to show available styles
                 style_table = Table(title="Available Style Templates")
                 style_table.add_column("Style Name", style="cyan")
                 style_table.add_column("Description", style="green")
                 style_table.add_column("Image Support", style="magenta")
-                style_table.add_column("Custom Fonts", style="yellow")  # Add this column
+                style_table.add_column("Custom Fonts", style="yellow")
                 
                 for name in style_names:
-                    # Try to get description from style
                     try:
                         style_config = pdf_generator.style_manager.load_style(name)
                         description = style_config.get('description', 'No description available')
-                        
-                        # Check for image support
                         has_image_config = 'images' in style_config
                         image_support = "[green]✓[/green]" if has_image_config else "[yellow]Limited[/yellow]"
-                        
-                        # Check for custom fonts
                         custom_fonts = style_config.get('custom_fonts', [])
                         if custom_fonts:
                             font_names = [font.get('name', 'Unknown') for font in custom_fonts]
                             fonts_info = f"[green]{', '.join(font_names)}[/green]"
                         else:
                             fonts_info = "[dim]None[/dim]"
-                        
                     except Exception as e:
                         description = 'No description available'
                         image_support = "[red]Unknown[/red]"
@@ -279,7 +305,6 @@ def main():
                 
                 console.print(style_table)
                 
-                # List available fonts in fonts directory
                 fonts_dir = 'fonts'
                 if os.path.exists(fonts_dir) and os.listdir(fonts_dir):
                     font_files = [f for f in os.listdir(fonts_dir) if f.lower().endswith('.ttf')]
@@ -290,7 +315,6 @@ def main():
                             border_style="green"
                         ))
                 
-                # Provide instructions for adding new styles
                 console.print(Panel.fit(
                     "[bold cyan]How to Add New Styles[/bold cyan]\n"
                     "[dim]1. Create a JSON or YAML file in the 'styles' directory\n"
@@ -301,7 +325,6 @@ def main():
                     border_style="blue"
                 ))
                 
-                # Show custom font configuration hint
                 console.print(Panel.fit(
                     "[bold cyan]Custom Font Configuration[/bold cyan]\n"
                     "[dim]To use custom fonts in your PDFs, add a 'custom_fonts' section to your style:\n\n"
@@ -318,7 +341,6 @@ def main():
                     border_style="yellow"
                 ))
                 
-                # Show image configuration hint
                 console.print(Panel.fit(
                     "[bold cyan]Image Configuration[/bold cyan]\n"
                     "[dim]To support images in your PDFs, ensure your style includes an 'images' section:\n\n"
@@ -351,7 +373,6 @@ def main():
                     border_style="blue"
                 ))
                 
-                # List available font files in fonts directory
                 fonts_dir = 'fonts'
                 if os.path.exists(fonts_dir) and os.listdir(fonts_dir):
                     font_files = [f for f in os.listdir(fonts_dir) if f.lower().endswith('.ttf')]
@@ -362,7 +383,6 @@ def main():
                             border_style="green"
                         ))
                 
-                # Create style generator and run it
                 generator = StyleGenerator()
                 style_path = generator.generate_style()
                 
