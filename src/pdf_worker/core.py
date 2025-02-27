@@ -179,6 +179,14 @@ class PDFGenerator:
         # Remember original style config
         original_style = self.style_manager.load_style(style_name)
         
+        # Initialize front matter manager only once if front matter is requested
+        shared_front_matter_manager = None
+        if front_matter_options:
+            shared_front_matter_manager = FrontMatterManager(original_style, api_key=api_key)
+            # Store these for later use
+            self.front_matter_options = front_matter_options
+            self.input_json_path = input_json_path
+        
         # Generate PDF in each format
         for format_config in formats:
             self.logger.info(f"Generating PDF in {format_config['name']} format ({format_config['width']}\" x {format_config['height']}\")")
@@ -196,7 +204,8 @@ class PDFGenerator:
                 input_json_path, book_name, author_name, 
                 adjusted_style, format_config,
                 output_dir, format_filename, 
-                max_pages_per_part, front_matter_options, api_key
+                max_pages_per_part, front_matter_options, api_key,
+                shared_front_matter_manager
             )
             
             # Store the result
@@ -318,7 +327,8 @@ class PDFGenerator:
 
     def _generate_pdf_with_style(self, input_json_path, book_name, author_name, 
                            style_config, format_config, output_dir, filename_base, 
-                           max_pages_per_part, front_matter_options, api_key):
+                           max_pages_per_part, front_matter_options, api_key,
+                           shared_front_matter_manager=None):
         """
         Generate a PDF with a specific style configuration.
         
@@ -333,6 +343,7 @@ class PDFGenerator:
             max_pages_per_part (int): Maximum pages per part for multi-part PDFs
             front_matter_options (dict): Front matter components to include
             api_key (str): Anthropic API key for front matter generation
+            shared_front_matter_manager (FrontMatterManager, optional): Shared front matter manager
             
         Returns:
             str or list: Path(s) to generated PDF file(s)
@@ -347,7 +358,13 @@ class PDFGenerator:
             
             # Initialize front matter manager if front matter options provided
             if front_matter_options:
-                self.front_matter_manager = FrontMatterManager(style_config, api_key=api_key)
+                # Use shared manager if provided (to avoid duplicate API calls)
+                if shared_front_matter_manager is not None:
+                    self.front_matter_manager = shared_front_matter_manager
+                    # Update style config in the shared manager
+                    self.front_matter_manager.style_config = style_config
+                else:
+                    self.front_matter_manager = FrontMatterManager(style_config, api_key=api_key)
             
             # Store front matter options and input path for later use
             self.front_matter_options = front_matter_options
@@ -383,7 +400,6 @@ class PDFGenerator:
             # Generate each part as a separate PDF
             generated_pdfs = []
             for part_num, part_chapters in enumerate(parts, 1):
-                # Format part info in filename
                 # Format part info in filename (keep format in filename but not in title)
                 if len(parts) > 1:
                     part_filename = f"{filename_base}_Part{part_num}.pdf"
@@ -674,7 +690,6 @@ class PDFGenerator:
                             simple_story.append(Paragraph(section_name, 
                                                         ParagraphStyle(name='SectionTitle', fontName='Helvetica-Bold', fontSize=14)))
                 
-                # Build with simpler content
                 # Build with simpler content
                 BaseDocTemplate.build(doc, simple_story)
                 self.logger.info("Successfully built simplified PDF")

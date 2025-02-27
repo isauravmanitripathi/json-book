@@ -135,7 +135,7 @@ class FrontMatterComponent:
 
 
 class CenteredTextComponent(FrontMatterComponent):
-    """Component for centered text content like epigraphs."""
+    """Component for centered text content like epigraphs with responsive sizing."""
     
     def __init__(self, style_config, content, title=None):
         """
@@ -151,32 +151,53 @@ class CenteredTextComponent(FrontMatterComponent):
         self.title = title
         
     def add_to_story(self, story):
-        """Add the component to the document story."""
+        """Add the component to the document story with responsive sizing."""
         # Add page break
         story.append(PageBreak())
         
-        # Add top spacing (25% of page)
-        story.append(VerticalSpace(A4[1] * 0.25))
+        # Get page dimensions from style config to calculate proportional spacing
+        page_config = self.style_config.get('page', {})
+        
+        # Calculate responsive page size
+        if page_config.get('size') == 'CUSTOM' and 'height' in page_config:
+            # Custom page size
+            page_height = page_config['height']
+        else:
+            # Default to A4 height
+            page_height = A4[1]
+            
+        # Calculate margins to get usable height
+        margins = page_config.get('margins', {'top': 72, 'bottom': 72})
+        usable_height = page_height - margins.get('top', 72) - margins.get('bottom', 72)
+        
+        # Add proportional top spacing (25% of usable height)
+        vertical_space = usable_height * 0.25
+        story.append(VerticalSpace(vertical_space))
+        
+        # Calculate font scaling based on page size
+        font_scaling_factor = min(1.0, usable_height / 700)  # 700 is a reference value for A4
         
         # Add title if provided
         if self.title:
+            title_font_size = int(18 * font_scaling_factor)
             title_style = self._create_heading_style(
                 name="CenteredTitle",
-                font_size=18,
+                font_size=max(14, title_font_size),
                 alignment=1,  # Center
-                space_after=24
+                space_after=24 * font_scaling_factor
             )
             story.append(Paragraph(self.title, title_style))
         
         # Convert markdown to ReportLab markup
         content_markup = self._convert_markdown_to_rl_markup(self.content)
         
-        # Create centered style for content
+        # Create centered style for content with responsive sizing
+        content_font_size = int(12 * font_scaling_factor)
         content_style = self._create_body_style(
             name="CenteredContent",
-            font_size=12,
+            font_size=max(10, content_font_size),
             alignment=1,  # Center
-            space_after=12,
+            space_after=12 * font_scaling_factor,
             font_name=self.style_config.get('body_text', {}).get('font', 'Helvetica-Italic')
         )
         
@@ -185,14 +206,14 @@ class CenteredTextComponent(FrontMatterComponent):
         for p in paragraphs:
             if p.strip():
                 story.append(Paragraph(p, content_style))
-                story.append(Spacer(1, 6))
+                story.append(Spacer(1, 6 * font_scaling_factor))
                 
         # Add page break
         story.append(PageBreak())
 
 
 class StandardTextComponent(FrontMatterComponent):
-    """Component for standard text content like preface, introduction, etc."""
+    """Component for standard text content like preface, introduction, etc. with responsive sizing."""
     
     def __init__(self, style_config, title, content):
         """
@@ -208,31 +229,52 @@ class StandardTextComponent(FrontMatterComponent):
         self.content = content
         
     def add_to_story(self, story):
-        """Add the component to the document story."""
+        """Add the component to the document story with responsive sizing."""
         # Add page break
         story.append(PageBreak())
         
-        # Add top spacing
-        story.append(Spacer(1, 60))
+        # Get page dimensions from style config to calculate proportional spacing
+        page_config = self.style_config.get('page', {})
         
-        # Add title
+        # Calculate responsive page size
+        if page_config.get('size') == 'CUSTOM' and 'height' in page_config:
+            # Custom page size
+            page_height = page_config['height']
+        else:
+            # Default to A4 height
+            page_height = A4[1]
+            
+        # Calculate margins to get usable height
+        margins = page_config.get('margins', {'top': 72, 'bottom': 72})
+        usable_height = page_height - margins.get('top', 72) - margins.get('bottom', 72)
+        
+        # Calculate font scaling based on page size
+        font_scaling_factor = min(1.0, usable_height / 700)  # 700 is a reference value for A4
+        
+        # Add proportional top spacing
+        top_space = 60 * font_scaling_factor
+        story.append(Spacer(1, top_space))
+        
+        # Add title with responsive sizing
+        title_font_size = int(18 * font_scaling_factor)
         title_style = self._create_heading_style(
             name="FrontMatterTitle",
-            font_size=18,
+            font_size=max(14, title_font_size),
             alignment=1,  # Center
-            space_after=24
+            space_after=24 * font_scaling_factor
         )
         story.append(Paragraph(self.title, title_style))
         
         # Convert markdown to ReportLab markup
         content_markup = self._convert_markdown_to_rl_markup(self.content)
         
-        # Create style for content
+        # Create style for content with responsive sizing
+        content_font_size = int(11 * font_scaling_factor)
         content_style = self._create_body_style(
             name="FrontMatterContent",
-            font_size=11,
+            font_size=max(9, content_font_size),
             alignment=4,  # Justified
-            space_after=12
+            space_after=12 * font_scaling_factor
         )
         
         # Add content
@@ -246,7 +288,7 @@ class StandardTextComponent(FrontMatterComponent):
 
 
 class CopyrightComponent(FrontMatterComponent):
-    """Component for copyright page."""
+    """Component for copyright page with improved responsive layout."""
     
     def __init__(self, style_config, content):
         """
@@ -260,20 +302,40 @@ class CopyrightComponent(FrontMatterComponent):
         self.content = content
         
     def add_to_story(self, story):
-        """Add the component to the document story."""
+        """Add the component to the document story with responsive positioning."""
         # Add page break
         story.append(PageBreak())
         
-        # Add vertical space (40% of page)
-        story.append(VerticalSpace(A4[1] * 0.4))
+        # Get page dimensions from style config to calculate proportional spacing
+        page_config = self.style_config.get('page', {})
+        
+        # Calculate responsive vertical spacing based on page height
+        if page_config.get('size') == 'CUSTOM' and 'height' in page_config:
+            # Custom page size
+            page_height = page_config['height']
+        else:
+            # Default to A4 height
+            page_height = A4[1]
+            
+        # Calculate margins to get usable height
+        margins = page_config.get('margins', {'top': 72, 'bottom': 72})
+        usable_height = page_height - margins.get('top', 72) - margins.get('bottom', 72)
+        
+        # Add proportional vertical space (30% of usable height)
+        vertical_space = usable_height * 0.3
+        story.append(VerticalSpace(vertical_space))
         
         # Convert markdown to ReportLab markup
         content_markup = self._convert_markdown_to_rl_markup(self.content)
         
-        # Create style for copyright content
+        # Create responsive style for copyright content - scale font based on page size
+        font_scaling_factor = min(1.0, usable_height / 700)  # 700 is a reference value for A4
+        base_font_size = 9
+        scaled_font_size = max(8, int(base_font_size * font_scaling_factor))
+        
         copyright_style = self._create_body_style(
             name="CopyrightText",
-            font_size=9,
+            font_size=scaled_font_size,
             alignment=0,  # Left aligned
             space_after=6
         )
