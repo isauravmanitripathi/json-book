@@ -37,20 +37,44 @@ class FrontMatterComponent:
         return colors.black
         
     def _convert_markdown_to_rl_markup(self, md_text):
-        """Convert markdown text to ReportLab markup."""
+        """Convert markdown text to ReportLab markup with improved handling."""
         try:
             html = markdown.markdown(md_text)
             
             # Replace problematic HTML tags with ReportLab markup
-            html = re.sub(r'<h1>(.*?)</h1>', r'<font size="18"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
-            html = re.sub(r'<h2>(.*?)</h2>', r'<font size="16"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
-            html = re.sub(r'<h3>(.*?)</h3>', r'<font size="14"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
-            html = re.sub(r'<h4>(.*?)</h4>', r'<font size="12"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
-            html = re.sub(r'<p>(.*?)</p>', r'\1<br/><br/>', html, flags=re.DOTALL)
+            
+            # Headers
+            html = re.sub(r'<h1>(.*?)</h1>', r'<font size="20"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<h2>(.*?)</h2>', r'<font size="18"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<h3>(.*?)</h3>', r'<font size="16"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<h4>(.*?)</h4>', r'<font size="14"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<h5>(.*?)</h5>', r'<font size="12"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<h6>(.*?)</h6>', r'<font size="11"><b>\1</b></font><br/><br/>', html, flags=re.DOTALL)
+            
+            # Text formatting
             html = re.sub(r'<strong>(.*?)</strong>', r'<b>\1</b>', html)
             html = re.sub(r'<em>(.*?)</em>', r'<i>\1</i>', html)
+            html = re.sub(r'<code>(.*?)</code>', r'<font face="Courier">\1</font>', html)
+            
+            # Lists
             html = re.sub(r'<ul>(.*?)</ul>', r'<br/>\1<br/>', html, flags=re.DOTALL)
+            html = re.sub(r'<ol>(.*?)</ol>', r'<br/>\1<br/>', html, flags=re.DOTALL)
             html = re.sub(r'<li>(.*?)</li>', r'• \1<br/>', html, flags=re.DOTALL)
+            
+            # Links
+            html = re.sub(r'<a href="(.*?)">(.*?)</a>', r'<u><font color="blue">\2</font></u> (\1)', html)
+            
+            # Blockquotes - important for epigraphs
+            html = re.sub(r'<blockquote>(.*?)</blockquote>', r'<i>\1</i>', html, flags=re.DOTALL)
+            
+            # Paragraphs - ensure good spacing
+            html = re.sub(r'<p>(.*?)</p>', r'\1<br/><br/>', html, flags=re.DOTALL)
+            
+            # Horizontal rules
+            html = re.sub(r'<hr />', r'_______________________________________________<br/><br/>', html)
+            
+            # Fix consecutive breaks
+            html = re.sub(r'<br/><br/><br/>', r'<br/><br/>', html)
             
             return html
         except Exception as e:

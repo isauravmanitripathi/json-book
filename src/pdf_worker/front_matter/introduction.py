@@ -35,6 +35,18 @@ class IntroductionGenerator:
             if json_file_path and not book_summary:
                 extractor = ContentExtractor(json_file_path)
                 book_summary = extractor.get_book_summary()
+                # Get a couple of sample sections to help inform the introduction
+                sample_content = extractor.get_sample_content(max_sections=5, sample_lines=2)
+                
+                # Add sample content to the book summary
+                if not book_summary:
+                    book_summary = {}
+                book_summary['sample_content'] = sample_content
+            elif json_file_path and book_summary:
+                # We have summary but still need samples
+                extractor = ContentExtractor(json_file_path)
+                sample_content = extractor.get_sample_content(max_sections=5, sample_lines=2)
+                book_summary['sample_content'] = sample_content
             
             # Create prompt
             prompt = self._create_prompt(book_title, author_name, book_summary)
@@ -42,7 +54,7 @@ class IntroductionGenerator:
             # Generate content
             introduction_content = self.api_client.generate_text(
                 prompt=prompt, 
-                max_tokens=1500,
+                max_tokens=1800,  # Increased for more comprehensive content
                 temperature=0.65
             )
             
@@ -55,7 +67,7 @@ class IntroductionGenerator:
             return self._create_fallback_content(book_title, book_summary)
     
     def _create_prompt(self, book_title, author_name, book_summary):
-        """Create prompt for introduction generation."""
+        """Create enhanced prompt for introduction generation."""
         # Format chapter information for the prompt
         chapter_info = ""
         if book_summary and 'chapter_structure' in book_summary:
@@ -65,7 +77,7 @@ class IntroductionGenerator:
                 if chapter['sections'] and len(chapter['sections']) > 0:
                     section_samples = [s['name'] for s in chapter['sections'][:3]]
                     if section_samples:
-                        chapter_desc += f" (includes sections on: {', '.join(section_samples)}"
+                        chapter_desc += f" (covers: {', '.join(section_samples)}"
                         if len(chapter['sections']) > 3:
                             chapter_desc += " and more"
                         chapter_desc += ")"
@@ -82,10 +94,21 @@ class IntroductionGenerator:
                 book_type = "programming/technical"
                 audience = "developers and technical professionals"
         
+        # Include samples if available
+        content_samples = ""
+        if book_summary and 'sample_content' in book_summary:
+            samples = book_summary['sample_content']
+            if samples:
+                content_samples = "\nHere are brief excerpts from various sections of the book:\n\n"
+                for i, sample in enumerate(samples, 1):
+                    content_samples += f"Sample {i} (from {sample.get('chapter', 'Chapter')}, {sample.get('section', 'Section')}):\n"
+                    content_samples += f"\"{sample.get('text', '')}...\"\n\n"
+        
         prompt = f"""Write a comprehensive introduction for a {book_type} book titled "{book_title}" by {author_name}.
 
 Additional book information:
 {chapter_info}
+{content_samples}
 
 The introduction should:
 1. Be approximately 800-1000 words
@@ -97,9 +120,12 @@ The introduction should:
 7. Highlight what makes this book unique or valuable
 8. Set appropriate expectations for what readers will gain
 9. Include subheadings to organize content clearly
-10. Be formatted in markdown
+10. Be formatted in MARKDOWN
 
 The tone should be authoritative, clear, and engaging. The introduction should serve as a roadmap to the entire book and help readers understand why this book is worth their time.
+
+Make sure the output is properly formatted in Markdown to render correctly in the PDF.
+Use ## for subheadings, * for emphasis, and proper paragraph breaks.
 
 DO NOT include the title "Introduction" at the top - that will be added separately.
 DO use appropriate subheadings (## format in markdown) to organize the introduction.
@@ -128,20 +154,20 @@ The book contains {num_chapters} chapters, each focusing on specific aspects of 
 
 You can approach this book in several ways:
 
-1. **Sequential reading:** For beginners, reading from beginning to end provides a structured learning path that builds knowledge progressively.
+* **Sequential reading:** For beginners, reading from beginning to end provides a structured learning path that builds knowledge progressively.
 
-2. **Reference guide:** Experienced readers may prefer to focus on specific chapters or sections relevant to their current needs.
+* **Reference guide:** Experienced readers may prefer to focus on specific chapters or sections relevant to their current needs.
 
-3. **Practical application:** Throughout the book, you'll find examples, case studies, and exercises that help reinforce concepts through practical application.
+* **Practical application:** Throughout the book, you'll find examples, case studies, and exercises that help reinforce concepts through practical application.
 
 ## Who This Book Is For
 
 This book is ideal for:
 
-- Students seeking comprehensive learning materials
-- Professionals looking to expand their knowledge or skills
-- Enthusiasts interested in developing deeper understanding
-- Anyone seeking a reliable reference on the subject matter
+* Students seeking comprehensive learning materials
+* Professionals looking to expand their knowledge or skills
+* Enthusiasts interested in developing deeper understanding
+* Anyone seeking a reliable reference on the subject matter
 
 Whether you're reading this book for academic purposes, professional development, or personal interest, you'll find valuable content tailored to your needs.
 

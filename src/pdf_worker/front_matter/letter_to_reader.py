@@ -35,6 +35,18 @@ class LetterToReaderGenerator:
             if json_file_path and not book_summary:
                 extractor = ContentExtractor(json_file_path)
                 book_summary = extractor.get_book_summary()
+                # Get some sample content for better context
+                sample_content = extractor.get_sample_content(max_sections=3, sample_lines=2)
+                
+                # Add sample content to the book summary
+                if not book_summary:
+                    book_summary = {}
+                book_summary['sample_content'] = sample_content
+            elif json_file_path and book_summary:
+                # We have summary but still need samples
+                extractor = ContentExtractor(json_file_path)
+                sample_content = extractor.get_sample_content(max_sections=3, sample_lines=2)
+                book_summary['sample_content'] = sample_content
             
             # Create prompt
             prompt = self._create_prompt(book_title, author_name, book_summary)
@@ -42,7 +54,7 @@ class LetterToReaderGenerator:
             # Generate content
             letter_content = self.api_client.generate_text(
                 prompt=prompt, 
-                max_tokens=1000,
+                max_tokens=1200,
                 temperature=0.75
             )
             
@@ -55,12 +67,12 @@ class LetterToReaderGenerator:
             return self._create_fallback_content(book_title, author_name)
     
     def _create_prompt(self, book_title, author_name, book_summary):
-        """Create prompt for letter to reader generation."""
+        """Create enhanced prompt for letter to reader generation."""
         # Format book info for the prompt
         book_type = "technical book"
         if book_summary:
             if book_summary.get('has_code', False):
-                book_type = "programming book"
+                book_type = "programming/technical book"
             
             word_count = book_summary.get('word_count', 0)
             if word_count > 100000:
@@ -72,7 +84,27 @@ class LetterToReaderGenerator:
         else:
             book_size = "comprehensive"
         
+        # Format chapter titles for context
+        chapter_titles = ""
+        if book_summary and 'chapter_structure' in book_summary:
+            titles = [chapter['name'] for _, chapter in book_summary['chapter_structure'].items()]
+            if titles:
+                chapter_titles = "The book covers: " + ", ".join(titles)
+        
+        # Include sample content
+        content_samples = ""
+        if book_summary and 'sample_content' in book_summary:
+            samples = book_summary['sample_content']
+            if samples:
+                content_samples = "\nHere are brief excerpts from the book:\n\n"
+                for i, sample in enumerate(samples, 1):
+                    content_samples += f"Sample {i} (from {sample.get('chapter', 'Chapter')}, {sample.get('section', 'Section')}):\n"
+                    content_samples += f"\"{sample.get('text', '')}...\"\n\n"
+                    
         prompt = f"""Write a personal letter to the reader for a {book_size} {book_type} titled "{book_title}" by {author_name}.
+
+{chapter_titles}
+{content_samples}
 
 The letter should:
 1. Be around 400-500 words
@@ -82,15 +114,17 @@ The letter should:
 5. Mention challenges the reader might face and how this book will help
 6. End with a positive, motivational note
 7. Include a personal sign-off from the author
-8. Be formatted in markdown
+8. Be formatted in MARKDOWN
 
 The tone should be warm, conversational, and encouraging - more personal than the formal preface.
+
+Make sure the output is properly formatted in Markdown to render correctly in the PDF.
+Use ## for subheadings, * for emphasis, and proper paragraph breaks.
 
 DO NOT include a title at the top (like "Letter to the Reader") - that will be added separately.
 DO NOT use generic platitudes or clichés.
 
-
-The Sign off should be natural and personal, like "Warm regards," or "With best wishes," followed by the author name or Government Exam Guru.
+The Sign off should be natural and personal, like "Warm regards," or "With best wishes," followed by the author name.
 """
         return prompt
     
@@ -111,9 +145,9 @@ Throughout this book, I encourage you to be patient with yourself. Take your tim
 
 My greatest hope is that this book serves as a valuable companion on your learning journey, whether you're reading it cover to cover or referring to specific sections as needed.
 
-I'd love to hear about your experience with the book and answer any questions you might have. You can reach me at [your preferred contact method].
+I'd love to hear about your experience with the book and answer any questions you might have.
 
 Wishing you every success,
 
-{author_name}
+*{author_name}*
 """

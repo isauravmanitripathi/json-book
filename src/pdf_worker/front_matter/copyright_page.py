@@ -59,7 +59,7 @@ class CopyrightPageGenerator:
             return self._create_fallback_content(book_info)
     
     def _create_prompt(self, book_info):
-        """Create prompt for copyright page generation."""
+        """Create enhanced prompt for copyright page generation."""
         prompt = f"""Generate a professional copyright page for a book with the following information:
 
 Title: {book_info.get('title', 'Book Title')}
@@ -73,8 +73,11 @@ Copyright Holder: {book_info.get('copyright_holder')}
 
 Format the content as a professional copyright page that would appear in a published book. 
 Include standard copyright language, rights reserved statement, and publisher information.
-The output should be in markdown format, formatted cleanly and professionally.
-Do NOT include the title "Copyright Page" at the top, just start with the copyright statement.
+
+The output MUST be in MARKDOWN format, formatted cleanly and professionally.
+Use proper paragraph breaks and formatting that will render correctly in the PDF.
+
+DO NOT include the title "Copyright Page" at the top, just start with the copyright statement.
 """
         return prompt
     
@@ -84,12 +87,21 @@ Do NOT include the title "Copyright Page" at the top, just start with the copyri
         author = book_info.get('author', 'The Author')
         title = book_info.get('title', 'The Book')
         publisher = book_info.get('publisher', 'Self-Published')
+        edition = book_info.get('edition', 'First Edition')
+        isbn = book_info.get('isbn', '')
         
-        return f"""© {year} {author}. All rights reserved.
+        isbn_text = f"\nISBN: {isbn}" if isbn else ""
+        
+        return f"""
+**{title}**
+
+{edition}
+
+© {year} {author}. All rights reserved.
 
 No part of this publication may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the publisher, except in the case of brief quotations embodied in critical reviews and certain other noncommercial uses permitted by copyright law.
 
-**{title}**
-{publisher}
+{publisher}{isbn_text}
 
-First Edition: {year}"""
+Printed in the United States of America
+"""

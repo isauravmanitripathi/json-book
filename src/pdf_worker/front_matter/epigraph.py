@@ -36,6 +36,14 @@ class EpigraphGenerator:
             if json_file_path and not book_summary:
                 extractor = ContentExtractor(json_file_path)
                 book_summary = extractor.get_book_summary()
+                # Extract topics for better thematic targeting
+                topics = extractor.get_sample_content(max_sections=5, sample_lines=1)
+                book_summary['topics'] = [sample.get('section', '') for sample in topics]
+            elif json_file_path and book_summary and 'topics' not in book_summary:
+                # We have summary but still need topics
+                extractor = ContentExtractor(json_file_path)
+                topics = extractor.get_sample_content(max_sections=5, sample_lines=1)
+                book_summary['topics'] = [sample.get('section', '') for sample in topics]
             
             # Create prompt
             prompt = self._create_prompt(book_title, author_name, book_summary)
@@ -43,7 +51,7 @@ class EpigraphGenerator:
             # Generate content
             epigraph_content = self.api_client.generate_text(
                 prompt=prompt, 
-                max_tokens=300,
+                max_tokens=400,
                 temperature=0.8  # Higher temperature for creativity
             )
             
@@ -56,7 +64,7 @@ class EpigraphGenerator:
             return self._create_fallback_content(book_title)
     
     def _create_prompt(self, book_title, author_name, book_summary):
-        """Create prompt for epigraph generation."""
+        """Create enhanced prompt for epigraph generation."""
         # Format chapter information for the prompt
         chapter_info = ""
         if book_summary and 'chapter_structure' in book_summary:
@@ -69,20 +77,34 @@ class EpigraphGenerator:
                 if len(chapters) > 7:
                     chapter_info += "\n(and more...)"
         
+        # Include topics if available
+        topics_info = ""
+        if book_summary and 'topics' in book_summary:
+            topics = book_summary['topics']
+            if topics:
+                topics_str = ", ".join(topics[:10])
+                topics_info = f"Key topics/themes: {topics_str}"
+        
         prompt = f"""Create a meaningful, thought-provoking epigraph (a short quotation or saying at the beginning of a book) for a book with the following details:
 
 Title: {book_title}
 Author: {author_name}
 {chapter_info}
+{topics_info}
 
 The epigraph should:
 1. Be a short quote, poem, or saying (4-8 lines maximum)
 2. Relate thematically to the book's content and title
 3. Be profound and meaningful
 4. Include attribution if it's a quote (you can create a fictional attribution if needed)
-5. Be formatted in markdown
+5. Be formatted in MARKDOWN
 
 The epigraph should capture the essence of the book and provide readers with a thoughtful entry point to the material.
+
+Make sure the output is properly formatted in Markdown to render correctly in the PDF.
+Use *italic* for the quotation text itself.
+Include proper attribution on a separate line.
+
 DO NOT use extremely common or cliché quotes.
 DO NOT prefix the response with "Here's an epigraph:" or similar explanatory text.
 """
@@ -90,6 +112,8 @@ DO NOT prefix the response with "Here's an epigraph:" or similar explanatory tex
     
     def _create_fallback_content(self, book_title):
         """Create fallback epigraph content if API fails."""
-        return f"""*"The journey of a thousand miles begins with a single page."*
+        return f"""
+*"The journey of a thousand miles begins with a single page."*
 
-— Anonymous"""
+— Anonymous
+"""

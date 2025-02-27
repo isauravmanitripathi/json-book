@@ -37,9 +37,12 @@ class PrefaceGenerator:
             if json_file_path and not book_summary:
                 extractor = ContentExtractor(json_file_path)
                 book_summary = extractor.get_book_summary()
-                sample_content = extractor.get_sample_content(max_sections=2)
-            else:
-                sample_content = []
+                # Get comprehensive samples from throughout the book
+                sample_content = extractor.get_sample_content(max_sections=10, sample_lines=2)
+            elif json_file_path and book_summary:
+                # We have summary but still need samples
+                extractor = ContentExtractor(json_file_path)
+                sample_content = extractor.get_sample_content(max_sections=10, sample_lines=2)
             
             # Create prompt
             prompt = self._create_prompt(book_title, author_name, book_summary, sample_content)
@@ -47,7 +50,7 @@ class PrefaceGenerator:
             # Generate content
             preface_content = self.api_client.generate_text(
                 prompt=prompt, 
-                max_tokens=1200,
+                max_tokens=1500,  # Increased for more comprehensive content
                 temperature=0.7
             )
             
@@ -60,7 +63,7 @@ class PrefaceGenerator:
             return self._create_fallback_content(book_title, author_name)
     
     def _create_prompt(self, book_title, author_name, book_summary, sample_content):
-        """Create prompt for preface generation."""
+        """Create enhanced prompt for preface generation."""
         # Format chapter information for the prompt
         chapter_info = ""
         if book_summary and 'chapter_structure' in book_summary:
@@ -82,7 +85,7 @@ class PrefaceGenerator:
         # Include sample content snippets if available
         content_samples = ""
         if sample_content:
-            content_samples = "\nHere are some brief excerpts from the book:\n\n"
+            content_samples = "\nHere are brief excerpts from various sections of the book:\n\n"
             for i, sample in enumerate(sample_content, 1):
                 content_samples += f"Sample {i} (from {sample.get('chapter', 'Chapter')}, {sample.get('section', 'Section')}):\n"
                 content_samples += f"\"{sample.get('text', '')}...\"\n\n"
@@ -100,9 +103,12 @@ The preface should:
 3. Outline what readers will learn
 4. Provide context for why this book was written
 5. Use a professional but engaging tone
-6. Be formatted in markdown with appropriate paragraphs, headings, etc.
+6. Be formatted in MARKDOWN with appropriate paragraphs, headings, etc.
 
 The preface should represent the author's voice, discussing their motivation for writing the book, the intended audience, the approach taken, and any acknowledgments to people or resources that contributed to the creation of the book.
+
+Make sure the output is properly formatted in Markdown to render correctly in the PDF. 
+Use ## for subheadings, * for emphasis, and proper paragraph breaks.
 
 DO NOT include the title "Preface" at the top - that will be added separately.
 """
@@ -111,17 +117,23 @@ DO NOT include the title "Preface" at the top - that will be added separately.
     def _create_fallback_content(self, book_title, author_name):
         """Create fallback preface content if API fails."""
         return f"""
-Welcome to *{book_title}*.
+## About This Book
 
-This book represents countless hours of work and a passion for sharing knowledge. My goal in writing this book was to create a comprehensive resource that would serve both beginners and those with more experience in the field.
+*{book_title}* represents countless hours of work and a passion for sharing knowledge. My goal in writing this book was to create a comprehensive resource that would serve both beginners and those with more experience in the field.
 
 Throughout these pages, you'll find practical information, theoretical foundations, and real-world applications that will help you understand the subject matter deeply and apply it effectively.
 
+## Approach and Structure
+
 I've structured the content to build progressively, starting with fundamental concepts and moving toward more advanced topics. Each chapter is designed to be both self-contained and part of a larger narrative, allowing you to either read from beginning to end or focus on specific sections of interest.
+
+## Who This Book Is For
 
 Whether you're a student, a professional, or simply someone with curiosity about the subject, I hope this book serves as a valuable companion on your learning journey.
 
+## Acknowledgments
+
 I'd like to express my gratitude to everyone who supported me during the writing process. Your encouragement, feedback, and patience made this book possible.
 
-{author_name}
+*{author_name}*
 """
