@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import os
 import sys
+import argparse
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-from rich.prompt import Prompt
+from rich.prompt import Prompt, IntPrompt, Confirm
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_gemini import generate_conversations_gemini
 from src.pdf_worker.core import PDFGenerator
@@ -12,6 +13,13 @@ from style_generator import StyleGenerator
 
 def main():
     """Main entry point for the application."""
+    # Check for headless mode argument
+    parser = argparse.ArgumentParser(description="Text Processing Utility")
+    parser.add_argument('--headless', action='store_true', help='Run in headless mode with command line args')
+    parser.add_argument('option', type=str, nargs='?', help='Option to run directly')
+    parser.add_argument('input_path', type=str, nargs='?', help='Input file path')
+    args, unknown = parser.parse_known_args()
+    
     console = Console()
     
     # Ensure fonts directory exists
@@ -37,18 +45,26 @@ def main():
     table.add_row("4", "Generate PDF from JSON")
     table.add_row("5", "List Available PDF Styles")
     table.add_row("6", "Create New PDF Style")
-    table.add_row("7", "Exit")
+    table.add_row("7", "Markdown Processing")
+    table.add_row("8", "Exit")
     console.print(table)
     
+    # If headless mode is enabled, run the specified option directly
+    if args.headless and args.option and args.input_path:
+        choice = args.option
+        input_path = args.input_path
+    else:
+        choice = console.input("[bold blue]Enter your choice (1-8): [/bold blue]").strip()
+    
     while True:
-        choice = console.input("[bold blue]Enter your choice (1-7): [/bold blue]").strip()
-        
         if choice == '1':
             # Extract chapter text option
-            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            file_path = args.input_path if args.headless else console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
             
             if not file_path or not os.path.exists(file_path):
                 console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                if args.headless:
+                    return
                 continue
 
             # Ensure results/json-combined directory exists
@@ -67,13 +83,18 @@ def main():
                     console.print(f"[bold green]Text extracted successfully to {output_path}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error extracting text: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
         
         elif choice == '2':
             # Generate with OpenAI
-            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            file_path = args.input_path if args.headless else console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
             
             if not file_path or not os.path.exists(file_path):
                 console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                if args.headless:
+                    return
                 continue
 
             try:
@@ -86,13 +107,18 @@ def main():
                     console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
         
         elif choice == '3':
             # Generate with Gemini
-            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            file_path = args.input_path if args.headless else console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
             
             if not file_path or not os.path.exists(file_path):
                 console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                if args.headless:
+                    return
                 continue
 
             try:
@@ -104,33 +130,28 @@ def main():
                     console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating articles: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
         
         elif choice == '4':
             # Generate PDF
-            file_path = console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
+            file_path = args.input_path if args.headless else console.input("[bold blue]Enter the path to the input JSON file: [/bold blue]").strip()
             
             if not file_path or not os.path.exists(file_path):
                 console.print("[bold red]Invalid file path. Please try again.[/bold red]")
+                if args.headless:
+                    return
                 continue
 
             # Get book name
-            book_name = console.input("[bold blue]Enter the name of the book: [/bold blue]").strip()
+            book_name = Prompt.ask("[bold blue]Enter the name of the book: [/bold blue]", default="Generated Book")
             
-            if not book_name:
-                console.print("[bold red]Book name cannot be empty. Please try again.[/bold red]")
-                continue
-                
             # Get author name
-            author_name = console.input("[bold blue]Enter the name of the author: [/bold blue]").strip()
-            
-            if not author_name:
-                console.print("[bold red]Author name cannot be empty. Please try again.[/bold red]")
-                continue
+            author_name = Prompt.ask("[bold blue]Enter the name of the author: [/bold blue]", default="Author")
             
             # Get images directory path
-            images_dir = console.input("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]").strip()
-            if not images_dir:
-                images_dir = 'images'
+            images_dir = Prompt.ask("[bold blue]Enter path to images directory (default: 'images'): [/bold blue]", default="images")
             if not os.path.exists(images_dir):
                 console.print(f"[bold yellow]Images directory '{images_dir}' does not exist. Creating it now.[/bold yellow]")
                 os.makedirs(images_dir, exist_ok=True)
@@ -337,6 +358,9 @@ def main():
                         console.print(f"[bold green]Output saved to: {result}[/bold green]")
             except Exception as e:
                 console.print(f"[bold red]Error generating PDF: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
         
         elif choice == '5':
             # List available PDF styles
@@ -440,6 +464,9 @@ def main():
                 ))
             except Exception as e:
                 console.print(f"[bold red]Error listing styles: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
         
         elif choice == '6':
             # Create new PDF style
@@ -473,14 +500,43 @@ def main():
                 ))
             except Exception as e:
                 console.print(f"[bold red]Error creating style: {str(e)}[/bold red]")
-        
+                
+            if args.headless:
+                return
+
         elif choice == '7':
+            # Markdown Processing - launch the markdown worker
+            console.print("[bold green]Launching Markdown Processing...[/bold green]")
+            
+            try:
+                # Import the markdown worker's main function
+                from src.markdown_worker.main import main as markdown_main
+                
+                # Run the markdown worker
+                markdown_main()
+            except ImportError:
+                console.print("[bold red]Error: Markdown worker module not found.[/bold red]")
+                console.print("[bold yellow]Make sure the markdown_worker module is installed correctly.[/bold yellow]")
+            except Exception as e:
+                console.print(f"[bold red]Error in markdown processing: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
+        
+        elif choice == '8':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
-            break
+            return
         
         else:
-            console.print("[bold red]Invalid choice. Please select 1-7.[/bold red]")
+            console.print("[bold red]Invalid choice. Please select 1-8.[/bold red]")
+        
+        # If in headless mode, exit after one operation
+        if args.headless:
+            return
+            
+        console.print("\n" + "-" * 80 + "\n")
+        choice = console.input("[bold blue]Enter your choice (1-8): [/bold blue]").strip()
 
 if __name__ == "__main__":
     main()

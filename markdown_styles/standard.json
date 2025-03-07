@@ -1,0 +1,118 @@
+{
+  "name": "Standard",
+  "description": "A clean, professional markdown processing style",
+  "heading_styles": {
+    "h1": {
+      "prefix": "# ",
+      "suffix": "",
+      "capitalize": "title",
+      "spacing": {
+        "before": 2,
+        "after": 1
+      },
+      "numbered": false,
+      "number_format": "{chapter}.",
+      "include_in_toc": true,
+      "toc_level": 1
+    },
+    "h2": {
+      "prefix": "## ",
+      "suffix": "",
+      "capitalize": "title",
+      "spacing": {
+        "before": 1,
+        "after": 1
+      },
+      "numbered": false,
+      "number_format": "{chapter}.{section}.",
+      "include_in_toc": true,
+      "toc_level": 2
+    },
+    "h3": {
+      "prefix": "### ",
+      "suffix": "",
+      "capitalize": "title",
+      "spacing": {
+        "before": 1,
+        "after": 1
+      },
+      "numbered": false,
+      "number_format": "{chapter}.{section}.{subsection}.",
+      "include_in_toc": true,
+      "toc_level": 3
+    }
+  },
+  "code_blocks": {
+    "style": "backtick",
+    "line_numbers": false,
+    "highlight_syntax": true,
+    "default_language": "",
+    "spacing": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "links": {
+    "style": "inline",
+    "include_title": true,
+    "auto_convert_urls": true
+  },
+  "images": {
+    "alt_text_required": true,
+    "center_align": true,
+    "caption_style": "below",
+    "figure_prefix": "Figure {number}: "
+  },
+  "lists": {
+    "bullet_style": "-",
+    "spacing": {
+      "before": 1,
+      "after": 1
+    },
+    "indent_spaces": 2
+  },
+  "tables": {
+    "include_header_separator": true,
+    "align_columns": true,
+    "caption_style": "above"
+  },
+  "quotes": {
+    "style": "blockquote",
+    "spacing": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "horizontal_rules": {
+    "style": "dashes",
+    "spacing": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "emphasis": {
+    "bold_style": "asterisks",
+    "italic_style": "underscores"
+  },
+  "toc": {
+    "title": "Table of Contents",
+    "include": true,
+    "max_depth": 3,
+    "numbered": false,
+    "include_title": true
+  },
+  "metadata": {
+    "include": true,
+    "format": "yaml",
+    "fields": [
+      "title",
+      "author",
+      "date",
+      "description"
+    ]
+  },
+  "footnotes": {
+    "style": "reference",
+    "location": "end_of_document"
+  }
+}
