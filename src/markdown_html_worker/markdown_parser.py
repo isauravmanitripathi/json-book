@@ -9,9 +9,6 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
-from .components.code_block import CodeBlock
-from .components.equation_block import EquationBlock
-
 class MarkdownParser:
     """Parse Markdown files to extract structured content for PDF generation."""
     
@@ -129,8 +126,8 @@ class MarkdownParser:
             # Replace code block in content with placeholder
             content = content.replace(code_block['original'], f"[CODE_BLOCK:{block_id}]")
         
-        # Extract equations
-        equations = self._extract_equations(content)
+        # Extract LaTeX equations - both inline and block
+        equations = self._extract_latex_equations(content)
         for i, equation in enumerate(equations):
             eq_id = f"eq_{i+1}"
             section['equations'].append({
@@ -173,7 +170,7 @@ class MarkdownParser:
             
         return code_blocks
     
-    def _extract_equations(self, content):
+    def _extract_latex_equations(self, content):
         """
         Extract LaTeX equations from markdown content.
         
@@ -185,38 +182,60 @@ class MarkdownParser:
         """
         equations = []
         
-        # Match equation tags [EQUATION:eq_id]
+        # Match block equations ($$...$$)
+        block_pattern = r'\$\$(.*?)\$\$'
+        for match in re.finditer(block_pattern, content, re.DOTALL):
+            equation = match.group(1).strip()
+            original = match.group(0)
+            
+            equations.append({
+                'equation': equation,
+                'type': 'block',
+                'original': original
+            })
+        
+        # Match inline equations ($...$) - but not if they're part of block equations
+        # First, replace block equations with placeholders to avoid matching their delimiters
+        content_with_placeholders = content
+        for i, match in enumerate(re.finditer(block_pattern, content, re.DOTALL)):
+            content_with_placeholders = content_with_placeholders.replace(match.group(0), f"BLOCK_EQ_PLACEHOLDER_{i}")
+        
+        # Now match inline equations
+        inline_pattern = r'(?<!\$)\$(.*?)\$(?!\$)'
+        for match in re.finditer(inline_pattern, content_with_placeholders, re.DOTALL):
+            # Get the original equation text from the original content
+            start_idx = match.start()
+            end_idx = match.end()
+            
+            # Ensure we're not inside a code block
+            code_block = False
+            for block in self._extract_code_blocks(content):
+                block_start = content.find(block['original'])
+                block_end = block_start + len(block['original'])
+                if block_start <= start_idx and end_idx <= block_end:
+                    code_block = True
+                    break
+            
+            if not code_block:
+                equation = match.group(1).strip()
+                original = f"${equation}$"
+                
+                equations.append({
+                    'equation': equation,
+                    'type': 'inline',
+                    'original': original
+                })
+        
+        # Also catch any placeholders from a previous run
         for match in re.finditer(r'\[EQUATION:([^\]]+)\]', content):
             eq_id = match.group(1)
             original = match.group(0)
             
-            # Try to find the actual equation nearby
-            eq_text = f"Equation {eq_id}"  # Default text if actual equation not found
-            
             equations.append({
                 'id': eq_id,
-                'equation': eq_text,
+                'equation': f"EQUATION_PLACEHOLDER_{eq_id}",  # This will be replaced by the equation formatter
                 'type': 'inline',
                 'original': original
             })
-        
-        # Also try to match LaTeX-style equations with $...$ and $$...$$
-        patterns = [
-            (r'\$\$(.*?)\$\$', 'block'),  # Block equations
-            (r'\$(.*?)\$', 'inline')      # Inline equations
-        ]
-        
-        for pattern, eq_type in patterns:
-            for match in re.finditer(pattern, content, re.DOTALL):
-                equation = match.group(1).strip()
-                original = match.group(0)
-                eq_id = f"latex_{len(equations) + 1}"
-                
-                equations.append({
-                    'id': eq_id,
-                    'equation': equation,
-                    'type': eq_type,
-                    'original': original
-                })
                 
         return equations

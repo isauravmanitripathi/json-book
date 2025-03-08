@@ -56,7 +56,8 @@ class MarkdownHTMLProcessor:
         
         # Initialize formatters
         self.code_formatter = CodeFormatter()
-        self.equation_formatter = EquationFormatter()
+        
+        # Note: We'll initialize equation_formatter when needed with proper settings
         
         # Load style configuration
         self.style_config = self._load_style_config()
@@ -263,9 +264,19 @@ class MarkdownHTMLProcessor:
             chapter = Chapter(self.style_config, document.get('chapter_title', 'Untitled'))
             chapter.add_to_story(story)
             
+            # Create equations directory for verification if needed
+            equations_dir = os.path.join('results', 'equations')
+            os.makedirs(equations_dir, exist_ok=True)
+            
+            # Initialize equation formatter with proper settings
+            equation_formatter = EquationFormatter(
+                equations_dir=equations_dir,
+                keep_equation_images=False  # Set to True for debugging
+            )
+            
             # Add all sections
             for section_data in document.get('sections', []):
-                # Create section component - FIXED: removed the image_handler parameter
+                # Create section component
                 section = Section(
                     self.style_config,
                     section_data.get('title', ''),
@@ -274,13 +285,16 @@ class MarkdownHTMLProcessor:
                 )
                 
                 # Add section content to story
-                section.add_to_story(story, self.code_formatter, self.equation_formatter)
+                section.add_to_story(story, self.code_formatter, equation_formatter)
                 
                 # Add spacer after section
                 story.append(Spacer(1, 12))
             
             # Build the PDF
             doc.build(story)
+            
+            # Clean up temporary equation files
+            equation_formatter.cleanup()
             
         except Exception as e:
             self.logger.error(f"Error generating PDF: {str(e)}")
@@ -324,7 +338,7 @@ class MarkdownHTMLProcessor:
                         content = re.sub(r'\[EQUATION:([^\]]+)\]', r'[EQUATION:\1]', content)
                         # Limit length
                         if len(content) > 500:
-                            content = content[:500] + "..."
+                            content = content[:500] + "... (text truncated for PDF safety)"
                         story.append(Paragraph(content, styles['Normal']))
                         story.append(Spacer(1, 12))
                 
