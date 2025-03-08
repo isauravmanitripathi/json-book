@@ -9,6 +9,7 @@ from rich.prompt import Prompt, IntPrompt, Confirm
 from src.json_writer.chapter_extractor import extract_section_text
 from src.json_writer.write_text_gemini import generate_conversations_gemini
 from src.pdf_worker.core import PDFGenerator
+from src.markdown_html_worker.core import MarkdownHTMLProcessor  # Import the new processor
 from style_generator import StyleGenerator
 
 def main():
@@ -45,7 +46,8 @@ def main():
     table.add_row("4", "Generate PDF from JSON")
     table.add_row("5", "List Available PDF Styles")
     table.add_row("6", "Create New PDF Style")
-    table.add_row("7", "Exit")
+    table.add_row("7", "Process Markdown/HTML Files")  # New option
+    table.add_row("8", "Exit")
     console.print(table)
     
     # If headless mode is enabled, run the specified option directly
@@ -504,6 +506,93 @@ def main():
                 return
         
         elif choice == '7':
+            # Process Markdown/HTML Files - New option
+            try:
+                console.print(Panel(
+                    "[bold cyan]Process Markdown/HTML Files[/bold cyan]\n"
+                    "[dim]This will convert Markdown or HTML files into PDF documents.\n"
+                    "You'll need to provide a directory containing either Markdown (.md) or HTML (.html) files.\n"
+                    "The files will be processed and converted to PDFs with chapter and section structure.[/dim]",
+                    border_style="blue"
+                ))
+                
+                # Get input directory
+                input_dir = console.input("[bold blue]Enter path to directory with Markdown/HTML files: [/bold blue]").strip()
+                
+                if not input_dir or not os.path.exists(input_dir) or not os.path.isdir(input_dir):
+                    console.print("[bold red]Invalid directory path. Please try again.[/bold red]")
+                    continue
+                
+                # Get output directory
+                output_dir = console.input("[bold blue]Enter path for output PDFs (default: 'results/pdfs'): [/bold blue]").strip()
+                if not output_dir:
+                    output_dir = 'results/pdfs'
+                    
+                # Ensure output directory exists
+                os.makedirs(output_dir, exist_ok=True)
+                
+                # Get style name
+                pdf_generator = PDFGenerator()
+                style_names = pdf_generator.style_manager.get_style_names()
+                
+                if not style_names:
+                    console.print("[bold yellow]No style templates found. Using default style.[/bold yellow]")
+                    style_name = "classic"
+                else:
+                    style_table = Table(title="Available Style Templates")
+                    style_table.add_column("Number", style="dim")
+                    style_table.add_column("Style Name", style="cyan")
+                    
+                    for i, name in enumerate(style_names, 1):
+                        style_table.add_row(str(i), name)
+                    
+                    console.print(style_table)
+                    
+                    style_choice = Prompt.ask(
+                        "[bold blue]Select a style by number[/bold blue]",
+                        choices=[str(i) for i in range(1, len(style_names) + 1)],
+                        default="1"
+                    )
+                    
+                    style_name = style_names[int(style_choice) - 1]
+                    console.print(f"[bold green]Selected style: {style_name}[/bold green]")
+                
+                # Initialize Markdown/HTML processor
+                processor = MarkdownHTMLProcessor(
+                    input_dir=input_dir,
+                    output_dir=output_dir,
+                    style_name=style_name
+                )
+                
+                # Scan directory to check file types
+                files, file_type = processor.scan_directory()
+                
+                if not files:
+                    console.print("[bold red]No Markdown or HTML files found in the specified directory.[/bold red]")
+                    continue
+                
+                if file_type == 'mixed':
+                    console.print("[bold red]Mixed file types found. Directory must contain only Markdown OR only HTML files.[/bold red]")
+                    continue
+                
+                # Process files
+                with console.status(f"[bold green]Processing {file_type.upper()} files...", spinner="dots"):
+                    pdf_files = processor.process_directory()
+                
+                if pdf_files:
+                    console.print(f"[bold green]{len(pdf_files)} PDFs generated successfully![/bold green]")
+                    for pdf_path in pdf_files:
+                        console.print(f"[bold green]PDF saved to: {pdf_path}[/bold green]")
+                else:
+                    console.print("[bold red]No PDFs were generated. See logs for details.[/bold red]")
+                
+            except Exception as e:
+                console.print(f"[bold red]Error processing Markdown/HTML files: {str(e)}[/bold red]")
+                
+            if args.headless:
+                return
+        
+        elif choice == '8':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
             return
