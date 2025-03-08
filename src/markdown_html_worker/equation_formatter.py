@@ -13,19 +13,47 @@ class EquationFormatter:
         """Initialize the equation formatter."""
         self.logger = logging.getLogger(__name__)
         self.styles = getSampleStyleSheet()
+        
+        # Common equations used in ML/finance - add more as needed
+        self.common_equations = {
+            "eq_1": "X = {x₁, x₂, ..., xₙ}",
+            "eq_2": "xₜ",
+            "eq_3": "t",
+            "eq_4": "T",
+            "eq_5": "μ",
+            "eq_6": "σ²",
+            "eq_7": "P(X|θ)",
+            "eq_8": "∑ⁿᵢ₌₁ xᵢ",
+            "eq_9": "β₀ + β₁x₁ + ... + βₙxₙ",
+            "eq_10": "VaR_α(X)",
+            "eq_11": "L(θ,X) = ∏ᵢ₌₁ⁿ f(xᵢ|θ)",
+            "eq_12": "y = f(x) + ε",
+            "eq_13": "H₀",
+            "eq_14": "H₁",
+            "eq_15": "∫ f(x) dx"
+        }
     
     def format_equation(self, equation, eq_type='inline'):
         """
         Format an equation for PDF rendering using ReportLab's built-in rendering.
         
         Args:
-            equation (str): Equation string
+            equation (str): Equation string or equation ID
             eq_type (str): 'inline' or 'block'
             
         Returns:
             reportlab.platypus.Paragraph: A paragraph with formatted equation
         """
         try:
+            # Check if this is a reference to a pre-defined equation
+            if equation.startswith("eq_") or equation.startswith("Equation eq_"):
+                eq_id = equation.replace("Equation ", "")
+                if eq_id in self.common_equations:
+                    equation = self.common_equations[eq_id]
+                else:
+                    # Generate a simple placeholder equation if not found
+                    equation = f"equation{eq_id.replace('eq_', '')}"
+            
             # Clean and prepare the equation
             equation = self._clean_equation(equation)
             
@@ -54,6 +82,16 @@ class EquationFormatter:
         equation = equation.replace('\\frac', '/')
         equation = equation.replace('\\cdot', '·')
         equation = equation.replace('\\times', '×')
+        equation = equation.replace('\\pm', '±')
+        equation = equation.replace('\\leq', '≤')
+        equation = equation.replace('\\geq', '≥')
+        equation = equation.replace('\\neq', '≠')
+        equation = equation.replace('\\approx', '≈')
+        equation = equation.replace('\\infty', '∞')
+        equation = equation.replace('\\partial', '∂')
+        equation = equation.replace('\\sum', '∑')
+        equation = equation.replace('\\prod', '∏')
+        equation = equation.replace('\\int', '∫')
         
         # Replace common Greek letters with their Unicode equivalents
         greek_letters = {
@@ -72,11 +110,13 @@ class EquationFormatter:
         equation = re.sub(r'_([0-9a-zA-Z])', r'<sub>\1</sub>', equation)
         equation = re.sub(r'\^([0-9a-zA-Z])', r'<sup>\1</sup>', equation)
         
-        # Clean up equation text if it contains "eq_N"
-        if equation.startswith("eq_") or equation.startswith("Equation eq_"):
-            # For placeholders like [EQUATION:eq_1], just return a nicely formatted equation symbol
-            return "𝐄"
-            
+        # Replace LaTeX set notation with Unicode
+        equation = equation.replace('\\in', '∈')
+        equation = equation.replace('\\subset', '⊂')
+        equation = equation.replace('\\supset', '⊃')
+        equation = equation.replace('\\cup', '∪')
+        equation = equation.replace('\\cap', '∩')
+        
         return equation.strip()
     
     def _format_as_styled_text(self, equation, eq_type):

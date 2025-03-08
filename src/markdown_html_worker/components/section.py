@@ -170,39 +170,36 @@ class Section:
                             remaining_content = parts[1] if len(parts) > 1 else ""
                 
                 # Also check for equation patterns directly in the content
-                if equation_formatter:
-                    # Look for [EQUATION:eq_N] patterns not already processed
-                    for match in re.finditer(r'\[EQUATION:([^\]]+)\]', remaining_content):
-                        eq_id = match.group(1)
-                        placeholder = match.group(0)
-                        
-                        # Split content at placeholder
-                        parts = remaining_content.split(placeholder, 1)
-                        
-                        # Add text before placeholder
-                        if parts[0].strip():
-                            for p in self._break_into_paragraphs(parts[0]):
-                                if p.strip():
-                                    try:
-                                        story.append(Paragraph(p, body_style))
-                                    except:
-                                        clean_p = self._clean_text_for_reportlab(p)
-                                        story.append(Paragraph(clean_p, body_style))
-                        
-                        # Add equation
-                        story.append(Spacer(1, 6))
-                        
-                        # Use equation ID as the content (might be something like "eq_1")
-                        eq = f"Equation {eq_id}"
-                        eq_type = 'inline'
-                        
-                        # Add equation
-                        eq_element = equation_formatter.format_equation(eq, eq_type)
-                        story.append(eq_element)
-                        story.append(Spacer(1, 6))
-                        
-                        # Continue with remaining content
-                        remaining_content = parts[1] if len(parts) > 1 else ""
+                # Also check for equation patterns directly in the content
+            if equation_formatter:
+                # Look for [EQUATION:eq_N] patterns not already processed
+                for match in re.finditer(r'\[EQUATION:([^\]]+)\]', remaining_content):
+                    eq_id = match.group(1)
+                    placeholder = match.group(0)
+                    
+                    # Split content at placeholder
+                    parts = remaining_content.split(placeholder, 1)
+                    
+                    # Add text before placeholder
+                    if parts[0].strip():
+                        for p in self._break_into_paragraphs(parts[0]):
+                            if p.strip():
+                                try:
+                                    story.append(Paragraph(p, body_style))
+                                except:
+                                    clean_p = self._clean_text_for_reportlab(p)
+                                    story.append(Paragraph(clean_p, body_style))
+                    
+                    # Add equation
+                    story.append(Spacer(1, 2))  # Reduced spacing for inline equations
+                    
+                    # Use the equation ID as the content
+                    eq_element = equation_formatter.format_equation(eq_id, 'inline')
+                    story.append(eq_element)
+                    story.append(Spacer(1, 2))  # Reduced spacing for inline equations
+                    
+                    # Continue with remaining content
+                    remaining_content = parts[1] if len(parts) > 1 else ""
                 
                 # Add any remaining content after processing all placeholders
                 if remaining_content.strip():
