@@ -45,8 +45,7 @@ def main():
     table.add_row("4", "Generate PDF from JSON")
     table.add_row("5", "List Available PDF Styles")
     table.add_row("6", "Create New PDF Style")
-    table.add_row("7", "Markdown Processing")
-    table.add_row("8", "Exit")
+    table.add_row("7", "Exit")
     console.print(table)
     
     # If headless mode is enabled, run the specified option directly
@@ -503,27 +502,8 @@ def main():
                 
             if args.headless:
                 return
-
-        elif choice == '7':
-            # Markdown Processing - launch the markdown worker
-            console.print("[bold green]Launching Markdown Processing...[/bold green]")
-            
-            try:
-                # Import the markdown worker's main function
-                from src.markdown_worker.main import main as markdown_main
-                
-                # Run the markdown worker
-                markdown_main()
-            except ImportError:
-                console.print("[bold red]Error: Markdown worker module not found.[/bold red]")
-                console.print("[bold yellow]Make sure the markdown_worker module is installed correctly.[/bold yellow]")
-            except Exception as e:
-                console.print(f"[bold red]Error in markdown processing: {str(e)}[/bold red]")
-                
-            if args.headless:
-                return
         
-        elif choice == '8':
+        elif choice == '7':
             # Exit the program
             console.print("[bold red]Exiting the application.[/bold red]")
             return
