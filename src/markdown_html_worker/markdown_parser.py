@@ -126,8 +126,8 @@ class MarkdownParser:
             # Replace code block in content with placeholder
             content = content.replace(code_block['original'], f"[CODE_BLOCK:{block_id}]")
         
-        # Extract LaTeX equations - both inline and block
-        equations = self._extract_latex_equations(content)
+        # Extract equations - looking for the pattern of standalone lines with $ delimiters
+        equations = self._extract_equations(content)
         for i, equation in enumerate(equations):
             eq_id = f"eq_{i+1}"
             section['equations'].append({
@@ -170,9 +170,10 @@ class MarkdownParser:
             
         return code_blocks
     
-    def _extract_latex_equations(self, content):
+    def _extract_equations(self, content):
         """
-        Extract LaTeX equations from markdown content.
+        Extract equations from markdown content, focusing on the pattern 
+        of standalone equations with empty lines before and after.
         
         Args:
             content (str): Markdown content
@@ -182,60 +183,42 @@ class MarkdownParser:
         """
         equations = []
         
-        # Match block equations ($$...$$)
-        block_pattern = r'\$\$(.*?)\$\$'
-        for match in re.finditer(block_pattern, content, re.DOTALL):
-            equation = match.group(1).strip()
-            original = match.group(0)
+        # Process the content line by line to find equations on their own lines
+        lines = content.split('\n')
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
             
-            equations.append({
-                'equation': equation,
-                'type': 'block',
-                'original': original
-            })
-        
-        # Match inline equations ($...$) - but not if they're part of block equations
-        # First, replace block equations with placeholders to avoid matching their delimiters
-        content_with_placeholders = content
-        for i, match in enumerate(re.finditer(block_pattern, content, re.DOTALL)):
-            content_with_placeholders = content_with_placeholders.replace(match.group(0), f"BLOCK_EQ_PLACEHOLDER_{i}")
-        
-        # Now match inline equations
-        inline_pattern = r'(?<!\$)\$(.*?)\$(?!\$)'
-        for match in re.finditer(inline_pattern, content_with_placeholders, re.DOTALL):
-            # Get the original equation text from the original content
-            start_idx = match.start()
-            end_idx = match.end()
-            
-            # Ensure we're not inside a code block
-            code_block = False
-            for block in self._extract_code_blocks(content):
-                block_start = content.find(block['original'])
-                block_end = block_start + len(block['original'])
-                if block_start <= start_idx and end_idx <= block_end:
-                    code_block = True
-                    break
-            
-            if not code_block:
-                equation = match.group(1).strip()
-                original = f"${equation}$"
+            # Check for standalone equation pattern: empty line, equation line with $ delimiters, empty line
+            if line.startswith('$') and line.endswith('$'):
+                # Check if this is a standalone equation (empty lines before and after)
+                is_standalone = False
+                if (i == 0 or not lines[i-1].strip()) and (i == len(lines)-1 or not lines[i+1].strip()):
+                    is_standalone = True
+                
+                # Extract the equation
+                equation = line
+                equation_type = 'block' if is_standalone else 'inline'
                 
                 equations.append({
                     'equation': equation,
-                    'type': 'inline',
-                    'original': original
+                    'type': equation_type,
+                    'original': line
                 })
-        
-        # Also catch any placeholders from a previous run
-        for match in re.finditer(r'\[EQUATION:([^\]]+)\]', content):
-            eq_id = match.group(1)
-            original = match.group(0)
             
-            equations.append({
-                'id': eq_id,
-                'equation': f"EQUATION_PLACEHOLDER_{eq_id}",  # This will be replaced by the equation formatter
-                'type': 'inline',
-                'original': original
-            })
-                
+            # Check for additional equations patterns like [EQUATION:eq_id]
+            elif '[EQUATION:' in line:
+                for match in re.finditer(r'\[EQUATION:([^\]]+)\]', line):
+                    eq_id = match.group(1)
+                    original = match.group(0)
+                    
+                    equations.append({
+                        'id': eq_id,
+                        'equation': f"EQUATION_{eq_id}",
+                        'type': 'inline',
+                        'original': original
+                    })
+            
+            i += 1
+        
         return equations

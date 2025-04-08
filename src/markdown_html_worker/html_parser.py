@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+
 
 from .components.code_block import CodeBlock
 from .components.equation_block import EquationBlock

@@ -103,11 +103,8 @@ class Section:
                 equations = self.section_data.get('equations', [])
                 content = self.section_data.get('content', self.section_text)
                 
-                # Process content with code blocks and equations
+                # Start processing with entire content
                 remaining_content = content
-
-                # Process markdown content for inline LaTeX
-                remaining_content = self._process_inline_latex(remaining_content, story, equation_formatter, body_style)
                 
                 # First, process code blocks
                 if code_formatter and code_blocks:
@@ -172,20 +169,32 @@ class Section:
                             # Continue with remaining content
                             remaining_content = parts[1] if len(parts) > 1 else ""
                 
-                # Also check for equation patterns directly in the content
+                # Check for any standalone equations in the remaining content
+                # These are lines that start and end with $
+                if equation_formatter and remaining_content:
+                    remaining_content = self._process_standalone_equations(remaining_content, story, equation_formatter, body_style)
+                
+                # Add any remaining content after processing all placeholders
+                if remaining_content.strip():
+                    for p in self._break_into_paragraphs(remaining_content):
+                        if p.strip():
+                            try:
+                                story.append(Paragraph(p, body_style))
+                            except:
+                                clean_p = self._clean_text_for_reportlab(p)
+                                story.append(Paragraph(clean_p, body_style))
+            else:
+                # No section data, just add the text with paragraph breaks
+                # Convert markdown to ReportLab markup
+                rl_text = self._convert_markdown_to_rl_markup(self.section_text)
+                
+                # Process standalone equations in the text
                 if equation_formatter:
-                    # Process any remaining content after handling all placeholders
-                    remaining_content = self._process_inline_latex(remaining_content, story, equation_formatter, body_style)
-                else:
-                    # No equation formatter, just add the text with paragraph breaks
-                    # Convert markdown to ReportLab markup
-                    rl_text = self._convert_markdown_to_rl_markup(self.section_text)
+                    rl_text = self._process_standalone_equations(rl_text, story, equation_formatter, body_style)
                     
-                    # Break the text into smaller paragraphs
-                    paragraphs = self._break_into_paragraphs(rl_text)
-                    
-                    # Add paragraphs to story
-                    for p in paragraphs:
+                # Add any remaining text as paragraphs
+                if rl_text.strip():
+                    for p in self._break_into_paragraphs(rl_text):
                         if p.strip():
                             try:
                                 story.append(Paragraph(p, body_style))
@@ -210,62 +219,59 @@ class Section:
             except:
                 print("Could not add even simplified error message")
                 
-    def _process_inline_latex(self, content, story, equation_formatter, body_style):
-        """Process content for inline LaTeX equations."""
-        if not equation_formatter:
-            return content
-            
-        # Look for LaTeX patterns $...$
-        result_content = content
-        inline_pattern = r'\$(.*?)\$'
+    def _process_standalone_equations(self, content, story, equation_formatter, body_style):
+        """
+        Process standalone equations (lines that start and end with $).
         
-        matches = list(re.finditer(inline_pattern, content))
-        if not matches:
-            return content
+        Args:
+            content (str): Content text
+            story (list): Report story to add to
+            equation_formatter (EquationFormatter): Equation formatter
+            body_style (ParagraphStyle): Body text style
             
-        # Process content in segments, handling each LaTeX block
-        last_end = 0
-        for match in matches:
-            start, end = match.span()
+        Returns:
+            str: Remaining content after processing equations
+        """
+        # Process the text line by line
+        lines = content.split('\n')
+        processed_content = []
+        i = 0
+        
+        while i < len(lines):
+            line = lines[i].strip()
             
-            # Add text before the equation
-            if start > last_end:
-                before_text = content[last_end:start]
-                if before_text.strip():
-                    for p in self._break_into_paragraphs(before_text):
+            # Check for standalone equation line (starts and ends with $)
+            if line.startswith('$') and line.endswith('$'):
+                # First, add any accumulated content as paragraphs
+                if processed_content:
+                    accumulated_text = '\n'.join(processed_content)
+                    for p in self._break_into_paragraphs(accumulated_text):
                         if p.strip():
                             try:
                                 story.append(Paragraph(p, body_style))
                             except:
                                 clean_p = self._clean_text_for_reportlab(p)
                                 story.append(Paragraph(clean_p, body_style))
+                    processed_content = []
+                
+                # Add spacer before equation
+                story.append(Spacer(1, 6))
+                
+                # Format and add the equation
+                eq_type = 'block'
+                eq_element = equation_formatter.format_equation(line, eq_type)
+                story.append(eq_element)
+                
+                # Add spacer after equation
+                story.append(Spacer(1, 6))
+            else:
+                # Regular text - accumulate
+                processed_content.append(lines[i])
             
-            # Process the equation
-            equation = match.group(1)
-            eq_type = 'inline'  # Assume inline for $ delimiters
-            
-            # Add equation with small spacing
-            story.append(Spacer(1, 2))
-            eq_element = equation_formatter.format_equation(equation, eq_type)
-            story.append(eq_element)
-            story.append(Spacer(1, 2))
-            
-            last_end = end
+            i += 1
         
-        # Add any remaining content
-        if last_end < len(content):
-            remaining = content[last_end:]
-            if remaining.strip():
-                for p in self._break_into_paragraphs(remaining):
-                    if p.strip():
-                        try:
-                            story.append(Paragraph(p, body_style))
-                        except:
-                            clean_p = self._clean_text_for_reportlab(p)
-                            story.append(Paragraph(clean_p, body_style))
-        
-        # Return empty content since we've processed it all
-        return ""
+        # Return any remaining accumulated content
+        return '\n'.join(processed_content)
     
     def _create_body_style(self, body_config):
         """Create and return body text style based on configuration."""
@@ -314,12 +320,12 @@ class Section:
             html = html.replace('<ul>', '').replace('</ul>', '')
             html = html.replace('<ol>', '').replace('</ol>', '')
             
-            # Handle math notation - preserve LaTeX equations
-            html = re.sub(r'\$(.*?)\$', r'$\1$', html, flags=re.DOTALL)
-            
             # Handle emphasis correctly
             html = re.sub(r'<em>(.*?)</em>', r'<i>\1</i>', html, flags=re.DOTALL)
             html = re.sub(r'<strong>(.*?)</strong>', r'<b>\1</b>', html, flags=re.DOTALL)
+            
+            # Preserve dollar signs for equations ($ and $$)
+            html = html.replace('$', '$')
             
             # Preserve [EQUATION:...] placeholders
             html = re.sub(r'\[EQUATION:([^\]]+)\]', r'[EQUATION:\1]', html)
@@ -335,16 +341,6 @@ class Section:
     
     def _break_into_paragraphs(self, text):
         """Break text into paragraphs for better rendering."""
-        # Skip if the text contains LaTeX equations to preserve them
-        if '$' in text:
-            # Skip equation patterns to ensure they don't get broken across paragraphs
-            pattern = r'\$(.*?)\$'
-            matches = list(re.finditer(pattern, text))
-            if matches:
-                # Process text as one paragraph if it contains equations
-                # This ensures equations stay intact
-                return [text]
-        
         # Split by double line breaks
         if '<br/><br/>' in text:
             return text.split('<br/><br/>')
@@ -354,17 +350,6 @@ class Section:
             
     def _clean_text_for_reportlab(self, text):
         """Clean text to make it safe for ReportLab processing."""
-        # Preserve LaTeX equations
-        if '$' in text:
-            # Temporarily replace equation content with placeholders
-            pattern = r'\$(.*?)\$'
-            eq_placeholders = {}
-            
-            for i, match in enumerate(re.finditer(pattern, text, re.DOTALL)):
-                placeholder = f"__EQ_PLACEHOLDER_{i}__"
-                eq_placeholders[placeholder] = match.group(0)
-                text = text.replace(match.group(0), placeholder, 1)
-        
         # Replace special XML/HTML characters
         text = text.replace('&', '&amp;')
         text = text.replace('<', '&lt;')
@@ -374,21 +359,10 @@ class Section:
         # Remove control characters
         text = ''.join(c for c in text if ord(c) >= 32 or c in '\n\r\t')
         
-        # Replace problematic Unicode characters but preserve common ones
-        printable_chars = set(range(32, 127))  # ASCII printable
-        # Add common Unicode ranges that are usually safe
-        printable_chars.update(range(0x00A0, 0x00FF))  # Latin-1 Supplement
-        printable_chars.update(range(0x0100, 0x017F))  # Latin Extended-A
-        printable_chars.update(range(0x2000, 0x206F))  # General Punctuation
-        
-        text = ''.join(c if (ord(c) in printable_chars or c in '\n\r\t') else ' ' for c in text)
+        # Preserve dollar signs for equations
+        # Don't modify $ characters as they're important for equations
         
         # Make sure equation placeholders are preserved
         text = re.sub(r'\[EQUATION:([^\]]+)\]', r'[EQUATION:\1]', text)
-        
-        # Restore LaTeX equations if any
-        if '$' in text or '__EQ_PLACEHOLDER_' in text:
-            for placeholder, equation in eq_placeholders.items():
-                text = text.replace(placeholder, equation)
         
         return text
