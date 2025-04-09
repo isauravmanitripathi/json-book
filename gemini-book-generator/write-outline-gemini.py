@@ -127,7 +127,6 @@ def fix_json_string(json_str: str) -> str:
         # Removing closing braces is riskier, maybe just warn
         console.print(f"[yellow]Warning: More closing braces ({close_braces}) than opening ({open_braces}). Proceeding with caution.[/yellow]")
 
-
     return json_str
 
 # --- Logging ---
@@ -164,7 +163,7 @@ def check_log_file(input_file_name: str, output_dir: Path) -> tuple:
 # --- Prompt Generation ---
 
 def generate_chapter_outline_prompt(part_name: str, chapter_title: str, chapter_description: str) -> str:
-    """Generate a prompt for creating a chapter outline."""
+    """Generate a prompt for creating a chapter outline, with enhanced JSON validity instructions."""
 
     # Define the desired JSON structure for the outline
     json_template = """{
@@ -232,18 +231,27 @@ INSTRUCTIONS FOR FILLING THE JSON:
 - `conclusion`: Guide the writing of a summary, state key takeaways, and suggest a transition.
 - `keywords_for_indexing`: Extract relevant terms from the description and title.
 
-IMPORTANT: Your entire response MUST be a single, valid JSON object matching the structure above. Do NOT include any introductory text, explanations, comments, or markdown formatting (like ```json) outside of the JSON object itself.
+**CRITICAL JSON VALIDITY RULES:**
+1.  Your *entire* response MUST be a single, valid JSON object conforming exactly to the structure above.
+2.  Do NOT include any introductory text, explanations, comments, or markdown formatting (like ```json) outside of the JSON object itself.
+3.  **Ensure correct comma usage:** All elements in JSON arrays (lists) must be separated by commas, except for the last element. All key-value pairs in JSON objects must be separated by commas, except for the last pair. Missing commas are a common error.
+    - Correct list example: `"key": ["item1", "item2", "item3"]`
+    - Correct object example: `"key": {{"prop1": "value1", "prop2": "value2"}}`
+4.  Ensure all strings are properly enclosed in double quotes and any double quotes *within* a string value are correctly escaped (e.g., `"He said \\"Hello\\""`).
+
+Adherence to valid JSON syntax is paramount. Double-check your response for validity before outputting.
 """
     return prompt
 
+
 # --- Gemini API Interaction ---
 
-def test_gemini_api(api_key: str): # <-- Accept generic api_key
+def test_gemini_api(api_key: str):
     """Quick test of the Gemini API with a simple prompt"""
     simple_prompt = "Return a JSON object with one key 'status' and value 'ok'."
     try:
         console.print("Testing Gemini API connection...")
-        genai.configure(api_key=api_key) # <-- Use passed api_key
+        genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-1.5-flash") # Use a recent model
         response = model.generate_content(simple_prompt)
         console.print(f"Test response received: {response.text[:100]}...")
@@ -265,9 +273,10 @@ def test_gemini_api(api_key: str): # <-- Accept generic api_key
         console.print(traceback.format_exc())
         return False
 
-def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str = "gemini-1.5-flash", retry_count: int = 5, exponential_backoff: bool = True) -> Dict: # <-- Accept generic api_key
-    """Call the Gemini API with retry logic and return the parsed JSON response"""
-    genai.configure(api_key=api_key) # <-- Use passed api_key
+# << MODIFIED: Default retry_count changed from 5 to 2 >>
+def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str = "gemini-1.5-flash", retry_count: int = 2, exponential_backoff: bool = True) -> Dict:
+    """Call the Gemini API with retry logic (default 3 attempts total) and return the parsed JSON response"""
+    genai.configure(api_key=api_key)
     request_time = datetime.now().isoformat()
 
     # Configuration for Gemini model
@@ -289,7 +298,7 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
 
     # Fallback response structure (matches expected outline structure)
     fallback_response = {
-        "error": "Failed to generate outline after multiple retries.",
+        "error": f"Failed to generate outline after {retry_count + 1} attempts.", # Updated fallback message
         "chapter_title_suggestion": "Error: Outline Generation Failed",
         "introduction": {"hook": "N/A", "context_setting": "N/A", "thesis_or_purpose": "N/A", "roadmap": "N/A"},
         "main_sections": [{"section_title": "Error", "key_points_to_cover": ["API call failed."], "suggested_examples_or_case_studies": [], "connections_to_other_concepts": []}],
@@ -298,19 +307,21 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
     }
 
     current_prompt = prompt # Initial prompt
+    max_attempts = retry_count + 1 # Total number of attempts
 
-    for attempt in range(retry_count):
+    for attempt in range(max_attempts):
+        current_attempt_num = attempt + 1
         log_entry = {
             "timestamp": datetime.now().isoformat(),
             "model": model_name,
-            "attempt": attempt + 1,
+            "attempt": current_attempt_num,
             "status": "pending"
         }
         try:
-            # Exponential backoff
+            # Exponential backoff (only applies *before* retries, not before first attempt)
             if attempt > 0:
                 backoff_time = min(30, (2 ** attempt) + random.uniform(0, 1)) # Add jitter
-                console.print(f"Retrying (attempt {attempt+1}/{retry_count}) after {backoff_time:.2f}s delay...")
+                console.print(f"Retrying (attempt {current_attempt_num}/{max_attempts}) after {backoff_time:.2f}s delay...")
                 time.sleep(backoff_time)
 
             model = genai.GenerativeModel(
@@ -320,6 +331,7 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
             )
 
             # Make API request
+            console.print(f"Sending request to Gemini API (Attempt {current_attempt_num}/{max_attempts})...")
             response = model.generate_content(current_prompt)
 
             # Try to extract text (even if mime type is JSON, text might be available)
@@ -346,25 +358,25 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
                      log_entry.update({"status": "success"})
                      log_data["api_calls"].append(log_entry)
                      gc.collect()
-                     return parsed_response
+                     return parsed_response # SUCCESS
                  except json.JSONDecodeError as json_err_direct:
-                     console.print(f"[yellow]Warning: Failed to parse direct JSON response (Attempt {attempt+1}). Trying fix_json_string. Error: {json_err_direct}[/yellow]")
+                     console.print(f"[yellow]Warning: Failed to parse direct JSON response (Attempt {current_attempt_num}). Trying fix_json_string. Error: {json_err_direct}[/yellow]")
                      # Fall through to fix_json_string
 
             except Exception as text_extract_err:
                  # Handle potential block reason or other errors during access
-                 error_msg = f"Response processing error on attempt {attempt+1}: {text_extract_err}"
+                 error_msg = f"Response processing error on attempt {current_attempt_num}: {text_extract_err}"
                  console.print(f"[yellow]API WARNING: {error_msg}[/yellow]")
                  log_entry.update({"status": "response_processing_error", "error": str(text_extract_err)})
                  log_data["api_calls"].append(log_entry)
-                 if attempt < retry_count - 1:
+                 if current_attempt_num < max_attempts:
                     continue # Retry
                  else:
-                    break # Max retries reached for this error type
+                    break # Max attempts reached for this error type
 
 
             # If direct parsing failed, try fixing the raw text
-            console.print(f"Attempt {attempt+1}: Raw response snippet: {repr(response_text[:150])}...")
+            console.print(f"Attempt {current_attempt_num}: Raw response snippet: {repr(response_text[:150])}...")
             fixed_json_str = fix_json_string(response_text)
 
             # Attempt to parse the fixed JSON string
@@ -373,21 +385,21 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
                 log_entry.update({"status": "success_after_fix"})
                 log_data["api_calls"].append(log_entry)
                 gc.collect()
-                return parsed_response
+                return parsed_response # SUCCESS after fix
             except json.JSONDecodeError as e:
-                error_msg = f"JSON parsing error even after fix_json_string on attempt {attempt+1}: {e}"
+                error_msg = f"JSON parsing error even after fix_json_string on attempt {current_attempt_num}: {e}"
                 console.print(f"[red]JSON PARSING ERROR: {error_msg}[/red]")
                 log_entry.update({"status": "json_error_after_fix", "error": str(e), "fixed_snippet": fixed_json_str[:200]})
                 log_data["api_calls"].append(log_entry)
-                if attempt < retry_count - 1:
+                if current_attempt_num < max_attempts:
                      console.print("[yellow]Retrying, hoping for better format next time.[/yellow]")
                      continue # Go to next attempt
                 else:
-                     break # Max retries reached
+                     break # Max attempts reached
 
         except Exception as e:
             # Handle API connection errors, block reasons etc.
-            error_msg = f"API call exception on attempt {attempt+1}: {e}"
+            error_msg = f"API call exception on attempt {current_attempt_num}: {e}"
             console.print(f"[bold red]API ERROR: {error_msg}[/bold red]")
             console.print(traceback.format_exc()) # Print full traceback for API errors
             log_entry.update({"status": "exception", "error": str(e)})
@@ -397,37 +409,37 @@ def call_gemini_api(prompt: str, api_key: str, log_data: Dict, model_name: str =
                 "item_key": "N/A", # We don't have item key context here, add in calling function if needed
                 "error": str(e),
                 "traceback": traceback.format_exc(),
-                "attempt": attempt + 1
+                "attempt": current_attempt_num
             })
             log_data["api_calls"].append(log_entry)
-            if attempt < retry_count - 1:
+            if current_attempt_num < max_attempts:
                 continue # Retry
             else:
-                break # Max retries reached
+                break # Max attempts reached
 
-    # If loop finishes without returning, all retries failed
-    console.print("[bold red]All API retries failed. Using fallback response.[/bold red]")
+    # If loop finishes without returning, all attempts failed
+    console.print(f"[bold red]All {max_attempts} API attempts failed. Using fallback response.[/bold red]")
     log_entry = {
         "timestamp": datetime.now().isoformat(),
         "model": model_name,
-        "attempt": retry_count,
-        "status": "failed_all_retries"
+        "attempt": max_attempts,
+        "status": "failed_all_attempts" # Renamed status
     }
     log_data["api_calls"].append(log_entry)
     # Add a final error entry
     log_data["errors"].append({
         "timestamp": log_entry["timestamp"],
          "item_key": "N/A",
-        "error": "All retries failed for API call.",
+        "error": f"All {max_attempts} attempts failed for API call.",
         "traceback": None,
-        "attempt": retry_count
+        "attempt": max_attempts
     })
     gc.collect()
     return fallback_response
 
 # --- Main Processing Logic ---
 
-def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- Accept generic api_key
+def process_input_json(input_file: str, api_key: str, output_dir: Path):
     """
     Process the input JSON file, generating chapter outlines using Gemini API.
     """
@@ -523,14 +535,25 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
                     # Generate prompt for this chapter
                     prompt = generate_chapter_outline_prompt(part_name, chapter_title, chapter_description)
 
-                    # Call Gemini API << Pass the generic api_key >>
-                    console.print(f"Sending request to Gemini API...")
-                    outline_response = call_gemini_api(prompt, api_key, log_data) # <-- Use api_key
+                    # Call Gemini API (uses default retry_count=2, i.e., 3 attempts)
+                    outline_response = call_gemini_api(prompt, api_key, log_data) # log_data is passed for internal logging
 
                     # Check if response indicates an error state from the API call itself
+                    # (i.e., the fallback response was returned)
                     if isinstance(outline_response, dict) and outline_response.get("error"):
+                         # Log this specific failure before adding to retry list
+                         console.print(f"[bold red]ERROR: API call failed after all attempts for P{part_idx+1}-Ch{chapter_idx+1}. Details in log.[/bold red]")
+                         # Add context to the error log entry made inside call_gemini_api
+                         for err_entry in reversed(log_data.get("errors", [])):
+                             if err_entry.get("item_key") == "N/A" and "All attempts failed" in err_entry.get("error",""):
+                                 err_entry["item_key"] = item_key
+                                 err_entry["part_name"] = part_name
+                                 err_entry["chapter_title"] = chapter_title
+                                 break
+                         # Add to retry list anyway, maybe second pass works with more retries
                          raise Exception(f"API call failed internally: {outline_response.get('error')}")
 
+                    # --- Success Path ---
                     # Add outline to the chapter object
                     chapter['generated_outline'] = outline_response
                     console.print(f"[green]Successfully generated outline for P{part_idx+1}-Ch{chapter_idx+1}[/green]")
@@ -553,33 +576,38 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
                     gc.collect()
 
                 except Exception as e:
-                    error_msg = f"Error processing Part {part_idx+1}, Chapter {chapter_idx+1} ('{chapter_title}'): {e}"
-                    console.print(f"[bold red]ERROR (will retry later): {error_msg}[/bold red]")
+                    # This block catches exceptions from call_gemini_api OR the success path check above
+                    if "API call failed internally" not in str(e): # Avoid double logging console message
+                         error_msg = f"Error processing Part {part_idx+1}, Chapter {chapter_idx+1} ('{chapter_title}'): {e}"
+                         console.print(f"[bold red]ERROR (will add to retry list): {error_msg}[/bold red]")
 
-                    # Add to error list for retry pass
-                    error_items_for_retry.append({
-                        "part_idx": part_idx,
-                        "chapter_idx": chapter_idx,
-                        "part_name": part_name,
-                        "chapter_title": chapter_title,
-                        "chapter_description": chapter_description,
-                        "item_key": item_key,
-                        "error": str(e) # Store first pass error
-                    })
+                    # Add to error list for retry pass ONLY if not already processed
+                    if item_key not in processed_items_set:
+                        error_items_for_retry.append({
+                            "part_idx": part_idx,
+                            "chapter_idx": chapter_idx,
+                            "part_name": part_name,
+                            "chapter_title": chapter_title,
+                            "chapter_description": chapter_description,
+                            "item_key": item_key,
+                            "error": str(e) # Store first pass error
+                        })
 
-                    # Log the error, marking for retry
-                    log_data["errors"].append({
-                        "timestamp": datetime.now().isoformat(),
-                        "item_key": item_key,
-                        "error": str(e),
-                        "part_name": part_name,
-                        "chapter_title": chapter_title,
-                        "status": "pending_retry",
-                        "traceback": traceback.format_exc()
-                    })
-                    save_json_file(log_data, str(final_log_filename))
+                        # Log the error, marking for retry if not already logged as final failure
+                        is_final_failure = any(err.get("item_key") == item_key and "All attempts failed" in err.get("error","") for err in log_data.get("errors", []))
+                        if not is_final_failure:
+                             log_data["errors"].append({
+                                "timestamp": datetime.now().isoformat(),
+                                "item_key": item_key,
+                                "error": str(e),
+                                "part_name": part_name,
+                                "chapter_title": chapter_title,
+                                "status": "pending_retry",
+                                "traceback": traceback.format_exc()
+                             })
+                             save_json_file(log_data, str(final_log_filename))
 
-                    # Don't advance progress here, it will be handled in retry pass or marked as final failure
+                    # Don't advance progress here if it's going to retry list
                     progress.update(overall_task, description=f"Error P{part_idx+1}-Ch{chapter_idx+1} (will retry)")
 
 
@@ -597,6 +625,12 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
                 chapter_description = error_item["chapter_description"]
                 item_key = error_item["item_key"]
 
+                # Double check if somehow processed between passes (unlikely but safe)
+                if item_key in processed_items_set:
+                    console.print(f"Skipping retry for already processed item: {item_key}")
+                    progress.update(retry_task, advance=1)
+                    continue
+
                 progress.update(retry_task, description=f"Retrying P{part_idx+1}-Ch{chapter_idx+1}", advance=0) # Show current retry item
                 console.print(f"\nRetrying {retry_idx+1}/{len(error_items_for_retry)}: Part {part_idx+1}, Chapter {chapter_idx+1} ('{chapter_title}')")
 
@@ -604,23 +638,32 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
                     # Generate the same prompt again
                     prompt = generate_chapter_outline_prompt(part_name, chapter_title, chapter_description)
 
-                    # Try API call again << Pass the generic api_key >>
-                    console.print(f"Sending retry request to Gemini API...")
+                    # Try API call again << MODIFIED: retry_count changed from 7 to 4 >>
+                    # This gives 5 total attempts in the second pass.
                     outline_response = call_gemini_api(
                         prompt,
-                        api_key, # <-- Use api_key
+                        api_key,
                         log_data,
-                        retry_count=7 # Use slightly more retries for the second pass
+                        retry_count=4
                         )
 
                     # Check if response indicates an error state
                     if isinstance(outline_response, dict) and outline_response.get("error"):
+                         # Log details of the final failure on retry pass
+                         console.print(f"[bold red]RETRY FAILED: API call failed after all retry attempts for P{part_idx+1}-Ch{chapter_idx+1}. Details in log.[/bold red]")
+                         # Add context to the error log entry made inside call_gemini_api
+                         for err_entry in reversed(log_data.get("errors", [])):
+                             if err_entry.get("item_key") == "N/A" and "All attempts failed" in err_entry.get("error",""):
+                                 err_entry["item_key"] = item_key
+                                 err_entry["part_name"] = part_name
+                                 err_entry["chapter_title"] = chapter_title
+                                 break
                          raise Exception(f"API retry call failed internally: {outline_response.get('error')}")
 
+                    # --- Retry Success Path ---
                     # Update the chapter object in the main data structure
                     input_data['parts'][part_idx]['chapters'][chapter_idx]['generated_outline'] = outline_response
                     console.print(f"[green]Successfully generated outline on retry for P{part_idx+1}-Ch{chapter_idx+1}[/green]")
-
 
                     # Update log: Find the original error and mark as resolved
                     for log_err in log_data.get("errors", []):
@@ -647,17 +690,35 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
                     gc.collect()
 
                 except Exception as e:
-                    error_msg = f"Error during retry for P{part_idx+1}-Ch{chapter_idx+1}: {e}"
-                    console.print(f"[bold red]RETRY FAILED: {error_msg}[/bold red]")
+                     # This block catches exceptions from call_gemini_api on retry OR the success check above
+                    if "API retry call failed internally" not in str(e): # Avoid double logging console message
+                        error_msg = f"Error during retry for P{part_idx+1}, Chapter {chapter_idx+1}: {e}"
+                        console.print(f"[bold red]RETRY FAILED: {error_msg}[/bold red]")
 
-                    # Update log: Mark original error as failed retry
+                    # Update log: Mark original error as failed retry if it was pending
+                    found_pending = False
                     for log_err in log_data.get("errors", []):
                          if log_err.get("item_key") == item_key and log_err.get("status") == "pending_retry":
                             log_err["status"] = "retry_failed"
                             log_err["final_error"] = str(e)
                             log_err["final_traceback"] = traceback.format_exc()
                             log_err["resolved_timestamp"] = datetime.now().isoformat()
+                            found_pending = True
                             break
+                    # If it wasn't pending retry (e.g., failed all attempts in first pass), add a new entry if needed
+                    if not found_pending:
+                         is_already_logged_final = any(err.get("item_key") == item_key and err.get("status") in ["retry_failed", "failed_all_attempts"] for err in log_data.get("errors", []))
+                         if not is_already_logged_final:
+                            log_data["errors"].append({
+                                "timestamp": datetime.now().isoformat(),
+                                "item_key": item_key,
+                                "error": f"Retry Pass Failure: {str(e)}",
+                                "part_name": part_name,
+                                "chapter_title": chapter_title,
+                                "status": "retry_failed",
+                                "traceback": traceback.format_exc()
+                            })
+
                     save_json_file(log_data, str(final_log_filename))
 
                     # Advance retry task progress, but not overall progress
@@ -689,18 +750,21 @@ def process_input_json(input_file: str, api_key: str, output_dir: Path): # <-- A
     # Count final processed based on the set, which includes successful first pass and successful retries
     final_processed_count = len(processed_items_set)
     log_data["successfully_processed_chapters"] = final_processed_count
-    log_data["chapters_with_final_errors"] = total_chapters - final_processed_count - len([e for e in log_data.get("errors",[]) if e.get("status") == "skipped_data_error"]) # Subtract data errors too
-    log_data["retry_attempts_made"] = len(error_items_for_retry)
-    log_data["retry_success_count"] = retry_successes
+    skipped_data_errors = len([e for e in log_data.get("errors",[]) if e.get("status") == "skipped_data_error"])
+    final_api_errors = total_chapters - final_processed_count - skipped_data_errors
+    log_data["chapters_with_final_errors"] = final_api_errors if final_api_errors > 0 else 0
+    log_data["chapters_skipped_data_error"] = skipped_data_errors
+    log_data["retry_pass_attempts_made"] = len(error_items_for_retry) # Items that entered retry pass
+    log_data["retry_pass_success_count"] = retry_successes
     log_data["output_file"] = str(final_filename)
     save_json_file(log_data, str(final_log_filename))
 
     console.print(f"Successfully processed {final_processed_count}/{total_chapters} chapters.")
     if log_data["chapters_with_final_errors"] > 0:
-         console.print(f"[bold red]Note: {log_data['chapters_with_final_errors']} chapters encountered errors that could not be resolved after retries.[/bold red]")
+         console.print(f"[bold red]Note: {log_data['chapters_with_final_errors']} chapters encountered API/processing errors that could not be resolved after retries.[/bold red]")
          console.print("Check the log file for details.")
-    if len([e for e in log_data.get("errors",[]) if e.get("status") == "skipped_data_error"]) > 0:
-         console.print(f"[yellow]Note: {len([e for e in log_data.get('errors',[]) if e.get('status') == 'skipped_data_error'])} chapters were skipped due to missing title/description in the input file.[/yellow]")
+    if skipped_data_errors > 0:
+         console.print(f"[yellow]Note: {skipped_data_errors} chapters were skipped due to missing title/description in the input file.[/yellow]")
 
     console.print(f"\nFinal outlined content saved to: [link=file://{os.path.abspath(final_filename)}]{final_filename}[/link]")
     console.print(f"Detailed log saved to: [link=file://{os.path.abspath(final_log_filename)}]{final_log_filename}[/link]")
@@ -737,14 +801,12 @@ def main():
         output_dir.mkdir(parents=True, exist_ok=True)
         print(f"Output directory ensured: {output_dir.resolve()}")
     except Exception as e:
-        print(f"[bold red]Fatal Error: Could not create output directory '{output_dir}'. Please check permissions. Error: {e}[/bold red]")
+        console.print(f"[bold red]Fatal Error: Could not create output directory '{output_dir}'. Please check permissions. Error: {e}[/bold red]")
         sys.exit(1)
 
-
-    # Get Google API key << CHANGED VARIABLE NAME HERE >>
-    api_key = os.environ.get('GOOGLE_API_KEY') # <-- Changed from GEMINI_API_KEY
+    # Get Google API key
+    api_key = os.environ.get('GOOGLE_API_KEY') # Reads GOOGLE_API_KEY
     if not api_key:
-        # <-- Updated error message >>
         console.print("[bold red]Fatal Error: GOOGLE_API_KEY not found in environment variables or .env file.[/bold red]")
         console.print("Please set the GOOGLE_API_KEY environment variable.")
         sys.exit(1)
@@ -752,14 +814,13 @@ def main():
         # Mask the key for security
         console.print(f"Found API key (starts with: {api_key[:5]}..., ends with: ...{api_key[-4:]})")
 
-    # Optional: Run API test << Pass the renamed variable >>
+    # Optional: Run API test
     if args.test:
         print("\n--- Running API Test ---")
-        if not test_gemini_api(api_key): # <-- Use api_key
+        if not test_gemini_api(api_key):
             console.print("[bold red]API test failed. Exiting. Please check your API key, billing status, and internet connection.[/bold red]")
             sys.exit(1)
         print("--- API Test Complete ---")
-
 
     # Check input file existence *before* calling load_json_file
     if not Path(args.input_file).is_file():
@@ -768,12 +829,12 @@ def main():
     else:
          print(f"Input file found: {args.input_file}")
 
-    # Process the input file << Pass the renamed variable >>
+    # Process the input file
     print("\n--- Starting Main Processing ---")
     try:
         process_input_json(
             input_file=args.input_file,
-            api_key=api_key, # <-- Use api_key
+            api_key=api_key,
             output_dir=output_dir
         )
         print("\n--- Script Execution Finished Successfully ---")
