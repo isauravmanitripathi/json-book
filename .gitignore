@@ -6,5 +6,6 @@ extracted_urls.txt
 *.txt
 article
 download.py
-*.md
 *.pdf
+articles.zip
+*.zip
