@@ -1,0 +1,922 @@
+{
+  "input_file": "/Users/sauravtripathi/Downloads/generate-pdf/gemini-book-generator/international-relations.json",
+  "start_time": "2025-04-10T23:41:19.572185",
+  "processed_items": [
+    "0-0",
+    "0-1",
+    "0-2",
+    "0-3",
+    "0-4",
+    "1-0",
+    "1-1",
+    "1-2",
+    "1-3",
+    "1-4",
+    "1-5",
+    "1-6",
+    "1-7",
+    "2-0",
+    "2-1",
+    "2-2",
+    "2-3",
+    "2-4",
+    "3-0",
+    "3-1",
+    "3-2",
+    "3-3",
+    "3-4",
+    "3-5",
+    "4-0",
+    "4-1",
+    "4-2",
+    "4-3",
+    "4-4",
+    "4-5",
+    "5-0",
+    "5-1",
+    "5-2",
+    "5-3",
+    "5-4",
+    "6-0",
+    "6-1",
+    "6-2",
+    "6-3",
+    "6-4",
+    "7-0",
+    "7-1",
+    "7-2",
+    "7-3",
+    "7-4",
+    "8-0",
+    "8-1",
+    "8-2",
+    "8-3",
+    "8-4",
+    "8-5",
+    "8-6",
+    "9-0",
+    "9-1",
+    "9-2",
+    "9-3",
+    "9-4",
+    "10-0",
+    "10-1",
+    "10-2",
+    "10-3",
+    "10-4",
+    "10-5",
+    "11-0",
+    "11-1",
+    "11-2",
+    "11-3",
+    "11-4",
+    "11-5",
+    "12-0",
+    "12-1",
+    "12-2",
+    "12-3",
+    "12-4",
+    "13-0",
+    "13-1",
+    "14-0",
+    "14-1",
+    "14-2",
+    "15-0",
+    "15-1",
+    "15-2",
+    "15-3",
+    "15-4",
+    "16-0",
+    "16-1",
+    "16-2",
+    "16-3",
+    "16-4",
+    "16-5",
+    "17-0",
+    "17-1",
+    "17-2",
+    "17-3",
+    "17-4",
+    "17-5",
+    "17-6",
+    "17-7",
+    "17-8",
+    "17-9",
+    "17-10",
+    "17-11",
+    "17-12",
+    "18-0",
+    "18-1",
+    "18-2",
+    "18-3",
+    "18-4",
+    "18-5",
+    "19-0",
+    "19-1",
+    "19-2",
+    "19-3",
+    "19-4",
+    "19-5",
+    "19-6",
+    "19-7",
+    "19-8",
+    "19-9",
+    "20-0",
+    "20-1",
+    "20-2",
+    "20-3",
+    "20-4",
+    "20-5",
+    "21-0",
+    "21-1",
+    "21-2"
+  ],
+  "errors": [],
+  "api_calls": [
+    {
+      "timestamp": "2025-04-10T23:41:24.484401",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:41:47.513981",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:42:03.473377",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:42:27.477545",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:42:46.187339",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:43:05.763203",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:43:20.919660",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:43:40.023959",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:44:01.233645",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:44:25.610211",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:44:47.756180",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:45:11.677064",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:45:39.784991",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:46:01.105012",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:46:23.634184",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:46:44.151463",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:47:08.605353",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:47:25.024590",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:47:41.037410",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:48:10.400128",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:48:29.701444",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:48:51.601869",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:49:11.303394",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:49:37.311144",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:49:58.655198",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:50:16.969978",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:50:50.282221",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:51:10.120220",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:51:33.288134",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:51:54.981234",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:52:18.291912",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:52:41.880915",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:53:01.788058",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:53:24.955745",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:53:55.236432",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:54:15.252490",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:54:43.905957",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:55:05.097635",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:55:23.659386",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:55:39.921090",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:56:01.302274",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:56:20.803378",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:56:40.374895",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:57:00.016715",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:57:20.151354",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:57:39.054756",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:57:59.514955",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:58:22.193020",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:58:41.234471",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:58:58.563609",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:59:23.519322",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-10T23:59:46.042222",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:00:06.389578",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:00:26.171362",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:00:44.602385",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:01:07.470641",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:01:25.177214",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:01:46.688493",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:02:10.768788",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:02:31.998059",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:02:57.775919",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:03:21.311351",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:03:44.245985",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:04:07.924066",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:04:27.852321",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:04:50.471451",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:05:08.465647",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:05:28.559812",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:05:55.313730",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:06:17.690984",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:06:40.635543",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:07:02.290556",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:07:33.743846",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:07:54.168741",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:08:13.694392",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:08:42.949789",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:09:04.289396",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:09:29.069187",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:09:51.223062",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:10:16.125860",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:10:39.175974",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:10:58.082908",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:11:15.829283",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:11:34.705906",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:11:56.501660",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:12:17.584938",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:12:41.836087",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:13:02.694491",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:13:32.461898",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:13:50.620682",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:14:16.602208",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:14:40.914302",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:15:00.692559",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:15:18.943034",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:15:39.980898",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:16:02.150300",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:16:25.445694",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:16:56.427475",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:17:16.902768",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:17:35.428205",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:17:57.977302",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:18:21.790551",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:18:39.709179",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "json_error_after_fix",
+      "error": "Expecting ',' delimiter: line 28 column 251 (char 2996)",
+      "raw_response_snippet": "{\n  \"chapter_title_suggestion\": \"India's Soft Power Strategy: Potential, Practice, and Policy Imperatives\",\n  \"writing_sections\": [\n    {\n      \"section_title\": \"Understanding Soft Power: Concepts and"
+    },
+    {
+      "timestamp": "2025-04-11T00:18:52.407814",
+      "model": "gemini-2.0-flash",
+      "attempt": 2,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:19:12.487241",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:19:32.102313",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:19:53.679079",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:20:09.291962",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:20:32.834080",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:20:53.843544",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:21:15.581726",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:21:37.130543",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:21:55.126807",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:22:20.408145",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:22:39.718259",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:23:00.536471",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:23:25.270948",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:23:44.914283",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:24:05.645544",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:24:22.835254",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:24:45.376191",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:25:07.944916",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:25:37.759029",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:26:00.887588",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:26:26.837149",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:26:45.059268",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:27:08.652569",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:27:30.654758",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    },
+    {
+      "timestamp": "2025-04-11T00:27:49.966337",
+      "model": "gemini-2.0-flash",
+      "attempt": 1,
+      "status": "success_parsed_json"
+    }
+  ],
+  "end_time": "2025-04-11T00:28:15.900449",
+  "total_chapters_in_input": 128,
+  "successfully_processed_chapters": 128,
+  "chapters_with_final_errors": 0,
+  "chapters_skipped_data_error": 0,
+  "retry_pass_attempts_made": 0,
+  "retry_pass_success_count": 0,
+  "output_file": "results/Outlines/international-relations_outlined_20250410_234119.json",
+  "model_used": "gemini-2.0-flash"
+}
