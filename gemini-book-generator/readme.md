@@ -125,3 +125,87 @@ This is the json it creates in response:
 }
 ```
 
+# Step 2:
+
+This is a Python script that uses Google's Gemini AI to convert a structured outline of UPSC study material into fully written content. It takes a JSON outline with parts, chapters, and bullet points, then elaborates each point into detailed paragraphs while maintaining context between sections.
+
+## How to Run
+
+```bash
+# Install dependencies
+pip install google-generativeai python-dotenv rich
+
+# Create .env file with API key
+echo "GOOGLE_API_KEY=your_api_key_here" > .env
+
+# Run the script
+python content_generator.py --input_file=your_outline.json --output_dir=results/Content
+```
+
+## Input JSON Structure
+
+```json
+{
+  "bookTitle": "India's International Relations for UPSC",
+  "parts": [
+    {
+      "name": "Bilateral Relations",
+      "chapters": [
+        {
+          "title": "Chapter Title",
+          "generated_outline": {
+            "writing_sections": [
+              {
+                "section_title": "India-US Relations",
+                "content_points_to_cover": [
+                  "Historical background of India-US relations",
+                  "Strategic partnership in the 21st century",
+                  "Areas of cooperation and conflict"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Output JSON Structure
+
+```json
+{
+  "bookTitle": "India's International Relations for UPSC",
+  "generation_model": "gemini-1.5-flash-8b",
+  "generation_timestamp": "2025-04-12T10:30:00.000Z",
+  "parts": [
+    {
+      "part_number": "A1",
+      "name": "Bilateral Relations",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "India-US Relations",
+          "content": [
+            {
+              "item_number": "1.1",
+              "type": "introduction",
+              "text": "This chapter explores the complex relationship between India and the United States..."
+            },
+            {
+              "item_number": "1.2",
+              "type": "point",
+              "original_point": "Historical background of India-US relations",
+              "text": "The India-US relationship has evolved significantly since India's independence in 1947..."
+            },
+            // Additional elaborated points follow
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+The program automatically tracks progress in a log file, allowing you to resume interrupted processing, and includes features like rate limiting, error recovery, and incremental saves to prevent data loss.
