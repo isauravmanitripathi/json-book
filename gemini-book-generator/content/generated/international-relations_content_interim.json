@@ -1,0 +1,4363 @@
+{
+  "bookTitle": "India's International Relations: A Comprehensive Analysis for UPSC Aspirants",
+  "generation_model": "gemini-1.5-flash-8b",
+  "generation_timestamp": "2025-04-12T10:01:03.202441",
+  "parts": [
+    {
+      "part_number": "A1",
+      "name": "Part I: Foundational Concepts in International Relations",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Defining and Understanding India's Foreign Policy",
+          "content": [
+            {
+              "item_number": "1.1",
+              "type": "introduction",
+              "text": "This chapter, \"Defining and Understanding India's Foreign Policy,\" serves as a foundational exploration of a crucial aspect of India's international relations.  It aims to provide a comprehensive understanding of India's foreign policy within the broader framework of international relations theory, crucial for UPSC aspirants.  We will define foreign policy, highlighting its role as a state's overarching strategy for global engagement. The chapter will delve into the core objectives driving India's foreign policy, including national security, economic development, strategic autonomy, regional stability, global influence, and diaspora protection. We will trace the evolution of these objectives through historical context.  Key principles such as Panchsheel, non-alignment, and multilateralism will be analyzed.  The distinction between national interest and foreign policy will be clarified, along with examples of how India has pursued its interests through various strategies.  Different instruments of foreign policy, including diplomacy, economic tools, military power, and cultural diplomacy, will be introduced.  Furthermore, the chapter will explore domestic factors influencing India's foreign policy choices, considering the roles of public opinion, political parties, economic conditions, and societal values.  The interplay between domestic and international factors, as well as the function of the Indian Parliament, will be examined. Finally, a comparative analysis of India's foreign policy during the Nehruvian era, the post-Cold War period, and the contemporary era will offer insights into key shifts in objectives, principles, and instruments. This comprehensive approach is designed to equip aspirants with a thorough understanding of India's foreign policy, a vital component for success in the UPSC examination."
+            },
+            {
+              "item_number": "1.2",
+              "type": "point",
+              "original_point": "Define foreign policy in the context of international relations, emphasizing its role as a state's overall strategy for interacting with other actors in the global arena. Provide a concise and UPSC-relevant definition.",
+              "text": "Foreign policy, in the context of international relations, encompasses a state's overall strategy for interacting with other actors in the global arena. It's not merely a collection of individual actions, but a coherent set of principles, values, and interests that guide a nation's behaviour in its dealings with other countries, international organizations, and non-state actors.  This strategy aims to achieve national objectives, safeguard national interests, and promote national values within the constraints of the international system.  Crucially, foreign policy is a dynamic process, adapting to shifting geopolitical realities and evolving national priorities.  For instance, India's foreign policy, historically emphasizing non-alignment and pan-Asianism, has evolved over time to incorporate engagement with major powers, regional cooperation, and addressing global challenges like climate change.  Understanding foreign policy requires analyzing its elements, including diplomatic relations, economic ties, security concerns, and cultural exchanges, all of which contribute to a state's broader engagement with the international community. This comprehensive approach, encompassing both tangible actions and underlying principles, allows for a nuanced understanding of a nation's international role and its pursuit of national goals within the complex web of global interactions."
+            },
+            {
+              "item_number": "1.3",
+              "type": "point",
+              "original_point": "Explain the core objectives that drive India's foreign policy. These typically include: (a) safeguarding national security and territorial integrity, (b) promoting economic growth and development, (c) preserving strategic autonomy, (d) fostering regional stability, (e) enhancing India's global influence, and (f) protecting the interests of the Indian diaspora. Provide historical context and evolution of these objectives.",
+              "text": "India's foreign policy, consistently evolving since independence, is fundamentally driven by a complex interplay of core objectives.  These objectives, while often interconnected, reflect a nation striving for both national security and global relevance.  (a) Safeguarding national security and territorial integrity has been a paramount concern, evolving from the initial focus on preventing external aggression to encompass contemporary challenges like cross-border terrorism and regional instability.  The 1962 Sino-Indian War and the ongoing disputes over Kashmir highlight the enduring significance of this objective. (b) Promoting economic growth and development has become increasingly important, with foreign policy increasingly focused on securing access to resources, markets, and technology.  India's engagement with global financial institutions and its pursuit of strategic partnerships are directly linked to this objective.  (c)  Preserving strategic autonomy, a cornerstone of Indian foreign policy, emphasizes the nation's right to chart its own course without being beholden to any external power.  This has manifested in India's non-alignment policy and its pursuit of a multipolar world order.  (d) Fostering regional stability, particularly in South Asia, is crucial for India's security and economic prosperity.  India's involvement in regional organizations and its engagement with neighboring countries reflect this objective.  (e) Enhancing India's global influence is a relatively recent and growing objective, driven by India's increasing economic and military strength.  This is evident in India's initiatives like the BRICS grouping and its growing participation in international forums.  Finally, (f) protecting the interests of the Indian diaspora, a significant and globally dispersed community, is a relatively newer, yet increasingly important, consideration.  India's engagement with countries hosting significant Indian populations demonstrates this aspect of its foreign policy. The relative importance of these objectives has shifted over time, reflecting India's evolving position in the global landscape and its evolving priorities."
+            },
+            {
+              "item_number": "1.4",
+              "type": "point",
+              "original_point": "Discuss the key principles that underpin India's foreign policy, such as Panchsheel (the Five Principles of Peaceful Coexistence), non-alignment, peaceful settlement of disputes, and support for multilateralism. Analyze the relevance of these principles in the contemporary world.",
+              "text": "India's foreign policy rests on a foundation of core principles that have consistently guided its interactions with the international community.  Crucially, the Panchsheel, comprising the Five Principles of Peaceful Coexistence – mutual respect for territorial integrity and sovereignty, mutual non-aggression, non-interference in each other's internal affairs, equality and mutual benefit, and peaceful co-existence – forms the bedrock of its approach.  Non-alignment, a policy pursued actively for decades, emphasizes India's independent judgment and avoidance of formal military alliances with major powers.  This principle, while challenged by evolving geopolitical realities, remains a guiding factor in shaping India's foreign relations.  The emphasis on peaceful settlement of disputes through diplomacy and international law underscores India's commitment to a rules-based international order.  Further, India strongly advocates for multilateralism, supporting the UN and other international forums as crucial platforms for addressing global challenges and ensuring collective security.  While the specifics of implementation have evolved, these principles remain relevant in the contemporary world.  The rise of great power competition, the resurgence of nationalism, and the proliferation of non-state actors require India to navigate complex international dynamics while upholding its core values.  For instance, India's engagement with the BRICS bloc exemplifies its pursuit of multilateralism and a multipolar world order.  The importance of these principles in addressing issues like climate change, global health crises, and economic cooperation underscores their continued significance in shaping India's role in the international arena."
+            },
+            {
+              "item_number": "1.5",
+              "type": "point",
+              "original_point": "Address the distinction between 'national interest' and 'foreign policy'. Explain how national interest shapes and influences India's foreign policy decisions. Provide examples of how India has pursued its national interests through different foreign policy strategies.",
+              "text": "While inextricably linked, 'national interest' and 'foreign policy' are distinct concepts. National interest encompasses the aggregate of goals, aspirations, and security needs of a nation-state, encompassing economic prosperity, territorial integrity, political stability, and strategic advantage.  Foreign policy, conversely, is the set of instruments and strategies employed to achieve these national interests in the international arena.  India's national interest, for instance, is deeply intertwined with its pursuit of regional and global power, security from external threats, and economic advancement.  This national interest shapes and influences India's foreign policy decisions.  India's foreign policy, therefore, is not a static entity; rather, it is a dynamic response to evolving national interests.  For example, India's pursuit of economic growth has been a major component of its national interest, influencing its engagement with international organizations like the WTO and its pursuit of free trade agreements.  Similarly, the imperative of regional stability, often stemming from security concerns, has prompted India to prioritize relations with its neighbours and develop strategic partnerships.  Historically, India's foreign policy has manifested itself through various strategies.  During the Cold War era, non-alignment was a key strategy, reflecting India's national interest in maintaining independence and avoiding superpower entanglements.  Post-Cold War, India's foreign policy has increasingly emphasized engagement with global powers, particularly the United States and other developed economies, while simultaneously fostering closer ties with its neighbours, influenced by its national interests concerning regional stability and economic cooperation.  Furthermore, India's growing economic power has led to a more assertive foreign policy, seeking a permanent seat on the UN Security Council and actively participating in global forums. These examples highlight how India has, at different points in its history, adapted its foreign policy to effectively pursue its diverse and evolving national interests."
+            },
+            {
+              "item_number": "1.6",
+              "type": "point",
+              "original_point": "Briefly introduce the various instruments of foreign policy that India employs, setting the stage for a more detailed discussion in later sections. These instruments include diplomacy, economic measures (trade, aid, investment), military power, cultural diplomacy, and information warfare. Mention the role of international organizations.",
+              "text": "India's foreign policy toolkit encompasses a diverse range of instruments, each playing a distinct role in achieving its strategic objectives.  Diplomacy, the cornerstone of India's engagement with the world, involves bilateral and multilateral interactions, negotiations, and the establishment of strong relationships with other nations.  Economic measures, including trade agreements, development aid, and foreign investment, are crucial levers for fostering economic partnerships and influencing global dynamics.  Military power, though not always the primary instrument, plays a significant role in safeguarding national interests and projecting India's influence, particularly in regional contexts.  Cultural diplomacy, emphasizing the sharing of India's rich cultural heritage, fosters understanding and builds bridges across borders.  Information warfare, encompassing the dissemination of information and countering misinformation, is a growing aspect of contemporary statecraft, increasingly relevant in shaping public opinion and countering negative narratives.  Finally, engagement with international organizations like the United Nations, the G20, and others provides platforms for articulating India's views, collaborating with other nations, and shaping global norms.  A comprehensive understanding of these various instruments, their interrelation, and their applications is essential to comprehending India's complex foreign policy landscape, which will be further explored in subsequent sections."
+            },
+            {
+              "item_number": "1.7",
+              "type": "point",
+              "original_point": "Discuss the domestic factors influencing India's foreign policy, such as public opinion, political parties, economic conditions, and societal values. Provide examples of how domestic considerations have shaped India's foreign policy choices. Examine the role of the Indian Parliament in foreign policy decision-making.",
+              "text": "India's foreign policy is deeply intertwined with its domestic landscape.  Public opinion, while often perceived as a diffuse force, can significantly influence government decisions, particularly regarding issues like national security and territorial disputes.  For example, the strong public sentiment against Pakistan following cross-border terrorism incidents has historically constrained India's willingness to engage in reconciliatory diplomacy.  Political parties, with varying ideologies and foreign policy approaches, also play a crucial role.  The differing stances of various parties on issues like engagement with specific regional powers or alignment with global blocs can lead to shifts in the government's foreign policy orientation.  Economic considerations, such as the need for access to resources, markets, and foreign investment, are equally vital.  India's desire for economic partnerships and trade agreements is frequently reflected in its bilateral and multilateral engagements.  Societal values, including a strong emphasis on non-alignment, secularism, and a commitment to peace, also shape the contours of India's foreign policy.  For instance, India's consistent opposition to nuclear proliferation, despite its own nuclear arsenal, reflects these deeply held values.  The Indian Parliament, though not directly involved in the formulation of detailed foreign policy strategies, plays a crucial oversight role.  Debates, questions, and resolutions in Parliament can influence public discourse and put pressure on the executive branch to align its foreign policy choices with national interests and societal values.  Thus, domestic factors, encompassing public opinion, political parties, economic realities, and societal values, exert a considerable influence on the development and implementation of India's foreign policy, demonstrating a strong interplay between internal and external factors."
+            },
+            {
+              "item_number": "1.8",
+              "type": "point",
+              "original_point": "Compare and contrast India's foreign policy during the Nehruvian era, the post-Cold War period, and the contemporary era. Highlight the key shifts in objectives, principles, and instruments.",
+              "text": "India's foreign policy has undergone significant transformations since independence, reflecting evolving geopolitical landscapes and national priorities.  The Nehruvian era, characterized by non-alignment, emphasized peaceful co-existence, Panchsheel principles, and a strong commitment to decolonization.  India actively sought to bridge the ideological divide between East and West, avoiding formal alliances with either superpower.  Examples include India's role in the Non-Aligned Movement and its support for newly independent nations.  The post-Cold War period witnessed a shift towards greater engagement with the global economy and an increasing emphasis on strategic partnerships, particularly with the United States.  India's economic liberalization and growing influence in the global arena prompted a re-evaluation of its foreign policy instruments, including increased military modernization and greater participation in international organizations.  The contemporary era, marked by India's rise as a major power, displays a more assertive foreign policy with a focus on regional and global leadership.  India is actively shaping its neighbourhood, engaging in strategic partnerships, and asserting its interests on the global stage through initiatives like the Quad and the BRICS.  While non-alignment remains a core principle, India's foreign policy now incorporates a greater emphasis on economic diplomacy, technological cooperation, and strategic security considerations.  These shifts demonstrate a progression from a largely non-interventionist approach in the Nehruvian era to a more proactive and multi-faceted strategy in the contemporary period, reflecting India's increasing global standing and ambition."
+            }
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "title": "Diplomacy as a Tool of Indian Foreign Policy",
+          "content": [
+            {
+              "item_number": "2.1",
+              "type": "introduction",
+              "text": "This chapter, \"Diplomacy as a Tool of Indian Foreign Policy,\" delves into the crucial role of diplomacy in shaping India's international relations.  It aims to provide a comprehensive understanding of diplomacy's multifaceted forms – from bilateral and multilateral engagements to summit diplomacy and track II initiatives – as employed by India.  The chapter will analyze India's diplomatic interactions with key global powers like the United States, Russia, China, and the European Union, examining successful and less successful initiatives.  It will also explore India's diplomatic approach to its neighboring countries, scrutinizing the challenges and opportunities for regional cooperation. Furthermore, the chapter will delve into India's role in multilateral diplomacy through international organizations, focusing on India's contributions and reform efforts within these forums.  The role of Indian diplomats and the Indian Foreign Service (IFS) in implementing and shaping foreign policy will also be discussed.  The significance of soft power, including cultural diplomacy and the promotion of Indian values, will be examined, along with the emerging role of digital diplomacy in today's interconnected world.  This comprehensive analysis is essential for UPSC aspirants to grasp the nuances of India's complex international relations and effectively address related questions in the exam."
+            }
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "title": "Economic Instruments in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Military Power and Security Considerations in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Relations with Key Global Powers",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "India and its Neighborhood: A Focus on Regional Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Contemporary Challenges and Future Directions in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Introduction: International Relations as a Discipline and its Relevance to India",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Sovereignty: Challenges and Transformations in the Indian Context",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Power in International Relations: India's Evolving Role",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Anarchy and the International System: Navigating a World Without a Central Authority for India",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Interdependence: Economic, Political, and Environmental Dimensions of India's Global Connections",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: Applying IR Concepts to Understand India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: Defining Foreign Policy and International Relations in the Indian Context",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Theoretical Foundations of India's Foreign Policy: Linking IR Theories to Practice",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "National Interest as the Guiding Principle: Defining and Pursuing India's Objectives",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Foreign Policy Decision-Making in India: Actors, Processes, and Constraints",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Case Studies: Applying IR Principles to Understand India's Relations with Key Countries/Regions",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: Foreign Policy as Applied International Relations - Key Takeaways for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: The Theoretical Landscape of International Relations and its Relevance to India",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Realism and India: Power, Security, and National Interest",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Liberalism and India: Cooperation, Institutions, and Democratic Values",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Constructivism and India: Ideas, Norms, and Identity",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Comparing and Contrasting Theoretical Perspectives on India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Conclusion: Towards a Nuanced Understanding of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Early Influences on India's Foreign Policy (Pre-Independence to Nehru)",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "The Evolution of Non-Alignment and its Relevance to India",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "India and its Neighbors: A Complex Web of Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "India and Major Global Powers: Balancing Interests and Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "India's Role in International Organizations and Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Contemporary Challenges and Opportunities for India's Foreign Policy",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A2",
+      "name": "Part II: India's Unique Context - Determinants of Foreign Policy",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "The Colonial Imprint: Shaping India's Worldview",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Independence and the Assertion of Sovereignty",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "The Scars of Partition: Shaping Regional Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Lasting Legacies: Sovereignty, Non-interference, and Regional Dynamics",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Strategic Location in South Asia: A Geopolitical Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Land and Maritime Borders: Security Challenges and Opportunities",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Resource Endowments: Energy Security, Water Resources, and Strategic Minerals",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Case Studies: Geographical Factors Shaping India's Bilateral Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Introduction: India's Soft Power and Foreign Policy - A Cultural Lens",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Cultural Heritage as a Diplomatic Tool: Art, Philosophy, and Shared Civilizational Links",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Diversity Within: Linguistic and Religious Pluralism and its Impact on Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Democratic Values as a Cornerstone of India's International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "The Indian Diaspora: A Bridge Between India and the World",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Case Studies: Cultural and Societal Dimensions in Specific Bilateral Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Conclusion: Leveraging Cultural and Societal Assets for a Stronger India",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "The Nehruvian Era: Socialist Foundations and Foreign Policy (1947-1991)",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "The 1991 Economic Crisis and the Shift to Liberalization",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Economic Diplomacy and the Rise of Trade as a Foreign Policy Tool",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Investment Flows and Strategic Partnerships: Shaping India's Foreign Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "The Rise of India as an Economic Power: Implications for Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Case Studies: Economic Diplomacy in Action",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Conclusion: India's Economic Trajectory and the Future of its International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Introduction: Democracy as a Determinant of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Parliamentary Democracy and Foreign Policy Oversight",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Federal Structure and Subnational Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Coalition Politics and Foreign Policy Consensus",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Civil Society and Public Opinion in Shaping Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Case Studies: Democratic Influences in Specific Foreign Policy Decisions",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Conclusion: Balancing Democratic Imperatives with Strategic Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "The Genesis of Non-Alignment: Historical Context and Ideological Foundations",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "NAM in Practice: India's Foreign Policy Under Nehru and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "The Decline of NAM and the Rise of Strategic Autonomy: A Post-Cold War Transformation",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Strategic Autonomy in Action: Case Studies of India's Foreign Policy Choices",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Challenges and Future Directions for India's Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Historical Foundations: The Partition and its Enduring Impact on India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Geostrategic Imperatives: The Influence of Geography on India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Security Concerns and Threat Perceptions: Shaping India's Strategic Culture",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Case Studies: Examining Specific Historical Events and their Impact on India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Contemporary Challenges and Future Directions: Adapting to a Changing World Order",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "Understanding Soft Power: Conceptual Framework and India's Approach",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Democracy as a Soft Power Tool: Projecting India's Values and Influence",
+          "content": []
+        },
+        {
+          "chapter_number": 42,
+          "title": "The Indian Diaspora: A Bridge Between Cultures and Economies",
+          "content": []
+        },
+        {
+          "chapter_number": 43,
+          "title": "Navigating Domestic Constraints: Balancing National Interests and Diaspora Aspirations",
+          "content": []
+        },
+        {
+          "chapter_number": 44,
+          "title": "The Future of India's Soft Power: Strategies for Enhancement and Sustainability",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A3",
+      "name": "Part III: Evolution of Indian Foreign Policy - Historical Phases",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Contextualizing India's Foreign Policy at Independence",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "The Philosophical Underpinnings: Nehru's Vision and Intellectual Contributions",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Non-Alignment: Defining India's Role in the Cold War",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Panchsheel: Principles of Peaceful Coexistence and Relations with China",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Relations with Key Countries During the Nehruvian Era",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Economic Diplomacy and Development Assistance",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Legacy and Relevance for Contemporary India",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Conclusion: Nehru, the Architect of Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Introduction: Nehru's Vision and the Post-Colonial World",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "The Genesis of the Non-Aligned Movement (NAM)",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Panchsheel: The Five Principles of Peaceful Coexistence",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "NAM and Panchsheel: A Critical Evaluation",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Contemporary Relevance and Legacy for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Conclusion: The Enduring Influence of Nehruvian Principles",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Introduction: The Dawn of the Cold War and India's Strategic Imperatives",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "India and the United States: A Relationship of Unease and Opportunity",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "India and the Soviet Union: A Budding Friendship Based on Shared Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "The Tightrope Walk: Maintaining Equidistance and Navigating Cold War Pressures",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: Legacy of Non-Alignment and Enduring Relevance",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: Setting the Stage for Independent India's Foreign Policy Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "The First Indo-Pakistani War (1947-48): Origins, Course, and International Dimensions",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "The Sino-Indian War (1962): Causes, Conduct, and Consequences",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Impact on India's Security Perceptions and Defense Policies",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Regional Alignments and Foreign Policy Adjustments",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Lessons Learned and Contemporary Relevance for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Introduction: The Inherited Landscape and Nehru's Vision",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Non-Alignment as a Strategy for Economic Development",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Nation-Building and Border Disputes: Implications for Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Economic Development and Regional Cooperation: The Colombo Plan and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Domestic Constraints and Foreign Policy Decision-Making",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: Legacy and Lessons for Contemporary India",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A4",
+      "name": "Part IV: Consolidation and Realignment (1970s-1990)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: NAM's Evolution and India's Central Role in the 1970s",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India's Leadership and Consolidation Efforts within NAM (1970-1980)",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "NAM and the Renewed Cold War Tensions (1980s): India's Balancing Act",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "NAM as a Tool for India's National Interests: Economic and Strategic Dimensions",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Internal Challenges and India's Response: Factionalism and Divergent Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "NAM in the Post-Cold War Era: A Reassessment and India's Continued Relevance",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Conclusion: India's Legacy in NAM and Lessons for Contemporary Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Introduction: Contextualizing Indo-Soviet Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Geopolitical Compulsions: The Road to Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "The 1971 Treaty of Peace, Friendship and Cooperation: A Detailed Analysis",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Benefits and Consequences of the Indo-Soviet Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "The Indo-Soviet Relationship: A Case Study in Realpolitik",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: Legacy and Lessons for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: India's Foreign Policy in the 1970s-1990s – A Global Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "The US-Pakistan Axis: A Persistent Irritant in Indo-US Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Nuclear Ambitions and US Sanctions: A Thorny Path",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Economic Relations: Trade, Aid, and Technology Transfer",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Differing Strategic Perspectives: Cold War Alignments and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Relations with Western Europe: A Parallel Narrative",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: Legacies of the Cold War and the Seeds of a New Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Historical Context and Precursors to the 1971 War: India's Evolving Regional Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "The Escalation of the Crisis and India's Intervention: Diplomatic and Strategic Considerations",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "The 1971 War: Military Operations and Geopolitical Ramifications",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Post-War Relations and the Legacy of 1971: India's Regional Role and Humanitarian Concerns",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Humanitarian Dimensions of the Conflict: India's Response and International Law",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: India's Strategic Gains and the Evolving Dynamics of South Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "The Geopolitical Context Leading to Pokhran-I",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "The Smiling Buddha: Declaration of a Peaceful Nuclear Explosion (PNE)",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "International Reactions and Diplomatic Fallout",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Strategic Implications for India's Security Calculus",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: Legacy of Pokhran-I and its Relevance Today",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Introduction: The Evolving Cold War Landscape and India's Strategic Imperatives",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "India-Soviet Relations: Deepening Ties and Strategic Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Navigating Détente and Superpower Rivalry: India's Diplomatic Balancing Act",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Regional Challenges and Opportunities: South Asia in the Cold War Context",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Economic Diplomacy and Development: India's Quest for Self-Reliance",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Conclusion: India's Enduring Principles and Evolving Role",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A5",
+      "name": "Part V: Post-Cold War Era and Economic Liberalization (1990s-2010)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "The Dissolution of the Soviet Union: Implications for India",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India's Response: Economic Liberalization and Engagement with the West",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Navigating a Unipolar World: Challenges and Opportunities",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "The Rise of Terrorism and India's Security Concerns",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Nuclear Doctrine and its Impact on International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "The Pre-1991 Context: A Foundation for Change",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "The 1991 Economic Reforms: A Catalyst for Foreign Policy Shift",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Economic Diplomacy in Action: Seeking Investment, Technology, and Market Access",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Strategic Partnerships and the Evolving Security Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "India and the Multilateral System: A Rising Power's Perspective",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Regional Relations: Navigating Complexities in South Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Conclusion: India's Foreign Policy in the Age of Globalization",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Introduction: The Cold War Legacy and the Dawn of a New Era",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "The Economic Dimension: Trade, Investment, and Technological Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Strategic Convergence: Counter-Terrorism, Maritime Security, and Regional Stability",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "The Role of Shared Democratic Values and People-to-People Ties",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Challenges and Opportunities in the India-US Strategic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Conclusion: The Future of India-US Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "The Backdrop: India-China Relations Before 1990",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Normalization and Dialogue: Diplomatic Overtures in the 1990s",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Economic Engagement: Trade and Investment Flows",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Strategic Competition: Border Disputes, Geopolitics, and the 'String of Pearls'",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Areas of Cooperation: Multilateralism and Global Issues",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "The Tibet Factor: Dalai Lama and its Impact on India-China Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Conclusion: Assessing the Balance of Cooperation and Competition",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "The Strategic Context Leading to Pokhran-II: India's Security Concerns and Policy Evolution",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Pokhran-II: The Nuclear Tests and India's Declaration of Nuclear Weapon Status",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "International Sanctions and Diplomatic Isolation: The Immediate Fallout of Pokhran-II",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "The Path to Normalization: Diplomatic Efforts and Engagement with the International Community",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "The Indo-US Nuclear Deal: A Turning Point in India's International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "India's Integration into the Global Nuclear Order: A De Facto Nuclear Weapon State",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Conclusion: Lessons Learned and Future Implications for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "The End of the Cold War and the Imperative for Diversification",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Embracing Globalization: Economic Diplomacy and New Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "The Rise of Terrorism and India's International Counter-Terrorism Efforts",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "India's Evolving Relationship with Major Powers: US, China, and Russia",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "India's Engagement with Multilateral Institutions and Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Conclusion: India's Foreign Policy in the 2010s - Continuity and Change",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A6",
+      "name": "Part VI: Contemporary Trends in Indian Foreign Policy (2010 onwards)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Defining Multi-Alignment and its Context",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India and the United States: A Strategic Partnership?",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "India and China: Cooperation and Competition",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "India and Russia: A Time-Tested Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India and the European Union: Strengthening Economic and Strategic Ties",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "India and Japan: A Special Strategic and Global Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Challenges and Limitations of India's Multi-Alignment Strategy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Conclusion: The Future of India's Multi-Alignment and its Implications",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Introduction: The Indo-Pacific as a Strategic Imperative for India",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Maritime Security in the Indo-Pacific: India's Role and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "India's Connectivity Initiatives in the Indo-Pacific: Promoting Economic Integration and Strategic Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "The Quad and Other Regional Architectures: India's Multilateral Engagement in the Indo-Pacific",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Challenges and Opportunities: Navigating the Future of India's Indo-Pacific Strategy",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Conclusion: India's Vision for a Free, Open, and Inclusive Indo-Pacific",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Introduction: India's Rise as a Global Player and the Shifting Landscape of Global Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "India's Climate Diplomacy: The International Solar Alliance and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Combating International Terrorism: India's Counter-Terrorism Strategies and Regional Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Addressing Cybersecurity Threats: India's Cyber Diplomacy and Digital Security Initiatives",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Responding to Global Health Crises: India's Pandemic Response and Vaccine Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: India's Path Towards Global Leadership and the Future of Multilateralism",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Introduction: Defining Strategic Autonomy and India's Foreign Policy Objectives",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "India-US Relations: Navigating Partnership and Divergence",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "India-China Relations: Competition, Cooperation, and Border Disputes",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "India-Russia Relations: A Time-Tested Friendship in a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "India and the European Union: A Strategic Partnership with Untapped Potential",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: Strategic Balancing and the Future of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Introduction: Contextualizing India's Neighborhood Policy and Regional Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "The 'Neighborhood First' Policy: Bilateral Relations with Key Neighbors",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Regional Connectivity Initiatives: Projects and Progress",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Challenges and Opportunities in Implementing India's Neighborhood Policy and Regional Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: The Future of India's Neighborhood Policy and Regional Connectivity",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A7",
+      "name": "Part VII: Core Principles Guiding Indian Foreign Policy",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Setting the Stage for Panchsheel's Emergence",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "The Five Principles of Panchsheel: Content and Interpretation",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Panchsheel Agreement: Genesis, Text, and Initial Impact",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "The Erosion of Panchsheel: The Sino-Indian War and its Aftermath",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Panchsheel's Enduring Relevance: Contemporary Applications and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Case Studies: Panchsheel in Action (or Inaction) - Specific Examples in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Conclusion: Panchsheel's Legacy and Future Prospects for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "The Genesis of Non-Alignment: Post-Independence India and the Cold War",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Non-Alignment in Practice: Successes, Challenges, and Limitations",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "The Shift Towards Strategic Autonomy: Adapting to a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Strategic Autonomy in Action: Case Studies of India's Contemporary Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Strategic Autonomy and India's Future Foreign Policy Trajectory: Implications for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "India's Philosophical and Historical Roots of Peaceful Dispute Settlement",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Constitutional and Legal Framework for Peaceful Dispute Resolution",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "India's Diplomatic Initiatives for Peaceful Dispute Resolution: Negotiation and Mediation",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Adherence to International Law and Institutions",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Challenges to India's Commitment: Case Studies of Deviations",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "The Future of India's Approach to Peaceful Dispute Settlement",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: Reaffirming India's Commitment and Way Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: Defining Sovereignty and Territorial Integrity in International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "India's Historical Experience and the Importance of Sovereignty",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "India's Stance on Sovereignty and Territorial Integrity in its Bilateral Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "India's Role in Multilateral Forums: Upholding Sovereignty and Territorial Integrity",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Challenges to Sovereignty and Territorial Integrity: Contemporary Issues and India's Response",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Case Studies: India's Application of the Principle in Specific Situations",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: The Enduring Significance of Sovereignty and Territorial Integrity for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Introduction: India's Philosophical Underpinnings and Foreign Policy Framework",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "India's Active Role in UN Peacekeeping Operations",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Advocacy for Disarmament: India's Stance on Nuclear Weapons",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Supporting a Stable World Order: India's Role in Multilateral Institutions",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "India's Humanitarian Assistance and Disaster Relief (HADR) Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Challenges and Future Directions for India's Peace and Security Agenda",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Conclusion: Reaffirming India's Commitment to a Peaceful and Secure World",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A8",
+      "name": "Part VIII: Specific Doctrines and Approaches",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Contextualizing India's Foreign Policy in the 1990s",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Genesis and Core Principles of the Gujral Doctrine",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Implementation and Impact: Case Studies of India's Relations with its Neighbors",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Criticisms and Limitations of the Gujral Doctrine",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Relevance and Legacy of the Gujral Doctrine in Contemporary Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Conclusion: The Gujral Doctrine and its Significance for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Genesis and Evolution of the 'Look East' Policy (LEP)",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Transition from 'Look East' to 'Act East': Rationale and Key Differences",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Strategic and Security Dimensions of the 'Act East' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Economic Engagement under the 'Act East' Policy: Trade, Investment, and Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Political and Cultural Dimensions of the 'Act East' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Challenges and Opportunities for India's 'Act East' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: The Future Trajectory of India's Asia-Pacific Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: Genesis and Evolution of India's 'Neighborhood First' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Pillars of the 'Neighborhood First' Policy: Connectivity, Cooperation, and Mutual Benefit",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Bilateral Relations Under the 'Neighborhood First' Policy: Case Studies",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Challenges and Criticisms of the 'Neighborhood First' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "The 'Neighborhood First' Policy in a Changing Geopolitical Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: Assessing the Successes and Future of India's 'Neighborhood First' Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Defining Strategic Autonomy in the Indian Context",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "India's Motivations for Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Strategic Autonomy in Practice: Case Studies",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Challenges and Limitations of Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "The Future of Strategic Autonomy: Implications for India",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Understanding Vasudhaiva Kutumbakam: Origins and Philosophical Significance",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Vasudhaiva Kutumbakam as a Guiding Principle in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Case Studies: Vasudhaiva Kutumbakam in Action",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Challenges and Critiques: Reconciling Idealism with National Interest",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Vasudhaiva Kutumbakam in the 21st Century: Relevance and Future Directions",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A9",
+      "name": "Part IX: Objectives of Indian Foreign Policy",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: National Security as the Cornerstone of Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Safeguarding Territorial Integrity: Border Disputes and Conflict Management",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Countering External Threats: Terrorism, Maritime Security, and Cyber Warfare",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Maintaining Internal Stability: Insurgency, Separatism, and Extremism",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Protecting Sovereignty: Nuclear Deterrence and Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Conclusion: India's Enduring Quest for Security and Sovereignty in a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "The Nexus Between Foreign Policy and Economic Growth: An Introduction",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Attracting Foreign Investment: A Key Foreign Policy Objective",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Securing Access to Technology and Resources: The Energy Security Imperative",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Promoting Exports: Enhancing Competitiveness Through Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Creating a Favorable External Environment: Regional Stability and Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Challenges and Opportunities: Navigating the Future of India's Economic Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: Foreign Policy as a Catalyst for India's Economic Transformation",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: The Imperative of Regional Peace for India's National Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "India's Diplomatic Initiatives for Regional Peace: A Focus on South Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Economic Cooperation as a Tool for Regional Stability: Trade, Connectivity, and Development Assistance",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Addressing Non-Traditional Security Threats: Climate Change, Pandemics, and Humanitarian Assistance",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "India and the Extended Neighborhood: Towards a Stable and Prosperous Indo-Pacific",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Challenges and Opportunities: Navigating a Complex Regional Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: India's Enduring Commitment to a Peaceful and Stable Region",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Introduction: India's Evolving Foreign Policy Objectives",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Seeking a Seat at the Table: India's Pursuit of Permanent Membership in the UN Security Council",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Shaping Global Norms: India's Role in Multilateral Forums and Initiatives",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "India as a Leading Power: Contributing to International Solutions",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Challenges and Constraints: Navigating a Complex Global Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: The Future of India's Global Role",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Introduction: The Growing Significance of the Indian Diaspora in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Economic Dimensions: Leveraging the Diaspora for Economic Growth and Development",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Political Influence and Advocacy: The Diaspora as a Voice for India",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Cultural Diplomacy and Soft Power: The Diaspora as Cultural Ambassadors",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Protecting Diaspora Interests: Consular Services and Crisis Management",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Challenges and Opportunities: A Path Forward for India's Diaspora Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Conclusion: The Future of India's Relationship with its Diaspora",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Introduction: Defining India's Core Foreign Policy Objectives",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "National Security vs. Economic Development: A Persistent Dilemma",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Economic Interests vs. Normative Values: Balancing Pragmatism and Principles",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Regional Stability vs. Great Power Ambitions: Navigating the Neighbourhood",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Soft Power vs. Hard Power: Projecting Influence in a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Evolution of Priorities: Adapting to a Dynamic Global Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "Case Studies: Illustrating Interplay and Conflicts",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Conclusion: Towards a Coherent and Effective Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 42,
+          "title": "Introduction: Defining Economic Growth and Strategic Autonomy in the Indian Context",
+          "content": []
+        },
+        {
+          "chapter_number": 43,
+          "title": "Historical Evolution: From Non-Alignment to Multi-Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 44,
+          "title": "Economic Diplomacy: Securing Resources and Markets",
+          "content": []
+        },
+        {
+          "chapter_number": 45,
+          "title": "Strategic Partnerships: Balancing Power and Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 46,
+          "title": "Case Studies: Balancing Growth and Autonomy in Specific Contexts",
+          "content": []
+        },
+        {
+          "chapter_number": 47,
+          "title": "Challenges and Future Directions: Navigating a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 48,
+          "title": "Conclusion: Reconciling Economic Imperatives and Strategic Independence",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A10",
+      "name": "Part X: Foreign Policy Making - Internal Factors",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Democracy as a Framework for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Parliamentary Oversight: Debate, Scrutiny, and Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Federalism and Foreign Policy: Balancing National Interests and State Concerns",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "The Pursuit of Political Consensus: Navigating Diverse Perspectives",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Coalition Politics and Foreign Policy: The Dynamics of Compromise",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Case Studies: Illustrating the Democratic Influence on Specific Foreign Policy Decisions",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Conclusion: Strengths, Weaknesses, and Future Directions",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Introduction: Economic Realities as a Cornerstone of Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Poverty Reduction and Foreign Aid: Projecting Soft Power and Securing Strategic Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Infrastructure Development: Fueling Economic Growth and Regional Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Energy Security: Securing Access to Resources and Diversifying Energy Sources",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Trade Aspirations and Economic Diplomacy: Promoting Exports and Attracting Investment",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Case Studies: Illustrating the Interplay of Economic Needs and Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Conclusion: The Evolving Landscape of India's Economic Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Introduction: Societal Influences as a Key Determinant of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Cultural Values and Foreign Policy: The Legacy of 'Vasudhaiva Kutumbakam' and Non-Violence",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Religious Dynamics and Foreign Policy: Navigating Domestic Sensitivities and International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "The Indian Diaspora: A Bridge Between India and the World",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Case Studies: Societal Influences in Action – Specific Foreign Policy Scenarios",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Challenges and Opportunities: Navigating Societal Complexities in a Globalized World",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Conclusion: Societal Influences as a Cornerstone of India's Foreign Policy Strategy",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Introduction: The Evolving Landscape of Foreign Policy Decision-Making in India",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Conceptual Framework: Understanding Public Opinion and its Formation",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "The Media's Role: Shaping Narratives and Influencing Public Discourse on Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Civil Society and Foreign Policy: Advocacy, Activism, and Public Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Case Studies: Impact of Public Opinion and Media on Specific Foreign Policy Decisions",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Challenges and Limitations: The Complexities of Gauging and Responding to Public Opinion",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Conclusion: Balancing Public Opinion, National Interest, and International Obligations in Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Introduction: Defining National Identity and its Relevance to Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Historical Roots: The Legacy of Ancient India and Colonial Experience",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Civilizational Values: Democracy, Pluralism, and Secularism in Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "National Aspirations: India as a 'Leading Power' and its Implications for Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Case Studies: National Identity in Action – Specific Foreign Policy Examples",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Conclusion: Evolving National Identity and Future Directions for Indian Foreign Policy",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A11",
+      "name": "Part XI: Foreign Policy Making - External Factors",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: India's Strategic Environment and the Global Power Structure",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "The Bipolar World and India's Non-Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "The Unipolar Moment and India's Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Emerging Multipolarity: Opportunities and Challenges for India",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Shifting Alliances and India's Strategic Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Case Studies: Global Power Shifts and India's Response",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Conclusion: India's Foreign Policy in the 21st Century – Navigating a Complex World",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Understanding the United States' Foreign Policy and its Implications for India",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "China's Assertive Foreign Policy and its Challenges for India",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Russia's Foreign Policy and its Enduring Relationship with India",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Comparative Analysis: India's Balancing Act with the US, China, and Russia",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Introduction: The Primacy of the Neighborhood in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Pakistan: A Relationship Defined by Conflict and Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "China: Strategic Competition and Economic Interdependence",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Bangladesh: A Story of Cooperation and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Nepal: Navigating Political Transitions and Economic Dependence",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Sri Lanka and the Maldives: Maritime Security and Strategic Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Bhutan and Myanmar: Special Relationships and Strategic Considerations",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "The Indian Ocean Region: A Zone of Strategic Competition",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: India's Regional Imperatives and Future Trajectory",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Introduction: International Organizations, Norms, and India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "The United Nations and India: A Cornerstone of Multilateralism",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "The World Trade Organization (WTO) and India: Navigating Trade and Development",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "International Norms on Climate Change and India's Environmental Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Human Rights Norms and India's Foreign Policy Conduct",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Emerging Norms and India's Strategic Response: Cyber Security, Data Governance, and Outer Space",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Conclusion: India's Foreign Policy in a Norm-Governed World",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Introduction: The Interconnectedness of Global Issues and India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Climate Change and India's Foreign Policy: Navigating Mitigation, Adaptation, and International Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Terrorism and India's Foreign Policy: Counterterrorism Strategies and Regional Security",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Pandemics and India's Foreign Policy: Health Diplomacy and Global Health Security",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Cybersecurity Vulnerabilities: India's Foreign Policy and Digital Security",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Conclusion: India's Role in Addressing Global Challenges and Shaping a Multilateral Future",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Understanding China's Ascendancy: Economic, Military, and Diplomatic Dimensions",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "The Security Dilemma: India's Strategic Concerns Regarding China",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Economic Engagement: Opportunities and Challenges in India-China Trade and Investment",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Diplomatic Strategies: India's Approach to Managing Relations with China",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "India's Policy Options: Balancing Challenge and Opportunity",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Conclusion: India's Future Trajectory in a China-Dominated World",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A12",
+      "name": "Part XII: Institutions Involved in Foreign Policy Making",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: The MEA and IFS in India's Foreign Policy Architecture",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "The Ministry of External Affairs (MEA): Structure, Functions, and Departments",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "The Indian Foreign Service (IFS): Recruitment, Training, and Career Progression",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "MEA's Role in Key Aspects of India's International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Challenges and Reforms: Strengthening the MEA and IFS for the Future",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Conclusion: The Enduring Importance of the MEA and IFS",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Introduction: The Centrality of the PMO in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Setting the Strategic Direction: The PMO's Role in Policy Formulation",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Coordinating Key Initiatives: The PMO's Operational Role",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Summit Diplomacy and Bilateral Engagements: The PMO's Diplomatic Leadership",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Case Studies: PMO's Impact on Specific Foreign Policy Issues",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Challenges and Criticisms: Evaluating the PMO's Role",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: The PMO as a Central Pillar of India's Foreign Policy Architecture",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: Parliament's Significance in Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Parliamentary Debates on Foreign Policy Issues",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Scrutiny of Government Actions: Questions and Resolutions",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "The Standing Committee on External Affairs: Composition, Functions, and Impact",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Treaty Ratification and Parliamentary Approval",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: Enhancing Parliament's Role in Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: The Evolving Landscape of Indian Foreign Policy and National Security",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Genesis and Evolution of the National Security Council (NSC)",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Structure and Composition of the National Security Council Secretariat",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "The National Security Advisor (NSA): Role, Responsibilities, and Influence",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Functions and Advisory Role of the NSC in Integrating National Security Considerations",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Case Studies: NSC's Impact on Specific Foreign Policy Decisions",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Criticisms and Challenges Facing the National Security Council",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "The NSC and the Future of Indian Foreign Policy: Recommendations and Way Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Conclusion: The Indispensable Role of the NSC and NSA in India's Rise as a Global Power",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Introduction: The Indispensable Role of Intelligence in Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Research and Analysis Wing (R&AW): India's External Intelligence Agency",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Intelligence Bureau (IB): Internal Security and Foreign Policy Implications",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "National Technical Research Organisation (NTRO): Technological Intelligence and Strategic Advantage",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Defence Intelligence Agency (DIA): Military Intelligence and Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Challenges and Limitations: Intelligence Failures and Systemic Issues",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Intelligence and Foreign Policy: Case Studies and Examples",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "The Future of Intelligence in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Conclusion: Intelligence as a Cornerstone of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "The Evolving Landscape of Indian Foreign Policy and the Need for Coordination",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Key Ministries and Their Roles in Shaping India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "Mechanisms for Inter-Ministerial Coordination in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Case Studies: Successes and Failures of Inter-Ministerial Coordination",
+          "content": []
+        },
+        {
+          "chapter_number": 42,
+          "title": "Recommendations for Enhancing Inter-Ministerial Coordination",
+          "content": []
+        },
+        {
+          "chapter_number": 43,
+          "title": "Conclusion: The Future of Inter-Ministerial Coordination in India's Foreign Policy",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A13",
+      "name": "Part XIII: Key Individuals and Non-State Actors",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "The Prime Minister's Office (PMO) and Foreign Policy Decision-Making",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Personal Diplomacy: The Prime Minister as Chief Diplomat",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Driving Key Foreign Policy Initiatives: From 'Look East' to 'Neighborhood First'",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Shaping India's International Image: Public Perception and Global Narratives",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Case Studies: Prime Ministerial Impact on Specific Bilateral Relationships",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "The Prime Minister and Multilateral Diplomacy: Engagement with Global Institutions",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Challenges and Criticisms: Evaluating the Prime Minister's Foreign Policy Record",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Conclusion: The Enduring Legacy of the Prime Minister in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Introduction: The EAM's Role in India's Foreign Policy Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Managing the Ministry of External Affairs: Structure, Functions, and Coordination",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Representing India on the Global Stage: Diplomacy, Advocacy, and Public Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Negotiations and Agreements: Shaping India's International Engagements",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Articulating Government Policy: Communication, Advocacy, and Crisis Management",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "The EAM's Influence on India's Strategic Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Case Studies: Examining the EAM's Role in Specific Foreign Policy Initiatives",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Challenges and Opportunities: The Future of the EAM's Role",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Conclusion: The EAM as a Key Pillar of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "The Indian Foreign Service: An Introduction and Historical Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Policy Implementation and the IFS: Translating Strategy into Action",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Managing Embassies and Consulates: The IFS as India's Face Abroad",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Intelligence Gathering and Analysis: The IFS as a Source of Critical Information",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Negotiating Treaties and Agreements: The IFS as India's Voice in International Forums",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Fostering Bilateral Relationships: The IFS as a Bridge Between Nations",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Challenges Facing the IFS: Adapting to a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Reforms and the Future of the IFS: Enhancing Effectiveness and Relevance",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: The Enduring Importance of the IFS in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Introduction: The Evolving Landscape of Foreign Policy Decision-Making in India",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "The Rise of Think Tanks in India's Foreign Policy Arena: An Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "The Contributions of Academic Experts to India's Foreign Policy Discourse",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Think Tanks and Academic Experts: Shaping Policy Analysis and Generating Ideas",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Think Tanks and Academic Experts: Shaping Public Discourse and Contributing to Track-II Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Challenges and Opportunities for Think Tanks and Academic Experts in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Conclusion: The Enduring Significance of Non-State Actors in India's International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Introduction: Defining the Indian Diaspora and its Global Footprint",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Economic Contributions: Remittances, Investments, and Trade Promotion",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Cultural Influence: Soft Power and Promoting Indian Culture Abroad",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Political Influence: Lobbying and Advocacy for Indian Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Case Studies: Success Stories and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Government of India Initiatives for Engaging the Diaspora",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "Future Prospects: The Evolving Role of the Indian Diaspora in India's International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Conclusion: Reaffirming the Diaspora's Vital Role as Bridge and Influencer",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A14",
+      "name": "Part XIV: India's Relations with its Neighbors (Neighborhood First Policy)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: India's Neighborhood First Policy - Principles and Evolution",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India-Pakistan Relations: A History of Conflict and Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "India-China Relations: Balancing Competition and Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "India-Bangladesh Relations: A Model of Neighborhood Cooperation?",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India-Nepal Relations: Navigating Historical Ties and Contemporary Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "India-Sri Lanka Relations: Addressing Ethnic Tensions and Promoting Economic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "India-Bhutan Relations: A Unique Partnership Based on Trust and Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "India-Afghanistan Relations: A Long-Term Commitment to Stability and Development",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "India-Myanmar Relations: Balancing Strategic Interests and Democratic Values",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Conclusion: Challenges and Opportunities in India's Neighborhood Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Introduction: Genesis and Evolution of India's Neighborhood First Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Aims and Objectives: A Multi-Dimensional Approach",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Challenges: Historical Mistrust and Bilateral Disputes",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "The China Factor: External Influence and Regional Dynamics",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Domestic Political Factors: Internal Challenges in Neighboring Countries",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Successes and Failures: A Critical Assessment of the Neighborhood First Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Recommendations and the Way Forward: Strengthening India's Neighborhood Policy",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A15",
+      "name": "Part XV: India's Relations with Major Global Powers (Multi-alignment in Practice)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: India's Foreign Policy Imperatives and Multi-Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India-USA Relations: A Strategic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "India-Russia Relations: A Time-Tested Friendship",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "India-European Union (EU) Relations: A Growing Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India-United Kingdom (UK) Relations: A Renewed Strategic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "India-France Relations: A Reliable Strategic Partner",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "India-Japan Relations: A Special Strategic and Global Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "India's Relations with Other Significant Partners: Germany, Canada, and Australia",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Conclusion: India's Multi-Alignment Strategy and its Future Trajectory",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Genesis and Evolution of the India-US Strategic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Key Pillars of the India-US Strategic Partnership: Defense and Security Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Economic and Trade Relations: Opportunities and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Strategic Convergence and Divergence: Indo-Pacific and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "The Indian Diaspora in the US: A Bridge Between Two Nations",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Challenges and Future Prospects of the India-US Strategic Partnership",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Introduction: India's Foreign Policy Doctrine and the Rise of Multi-Alignment",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "India-United States Relations: A Strategic Partnership?",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "India-Russia Relations: A Time-Tested Friendship in a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "India-China Relations: Cooperation and Competition in the Asian Century",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "India-European Union Relations: A Partnership for Sustainable Development and Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Comparative Analysis: Key Features, Priorities, and Challenges – A Summary Table",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Conclusion: India's Balancing Act and the Future of Multi-Alignment",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A16",
+      "name": "Part XVI: India's Engagement with Global Organizations",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: India's Enduring Commitment to the UN System",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India's Contributions to UN Peacekeeping Operations: A Force for Stability",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "India's Role in UN Development Initiatives: Championing the Global South",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "India's Advocacy for UN Reforms, Especially the Security Council: A Quest for Greater Representation",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Challenges and Opportunities for India's Engagement with the UN",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Conclusion: India's Continued Commitment to a Multilateral World Order Through the UN",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Introduction: India's Engagement with the WTO – An Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "India's Key Interests and Concerns at the WTO: Agriculture",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "India's Key Interests and Concerns at the WTO: Services",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "India and the Doha Development Agenda: A Critical Assessment",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Navigating Multilateral Trade Negotiations: India's Strategies and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "WTO Dispute Settlement Mechanism: India's Experience",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "The Future of India and the WTO: Challenges and Opportunities",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Conclusion: India's Strategic Imperatives in the WTO",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Introduction: The Evolving Landscape of India's Engagement with IFIs",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "India and the IMF: A Historical Perspective",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "India and the World Bank: Financing Development and Infrastructure",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "India as a Contributor and Stakeholder: Shaping Global Financial Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Challenges and Opportunities: Navigating the Future of India's Engagement with IFIs",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: India's Strategic Partnership with IFIs – Implications for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Introduction: India's Multilateral Diplomacy and UPSC Relevance",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "India and the World Health Organization (WHO): Health Diplomacy and Global Health Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "India and the G20: Economic Leadership and Global Financial Stability",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "India's Engagement with Other Global Bodies: A Survey",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Challenges and Opportunities for India in Multilateral Forums",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Conclusion: India's Evolving Role in Global Governance and Implications for UPSC",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Introduction: India's Pursuit of a Permanent UNSC Seat - A Historical Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "The Rationale for India's Claim: Justifying Permanent Membership",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Obstacles and Challenges: Navigating the Geopolitical Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Diplomatic Strategies and Initiatives: India's Approach to Securing Support",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "The Path Forward: Potential Scenarios and Future Prospects",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Conclusion: India's Enduring Commitment to the UN and the Pursuit of a Just Global Order",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A17",
+      "name": "Part XVII: India's Role in Regional Organizations",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: The Genesis of SAARC and India's Role",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "SAARC's Objectives and India's Contribution: A Review",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Achievements of SAARC: An India-Centric Perspective",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Limitations of SAARC: The India-Pakistan Factor and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Alternatives and Future Strategy within SAARC",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Conclusion: SAARC's Relevance and India's Role in South Asian Regionalism",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Introduction: BIMSTEC's Genesis and Evolution in India's Regional Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "India's Strategic Interests and BIMSTEC: Countering China and Enhancing Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Economic Cooperation within BIMSTEC: Opportunities and Challenges for India",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Sectoral Cooperation and India's Leadership Role in BIMSTEC",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Challenges and the Way Forward: Strengthening BIMSTEC for India's Benefit",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Conclusion: BIMSTEC's Future and India's Vision for Regional Integration",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Introduction: The Strategic Importance of ASEAN for India",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Historical Context: From 'Look East' to 'Act East'",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Political Cooperation: Diplomacy and Strategic Dialogue",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Economic Partnership: Trade, Investment, and Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Security Cooperation: Maritime Security, Counter-Terrorism, and Disaster Management",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Challenges and Opportunities in India-ASEAN Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: The Future of India's Act East Policy and ASEAN Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: The SCO and India's Eurasian Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "India's Objectives and Priorities within the SCO Framework",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "India's Contributions and Engagement within the SCO",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Challenges and Opportunities for India within the SCO",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "The SCO and India's Balancing Act: China, Russia, and Central Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Conclusion: India's SCO Engagement – A Strategic Imperative",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Introduction: India's Multilateral Diplomacy and Regional Forums",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "The Indian Ocean Rim Association (IORA): Genesis and Evolution",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "India's Priorities and Contributions within IORA",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "IORA and Maritime Security in the Indian Ocean: India's Perspective",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Challenges and Opportunities for India within IORA",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: IORA's Significance for India's Foreign Policy and the Way Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Introduction: The Evolving Landscape of Regional Cooperation in South Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "SAARC: Stagnation and the Impasse in Regional Integration",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "BIMSTEC: A Strategic Pivot Towards Sub-Regionalism and Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Comparative Analysis: BIMSTEC vs. SAARC – Strengths, Weaknesses, and India's Strategic Choice",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Challenges and Opportunities for BIMSTEC: A Path Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Conclusion: Reassessing India's Regional Strategy and the Future of Sub-Regionalism",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A18",
+      "name": "Part XVIII: Key Thematic Areas in Indian Foreign Policy",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: The Rise of Economic Diplomacy in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Trade Agreements: India's Strategy for Global Market Access",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Attracting Foreign Direct Investment: India as a Global Investment Destination",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Energy Security: Securing India's Growing Energy Needs Through Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Facilitating Technology Transfer: Enhancing India's Technological Capabilities",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Case Studies in India's Economic Diplomacy: Successes and Failures",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Challenges and Future Directions for India's Economic Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Conclusion: India's Economic Diplomacy as a Tool for National Development and Global Influence",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "Introduction: The Geopolitical Imperative of Connectivity",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "The International North-South Transport Corridor (INSTC): A Eurasian Gateway",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Chabahar Port: A Strategic Asset in the Indian Ocean",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Asia-Africa Growth Corridor (AAGC): Bridging Two Continents",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Comparative Analysis: Strengths, Weaknesses, Opportunities, and Threats (SWOT)",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Conclusion: India's Connectivity Diplomacy – A Path Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Introduction: The Evolving Landscape of India's Economic Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "'Make in India' as a Cornerstone of Economic Diplomacy: Objectives and Strategies",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "'Digital India' and 'Skill India': Complementary Initiatives and their Diplomatic Dimensions",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Case Studies: Successes and Challenges in Integrating Domestic Policies with Economic Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "India's Economic Diplomacy and Geopolitical Considerations: Balancing Interests",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Conclusion: The Future of India's Economic Diplomacy and its Implications for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Core Objectives of India's Defense Policy: A Strategic Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Military Modernization Efforts: Enhancing India's Strategic Capabilities",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Developing the Defense Industrial Base: Challenges and Opportunities for Self-Reliance",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Defense Policy and its Impact on India's Relations with Key Countries",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Future Trends and Challenges in India's Defense Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Introduction: Terrorism as a Global Threat and India's Vulnerability",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Domestic Counter-Terrorism Framework: Legal and Institutional Mechanisms",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Bilateral Counter-Terrorism Cooperation: Strategic Partnerships and Agreements",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Multilateral Engagement: India's Role in Global Counter-Terrorism Efforts",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Challenges and Future Directions: Strengthening India's Counter-Terrorism Strategy",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: India's Commitment to Counter-Terrorism and its Impact on International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Introduction: The Evolving Landscape of Cybersecurity and its Implications for India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Cyber Threats Facing India: A Comprehensive Assessment",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "India's National Cybersecurity Strategy: A Framework for Protection and Resilience",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "India's International Cooperation in Cybersecurity: Building Partnerships and Promoting Cyber Norms",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Case Studies: Examining India's Response to Major Cyber Incidents with International Dimensions",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Challenges and Opportunities for India in the Global Cybersecurity Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Conclusion: Strengthening India's Cybersecurity Posture for a Secure and Prosperous Future",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Introduction: The Rising Importance of Maritime Security for India",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "The Indo-Pacific: A Geopolitical Construct and India's Strategic Vision",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Naval Modernization: Strengthening India's Maritime Capabilities",
+          "content": []
+        },
+        {
+          "chapter_number": 42,
+          "title": "Maritime Domain Awareness: Enhancing Situational Awareness in the Indo-Pacific",
+          "content": []
+        },
+        {
+          "chapter_number": 43,
+          "title": "Security Partnerships: The Quad and Other Regional Initiatives",
+          "content": []
+        },
+        {
+          "chapter_number": 44,
+          "title": "Challenges and Opportunities: Navigating a Complex Maritime Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 45,
+          "title": "Conclusion: India's Maritime Future in the Indo-Pacific",
+          "content": []
+        },
+        {
+          "chapter_number": 46,
+          "title": "Introduction: Contextualizing India's Nuclear Doctrine within its Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 47,
+          "title": "Credible Minimum Deterrence: Defining and Assessing India's Nuclear Arsenal",
+          "content": []
+        },
+        {
+          "chapter_number": 48,
+          "title": "No First Use (NFU): Rationale, Debates, and Strategic Implications for India",
+          "content": []
+        },
+        {
+          "chapter_number": 49,
+          "title": "Civilian Control and Command & Control Mechanisms: Ensuring Responsible Nuclear Stewardship",
+          "content": []
+        },
+        {
+          "chapter_number": 50,
+          "title": "India's Nuclear Doctrine and its Impact on Regional and Global Security",
+          "content": []
+        },
+        {
+          "chapter_number": 51,
+          "title": "Conclusion: Assessing the Effectiveness and Future of India's Nuclear Doctrine",
+          "content": []
+        },
+        {
+          "chapter_number": 52,
+          "title": "Introduction: The Strategic Imperative of Defense Self-Reliance and Diversification",
+          "content": []
+        },
+        {
+          "chapter_number": 53,
+          "title": "The Evolution of India's Defense Procurement Policy: From Dependence to Diversification",
+          "content": []
+        },
+        {
+          "chapter_number": 54,
+          "title": "Atmanirbhar Bharat: Progress, Challenges, and Future Prospects in Defense Manufacturing",
+          "content": []
+        },
+        {
+          "chapter_number": 55,
+          "title": "Navigating Geopolitical Realities: Balancing Relationships with Russia, the US, and Other Key Partners",
+          "content": []
+        },
+        {
+          "chapter_number": 56,
+          "title": "Case Studies: Analyzing Specific Defense Procurement Deals and Indigenous Projects",
+          "content": []
+        },
+        {
+          "chapter_number": 57,
+          "title": "Conclusion: The Way Forward – Towards a Sustainable and Strategically Sound Defense Ecosystem",
+          "content": []
+        },
+        {
+          "chapter_number": 58,
+          "title": "Introduction: Defining Cultural Diplomacy and its Significance for India",
+          "content": []
+        },
+        {
+          "chapter_number": 59,
+          "title": "Classical Arts as Ambassadors: Promoting India's Cultural Identity",
+          "content": []
+        },
+        {
+          "chapter_number": 60,
+          "title": "Yoga and Spiritual Philosophies: Projecting India's Image as a Land of Wisdom",
+          "content": []
+        },
+        {
+          "chapter_number": 61,
+          "title": "Bollywood and Popular Culture: Engaging a Global Audience",
+          "content": []
+        },
+        {
+          "chapter_number": 62,
+          "title": "Traditional Knowledge Systems: Showcasing India's Innovation and Sustainability",
+          "content": []
+        },
+        {
+          "chapter_number": 63,
+          "title": "Challenges and Opportunities in India's Cultural Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 64,
+          "title": "Case Studies: Successful Examples of India's Cultural Diplomacy in Action",
+          "content": []
+        },
+        {
+          "chapter_number": 65,
+          "title": "Conclusion: The Future of India's Cultural Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 66,
+          "title": "Introduction: Defining the Indian Diaspora and its Global Presence",
+          "content": []
+        },
+        {
+          "chapter_number": 67,
+          "title": "The Diaspora as Cultural Ambassadors: Promoting Indian Culture and Values",
+          "content": []
+        },
+        {
+          "chapter_number": 68,
+          "title": "The Diaspora's Role in Strengthening India's Bilateral Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 69,
+          "title": "Challenges and Criticisms: Addressing Concerns and Managing Expectations",
+          "content": []
+        },
+        {
+          "chapter_number": 70,
+          "title": "Government Initiatives and Diaspora Engagement Strategies",
+          "content": []
+        },
+        {
+          "chapter_number": 71,
+          "title": "Case Studies: Success Stories and Challenges in Different Regions",
+          "content": []
+        },
+        {
+          "chapter_number": 72,
+          "title": "Conclusion: The Diaspora's Enduring Impact on India's Soft Power and International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 73,
+          "title": "Introduction: Defining Cultural Diplomacy and its Significance in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 74,
+          "title": "The Indian Council for Cultural Relations (ICCR): Mandate, Activities, and Impact",
+          "content": []
+        },
+        {
+          "chapter_number": 75,
+          "title": "Yoga Diplomacy: Promoting India's Soft Power through the International Day of Yoga",
+          "content": []
+        },
+        {
+          "chapter_number": 76,
+          "title": "Establishment and Impact of Indian Cultural Centers Abroad",
+          "content": []
+        },
+        {
+          "chapter_number": 77,
+          "title": "Educational Exchange Programs: Fostering Understanding and Building Bridges",
+          "content": []
+        },
+        {
+          "chapter_number": 78,
+          "title": "Case Studies: Successes and Failures of Indian Cultural Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 79,
+          "title": "Conclusion: The Future of India's Cultural Diplomacy in a Changing World",
+          "content": []
+        },
+        {
+          "chapter_number": 80,
+          "title": "Understanding Soft Power: Concept and Relevance to India",
+          "content": []
+        },
+        {
+          "chapter_number": 81,
+          "title": "India's Soft Power Assets: Culture, Values, and Diaspora",
+          "content": []
+        },
+        {
+          "chapter_number": 82,
+          "title": "India's Soft Power Initiatives: Cultural Diplomacy and Public Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 83,
+          "title": "Challenges and Limitations of India's Soft Power",
+          "content": []
+        },
+        {
+          "chapter_number": 84,
+          "title": "Strategic Recommendations for Enhancing India's Soft Power",
+          "content": []
+        },
+        {
+          "chapter_number": 85,
+          "title": "Case Studies: Successful and Unsuccessful Soft Power Deployments",
+          "content": []
+        },
+        {
+          "chapter_number": 86,
+          "title": "Soft Power and Economic Diplomacy: Synergies and Opportunities",
+          "content": []
+        },
+        {
+          "chapter_number": 87,
+          "title": "Conclusion: The Future of India's Soft Power in a Multipolar World",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A19",
+      "name": "Part XIX: Addressing Contemporary Global Challenges",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Introduction: Climate Change as a Key Dimension of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "India and the UNFCCC: Upholding CBDR-RC and Advocating for Climate Justice",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "National Climate Goals (NDCs): Balancing Development and Mitigation",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "India's Climate Leadership: The International Solar Alliance (ISA) and Beyond",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Balancing Development Needs and Environmental Concerns: The Energy Transition Challenge",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "India's Climate Diplomacy in a Changing Geopolitical Landscape",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Conclusion: India's Evolving Role in Global Climate Action",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Introduction: Terrorism as a Threat to India's National Security and International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "India's Domestic Counter-Terrorism Measures: Strengthening Internal Security",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "India's Diplomatic Efforts: Building International Counter-Terrorism Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Isolating State Sponsors of Terrorism: India's Diplomatic Strategy towards Pakistan",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Challenges and Opportunities in India's Counter-Terrorism Strategy",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Conclusion: Future Directions for India's Counter-Terrorism Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Introduction: Global Health Security as a Dimension of India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "India's Domestic Response to the COVID-19 Pandemic: Implications for International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Vaccine Maitri: India's Vaccine Diplomacy and its Geopolitical Significance",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "India's Advocacy for Equitable Access to Healthcare and Pandemic Preparedness: Multilateral Engagements",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Challenges and Opportunities for India in Global Health Security: A Strategic Outlook",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Conclusion: India's Evolving Role in Global Health Governance and its Implications for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Introduction: The Evolving Landscape of Cyber Threats and India's Strategic Imperative",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "India's National Cybersecurity Strategy: A Multifaceted Approach",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "India's Role in Shaping Global Cyber Norms: Diplomacy and Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Cybersecurity and India's Relations with Key Partners and Adversaries",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Challenges and Opportunities for India in the Global Cyber Arena",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Conclusion: India's Cyber Future - Balancing Security, Sovereignty, and Global Responsibility",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Introduction: The Evolving Global Order and India's Strategic Imperatives",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Shifting Power Dynamics: Great Power Competition and its Implications for India",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Weakening Multilateral Structures: Reforming Global Governance in India's Interest",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Navigating Uncertainty: India's Policy Options and Strategic Choices",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Case Studies: India's Engagement with Key Regions and Countries",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: India's Vision for a Stable and Prosperous Global Order",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Understanding Transnational Challenges: A Conceptual Framework for India",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Climate Change: India's Role in Global Climate Action",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Pandemics and Global Health Security: India's Response and Contribution",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Combating Terrorism: India's Counter-Terrorism Strategy and International Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Cyber Threats and Cybersecurity: India's Approach to Protecting Cyberspace",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Multilateral Cooperation: India's Engagement with International Forums",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Challenges and Opportunities for India in Multilateralism",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A20",
+      "name": "Part XX: Assessment and Future Outlook",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Strategic Autonomy: A Cornerstone of Indian Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Economic Weight and Influence: Projecting Power Through Trade and Investment",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Demographic Dividend: A Potential Asset for Global Engagement",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Soft Power Appeal: Culture, Values, and Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Established Diplomatic Corps: The Backbone of Indian Foreign Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Democratic Credentials: Enhancing India's Legitimacy and Influence",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Bureaucratic Impediments to Effective Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Capacity Constraints and Resource Limitations",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "The Implementation Gap: Bridging Policy and Practice",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Domestic Political Constraints on Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Navigating Neighborhood Complexities: Challenges in South Asia",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Introduction: Defining Objectives and Framework for Assessment",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Strategic Achievements: Enhancing Security and Projecting Power",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Economic Diplomacy: Promoting Growth and Development",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Diplomatic Achievements: Enhancing India's Global Influence and Reputation",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Shortcomings and Setbacks: Areas for Improvement",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Case Studies: Successes and Failures in Specific Areas",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Conclusion: A Balanced Assessment and the Way Forward",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "Introduction: India's Evolving Role in the Global Order",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Successes in India's Foreign Policy: A Critical Analysis",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Challenges in India's Foreign Policy: A Comprehensive Assessment",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "The Need for Institutional Strengthening: Reforms and Capacity Building",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Case Studies: Institutional Responses to Specific Foreign Policy Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Future Outlook: Recommendations for Institutional Strengthening and Policy Coherence",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Conclusion: The Path Forward for a Resilient and Effective Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Understanding the Evolving Multipolar World Order",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "India's Strategic Priorities in a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Leveraging Opportunities: Economic Diplomacy and Trade in a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Mitigating Risks: Geopolitical Challenges and Security Concerns",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "India's Role in Shaping the Future of Multilateralism",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Conclusion: Charting India's Course in the Multipolar Era",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Introduction: Defining Strategic Autonomy in the 21st Century",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "India and the United States: A Strategic Partnership with Complexities",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "India and China: Competition, Cooperation, and Border Disputes",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "India and Russia: A Time-Tested Friendship Facing New Realities",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "India's Multilateral Engagements: Balancing Interests in a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 37,
+          "title": "Economic Diplomacy: Leveraging Trade and Investment for Strategic Advantage",
+          "content": []
+        },
+        {
+          "chapter_number": 38,
+          "title": "Conclusion: Navigating the Future – Challenges and Opportunities for India's Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 39,
+          "title": "Introduction: The Evolving Landscape of Diplomacy in the Digital Age",
+          "content": []
+        },
+        {
+          "chapter_number": 40,
+          "title": "AI in India's Foreign Policy: Opportunities and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 41,
+          "title": "Cyber Diplomacy: Navigating the Geopolitical Landscape of Cyberspace",
+          "content": []
+        },
+        {
+          "chapter_number": 42,
+          "title": "Space Diplomacy: India's Rising Influence in Outer Space",
+          "content": []
+        },
+        {
+          "chapter_number": 43,
+          "title": "Digital Public Diplomacy: Engaging Global Audiences and Shaping Narratives",
+          "content": []
+        },
+        {
+          "chapter_number": 44,
+          "title": "Economic Engagement Through Digital Platforms: Trade, Investment, and Development",
+          "content": []
+        },
+        {
+          "chapter_number": 45,
+          "title": "Case Studies: Successes and Failures of India's Digital Diplomacy Initiatives",
+          "content": []
+        },
+        {
+          "chapter_number": 46,
+          "title": "The Future of India's Digital Diplomacy: Challenges and Opportunities",
+          "content": []
+        },
+        {
+          "chapter_number": 47,
+          "title": "Conclusion: Towards a Technology-Enabled Foreign Policy for India",
+          "content": []
+        },
+        {
+          "chapter_number": 48,
+          "title": "Introduction: The Evolving Global Landscape and India's Strategic Imperatives",
+          "content": []
+        },
+        {
+          "chapter_number": 49,
+          "title": "Climate Change and Resource Scarcity: India's Response and Global Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 50,
+          "title": "Technological Disruption and the Future of Work: India's Digital Diplomacy and Innovation Ecosystem",
+          "content": []
+        },
+        {
+          "chapter_number": 51,
+          "title": "Geopolitical Shifts and Emerging Power Dynamics: India's Strategic Partnerships and Regional Leadership",
+          "content": []
+        },
+        {
+          "chapter_number": 52,
+          "title": "Demographic Shifts and Migration: India's Diaspora Diplomacy and Global Talent Pool",
+          "content": []
+        },
+        {
+          "chapter_number": 53,
+          "title": "Pandemics and Global Health Security: India's Vaccine Diplomacy and Healthcare Cooperation",
+          "content": []
+        },
+        {
+          "chapter_number": 54,
+          "title": "Seizing Opportunities: India's Vision for a Multipolar World and its Global Leadership Aspirations",
+          "content": []
+        },
+        {
+          "chapter_number": 55,
+          "title": "Conclusion: India's Path Forward in a Complex World",
+          "content": []
+        },
+        {
+          "chapter_number": 56,
+          "title": "Introduction: India's Evolving Role in International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 57,
+          "title": "Pillar 1: Championing a Rules-Based Multilateral Order",
+          "content": []
+        },
+        {
+          "chapter_number": 58,
+          "title": "Pillar 2: Advocating for Reformed Global Governance Institutions",
+          "content": []
+        },
+        {
+          "chapter_number": 59,
+          "title": "Pillar 3: Promoting Inclusive and Sustainable Growth Globally",
+          "content": []
+        },
+        {
+          "chapter_number": 60,
+          "title": "Pillar 4: India's Aspiration to be a 'Leading Power' and its Constructive Contributions",
+          "content": []
+        },
+        {
+          "chapter_number": 61,
+          "title": "Challenges and Opportunities: Navigating the Future of India's Vision",
+          "content": []
+        },
+        {
+          "chapter_number": 62,
+          "title": "Conclusion: India's Vision as a Guiding Framework for its International Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 63,
+          "title": "Introduction: India's Evolving Role in a Multipolar World",
+          "content": []
+        },
+        {
+          "chapter_number": 64,
+          "title": "India's Balancing Act: Managing Relationships with Major Powers",
+          "content": []
+        },
+        {
+          "chapter_number": 65,
+          "title": "Leveraging Capabilities: Economic Growth, Military Modernization, and Technological Advancement",
+          "content": []
+        },
+        {
+          "chapter_number": 66,
+          "title": "From Balancing Power to Leading Power: Opportunities and Challenges",
+          "content": []
+        },
+        {
+          "chapter_number": 67,
+          "title": "Case Studies: India's Foreign Policy in Action",
+          "content": []
+        },
+        {
+          "chapter_number": 68,
+          "title": "Conclusion: India's Future Trajectory and Implications for UPSC Aspirants",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A21",
+      "name": "Part XXI: Appendices and Resources",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "Core Concepts: Foundational Terms in India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Regional Dynamics: Key Terms Related to India's Neighbourhood Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "Global Partnerships: Defining Key Relationships and Strategies",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Security and Defence: Terminology in India's Strategic Affairs",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "Economic Diplomacy: Key Terms in India's Trade and Investment Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "The Nehruvian Era (1947-1964): Foundation and Principles",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "The Indira Gandhi Era (1966-1984): Realism and Regional Power",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Post-Cold War Era (1991-2000): Economic Liberalization and Strategic Autonomy",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "The 21st Century (2001-Present): Multi-Alignment and Rising Power",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Key Treaties and Agreements: A Comprehensive List",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Chronology of Major Events: A Detailed Timeline",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "India's Geopolitical Significance: A Map-Based Introduction",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Mapping India's Border Disputes and Security Concerns",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "India's Neighborhood: A Geographical Perspective on Bilateral Relations",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Mapping India's Connectivity Projects: Enhancing Regional Integration",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "The Indo-Pacific Region: India's Strategic Footprint on the Map",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Introduction: Understanding the Significance of PYQs for UPSC Indian Foreign Policy Preparation",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "India's Bilateral Relations: Analyzing PYQs on Key Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 19,
+          "title": "India's Multilateral Engagements: Examining PYQs on International Organizations and Forums",
+          "content": []
+        },
+        {
+          "chapter_number": 20,
+          "title": "Foreign Policy Doctrines and Principles: Understanding the Theoretical Framework through PYQs",
+          "content": []
+        },
+        {
+          "chapter_number": 21,
+          "title": "Contemporary Issues in Indian Foreign Policy: Analyzing Recent PYQs",
+          "content": []
+        },
+        {
+          "chapter_number": 22,
+          "title": "Answer Writing Strategies for Indian Foreign Policy Questions in UPSC Mains",
+          "content": []
+        },
+        {
+          "chapter_number": 23,
+          "title": "Conclusion: Key Takeaways and Future Directions for UPSC Aspirants",
+          "content": []
+        },
+        {
+          "chapter_number": 24,
+          "title": "Foundational Texts on India's Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 25,
+          "title": "Contemporary Academic Analyses of India's Global Role",
+          "content": []
+        },
+        {
+          "chapter_number": 26,
+          "title": "Official Documents and Government Publications",
+          "content": []
+        },
+        {
+          "chapter_number": 27,
+          "title": "Journals and Periodicals for In-depth Analysis",
+          "content": []
+        },
+        {
+          "chapter_number": 28,
+          "title": "Online Resources and Databases",
+          "content": []
+        },
+        {
+          "chapter_number": 29,
+          "title": "Preparing for UPSC: Specific Reading Strategies",
+          "content": []
+        },
+        {
+          "chapter_number": 30,
+          "title": "Introduction: The Indispensable Role of PYQs in UPSC International Relations Preparation",
+          "content": []
+        },
+        {
+          "chapter_number": 31,
+          "title": "Unveiling Exam Patterns: Analyzing Trends in International Relations PYQs",
+          "content": []
+        },
+        {
+          "chapter_number": 32,
+          "title": "Identifying High-Priority Topics: Decoding Syllabus through PYQs",
+          "content": []
+        },
+        {
+          "chapter_number": 33,
+          "title": "Mastering Answer Writing: Structuring and Presenting Effective Responses",
+          "content": []
+        },
+        {
+          "chapter_number": 34,
+          "title": "Case Studies: Analyzing PYQs with Model Answers and Explanations",
+          "content": []
+        },
+        {
+          "chapter_number": 35,
+          "title": "Beyond PYQs: Complementary Resources for International Relations Preparation",
+          "content": []
+        },
+        {
+          "chapter_number": 36,
+          "title": "Conclusion: Maximizing PYQ Utility for UPSC International Relations Success",
+          "content": []
+        }
+      ]
+    },
+    {
+      "part_number": "A22",
+      "name": "Conclusion",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "India's Shifting Foreign Policy Landscape: A Historical Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 2,
+          "title": "Navigating the Neighborhood: India's Regional Diplomacy",
+          "content": []
+        },
+        {
+          "chapter_number": 3,
+          "title": "India and the Major Powers: Balancing Interests and Partnerships",
+          "content": []
+        },
+        {
+          "chapter_number": 4,
+          "title": "Economic Diplomacy and Global Trade: India's Growing Influence",
+          "content": []
+        },
+        {
+          "chapter_number": 5,
+          "title": "India's Role in Multilateral Institutions and Global Governance",
+          "content": []
+        },
+        {
+          "chapter_number": 6,
+          "title": "Internal Dynamics and External Pressures: Shaping India's Foreign Policy Choices",
+          "content": []
+        },
+        {
+          "chapter_number": 7,
+          "title": "Future Trajectories: India's Role in a Changing World Order",
+          "content": []
+        },
+        {
+          "chapter_number": 8,
+          "title": "Recap: Key Themes and India's Evolving Foreign Policy",
+          "content": []
+        },
+        {
+          "chapter_number": 9,
+          "title": "UPSC Syllabus Alignment: Mapping Chapters to Key Topics",
+          "content": []
+        },
+        {
+          "chapter_number": 10,
+          "title": "Analytical Skills and Critical Thinking: Preparing for the UPSC",
+          "content": []
+        },
+        {
+          "chapter_number": 11,
+          "title": "Memorization and Retention Strategies: Maximizing Exam Performance",
+          "content": []
+        },
+        {
+          "chapter_number": 12,
+          "title": "Beyond the Exam: Understanding India's Place in the World",
+          "content": []
+        },
+        {
+          "chapter_number": 13,
+          "title": "Recap of Foundational Concepts and Theoretical Frameworks",
+          "content": []
+        },
+        {
+          "chapter_number": 14,
+          "title": "Evolution of India's Foreign Policy: A Historical Overview",
+          "content": []
+        },
+        {
+          "chapter_number": 15,
+          "title": "Core Principles and Objectives: A Reaffirmation",
+          "content": []
+        },
+        {
+          "chapter_number": 16,
+          "title": "Key Bilateral and Multilateral Relationships: A Consolidated View",
+          "content": []
+        },
+        {
+          "chapter_number": 17,
+          "title": "Thematic Issues in India's Foreign Policy: A Synthesis",
+          "content": []
+        },
+        {
+          "chapter_number": 18,
+          "title": "Future Prospects and Emerging Trends: A Forward-Looking Perspective",
+          "content": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "input_file": "/Users/sauravtripathi/Downloads/generate-pdf/gemini-book-generator/results/Outlines/international-relations.json",
+  "start_time": "2025-04-12T10:01:03.201959",
+  "processed_points": [
+    "p0-c0-s0-intro",
+    "p0-c0-s0-p0",
+    "p0-c0-s0-p1",
+    "p0-c0-s0-p2",
+    "p0-c0-s0-p3",
+    "p0-c0-s0-p4",
+    "p0-c0-s0-p5",
+    "p0-c0-s0-p6",
+    "p0-c0-s1-intro"
+  ],
+  "errors": [],
+  "api_calls": [
+    {
+      "timestamp": "2025-04-12T10:01:04.031962",
+      "item_key": "p0-c0-s0-intro",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 3859,
+      "error": null,
+      "response_snippet": "```json {   \"introduction_text\": \"This chapter, \\\"Defining and Understanding India's Foreign Policy,\\\" serves as a foundational exploration of a crucial aspect of India's international relations.  It ",
+      "response_length": 1839
+    },
+    {
+      "timestamp": "2025-04-12T10:01:09.221566",
+      "item_key": "p0-c0-s0-p0",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 1977,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"Foreign policy, in the context of international relations, encompasses a state's overall strategy for interacting with other actors in the global arena. It's not merely a",
+      "response_length": 1392
+    },
+    {
+      "timestamp": "2025-04-12T10:01:13.628759",
+      "item_key": "p0-c0-s0-p1",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 2183,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"India's foreign policy, consistently evolving since independence, is fundamentally driven by a complex interplay of core objectives.  These objectives, while often interc",
+      "response_length": 2172
+    },
+    {
+      "timestamp": "2025-04-12T10:01:19.730421",
+      "item_key": "p0-c0-s0-p2",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 2039,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"India's foreign policy rests on a foundation of core principles that have consistently guided its interactions with the international community.  Crucially, the Panchshee",
+      "response_length": 1753
+    },
+    {
+      "timestamp": "2025-04-12T10:01:26.223898",
+      "item_key": "p0-c0-s0-p3",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 2028,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"While inextricably linked, 'national interest' and 'foreign policy' are distinct concepts. National interest encompasses the aggregate of goals, aspirations, and security",
+      "response_length": 2145
+    },
+    {
+      "timestamp": "2025-04-12T10:01:33.053158",
+      "item_key": "p0-c0-s0-p4",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 2097,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"India's foreign policy toolkit encompasses a diverse range of instruments, each playing a distinct role in achieving its strategic objectives.  Diplomacy, the cornerstone",
+      "response_length": 1513
+    },
+    {
+      "timestamp": "2025-04-12T10:01:38.158063",
+      "item_key": "p0-c0-s0-p5",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 2077,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"India's foreign policy is deeply intertwined with its domestic landscape.  Public opinion, while often perceived as a diffuse force, can significantly influence governmen",
+      "response_length": 1924
+    },
+    {
+      "timestamp": "2025-04-12T10:01:43.819921",
+      "item_key": "p0-c0-s0-p6",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 1949,
+      "error": null,
+      "response_snippet": "```json {   \"point_content\": \"India's foreign policy has undergone significant transformations since independence, reflecting evolving geopolitical landscapes and national priorities.  The Nehruvian e",
+      "response_length": 1729
+    },
+    {
+      "timestamp": "2025-04-12T10:01:47.935793",
+      "item_key": "p0-c0-s1-intro",
+      "model": "gemini-1.5-flash-8b",
+      "attempt": 1,
+      "status": "success_parsed_json",
+      "prompt_length": 3260,
+      "error": null,
+      "response_snippet": "```json {   \"introduction_text\": \"This chapter, \\\"Diplomacy as a Tool of Indian Foreign Policy,\\\" delves into the crucial role of diplomacy in shaping India's international relations.  It aims to prov",
+      "response_length": 1400
+    }
+  ],
+  "model_used": "gemini-1.5-flash-8b"
+}

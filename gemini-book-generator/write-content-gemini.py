@@ -5,7 +5,7 @@ import argparse
 import time
 import random
 import gc
-from typing import Dict, List, Any, Set, Optional # Import Set, Optional
+from typing import Dict, List, Any, Set, Optional
 from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
@@ -13,6 +13,7 @@ import sys
 import traceback
 import re
 from collections import deque
+from decimal import Decimal # For accurate sorting of numbers like 1.1, 1.10, 1.2
 
 # Rich library for enhanced terminal display
 try:
@@ -76,14 +77,13 @@ console = Console() if rich_available else SimpleConsole()
 Progress = Progress if rich_available else SimpleProgress
 
 # --- Constants ---
-# Use the model name detected from the user's previous run log
 DEFAULT_MODEL = "gemini-1.5-flash-8b" # Fallback default
 API_CALL_LIMIT_PER_MINUTE = 15 # Adjust based on Gemini model limits
 API_RETRY_COUNT = 3
-INTERIM_SAVE_FREQUENCY = 5 # Save after every N points processed
+INTERIM_SAVE_FREQUENCY = 5 # Save after every N items processed
 
 # --- File Handling ---
-
+# load_json_file and save_json_file remain unchanged
 def load_json_file(file_path: str) -> Optional[Dict]:
     """Load and parse JSON file, returning None on error."""
     try:
@@ -124,38 +124,35 @@ def save_json_file(data: Dict, file_path: str) -> bool:
     except Exception as e:
         console.print(f"[bold red]Error saving JSON file: {e}[/bold red]")
         console.print(f"Path: {file_path}")
-        # Don't print full traceback on save error unless debugging
-        # console.print(traceback.format_exc())
         return False
 
 # --- JSON Fixing ---
-
+# fix_json_string remains unchanged
 def fix_json_string(json_str: str) -> str:
     """Attempt to fix common issues with malformed JSON responses from LLMs."""
     if not json_str or not json_str.strip(): return '{}'
+    # Remove markdown code fences
     json_str = re.sub(r'^```json\s*', '', json_str.strip(), flags=re.IGNORECASE)
     json_str = re.sub(r'\s*```$', '', json_str)
-    json_str = re.sub(r'^```\s*', '', json_str.strip())
+    json_str = re.sub(r'^```\s*', '', json_str.strip()) # Handle case with no 'json' identifier
     json_str = json_str.strip()
+    # Ensure it starts/ends with braces (basic check)
     start_brace = json_str.find('{')
     end_brace = json_str.rfind('}')
     if start_brace == -1 or end_brace == -1 or start_brace >= end_brace:
-        # console.print(f"[yellow]Warning: Response doesn't seem JSON-like: {json_str[:100]}...[/yellow]")
-        return json_str # Return cleaned string, let caller handle wrapping
+        return json_str # Return cleaned string, let caller handle wrapping or parsing error
     json_str = json_str[start_brace : end_brace + 1]
-    # Slightly safer regex for trailing commas
+    # Remove trailing commas before closing braces/brackets
     json_str = re.sub(r'(?<=[}\]"\'\w\d]),\s*(?=[}\]])', '', json_str)
+    # Basic brace balancing (add missing closing braces)
     open_braces = json_str.count('{')
     close_braces = json_str.count('}')
     if open_braces > close_braces:
         json_str += '}' * (open_braces - close_braces)
-        # console.print(f"[yellow]Warning: Added {open_braces - close_braces} closing braces.[/yellow]")
-    # elif close_braces > open_braces:
-        # console.print(f"[yellow]Warning: More closing braces ({close_braces}) than opening ({open_braces}).[/yellow]")
     return json_str
 
 # --- Logging ---
-
+# check_content_log_file remains unchanged
 def check_content_log_file(input_file_name: str, output_dir: Path) -> tuple[str, Dict, Set[str]]:
     """Check/create a log file for content generation, tracking processed points."""
     log_file_name = f"{Path(input_file_name).stem}_content_log.json"
@@ -169,20 +166,18 @@ def check_content_log_file(input_file_name: str, output_dir: Path) -> tuple[str,
         if isinstance(log_data, dict) and isinstance(log_data.get("processed_points"), list):
              processed_points_set = set(log_data["processed_points"])
              console.print(f"Log file loaded. {len(processed_points_set)} items previously processed.")
-             # Ensure essential keys exist if loading old log
              log_data.setdefault("errors", [])
              log_data.setdefault("api_calls", [])
              return str(log_file_path), log_data, processed_points_set
         else:
              console.print("[yellow]Warning: Existing log file has unexpected structure or failed to load. Creating new log.[/yellow]")
-             log_data = {} # Reset log data
+             log_data = {}
 
-    # Create new log structure if no valid log exists or loading failed
     console.print("Creating new content log file.")
     log_data = {
         "input_file": input_file_name,
         "start_time": datetime.now().isoformat(),
-        "processed_points": [], # List of strings like "p0-c0-intro", "p0-c0-s0-p0"
+        "processed_points": [], # List of unique item keys (e.g., "p0_ch1_intro", "p0_ch1_pt0")
         "errors": [],
         "api_calls": [],
         "model_used": None
@@ -191,46 +186,47 @@ def check_content_log_file(input_file_name: str, output_dir: Path) -> tuple[str,
     return str(log_file_path), log_data, processed_points_set
 
 # --- Prompt Generation ---
-# generate_intro_prompt and generate_point_prompt remain unchanged from previous version
-# (They were correctly designed for the task)
-def generate_intro_prompt(book_title: str, part_name: str, chapter_title: str, chapter_desc: str, outline_data: Dict) -> str:
-    """Generates the prompt for writing a chapter introduction."""
-    outline_summary = f"The chapter '{chapter_title}' within Part '{part_name}' covers the following sections:\n"
-    for i, section in enumerate(outline_data.get('writing_sections', [])):
-        outline_summary += f"{i+1}. {section.get('section_title', 'Untitled Section')}\n"
+
+# <<< MODIFICATION >>> Added new intro prompt function for the revised chapter structure
+def generate_chapter_intro_prompt(book_title: str, part_name: str, chapter_title: str, chapter_points: List[str]) -> str:
+    """Generates the prompt for writing an introduction for a chapter (derived from section_title)."""
+    points_summary = "\n".join(f"- {point}" for point in chapter_points)
     prompt = f"""You are an expert academic writer specializing in content for UPSC (Union Public Service Commission) aspirants in India. Your task is to write a compelling and informative introduction for a specific chapter in a book.
 
 BOOK CONTEXT: - Book Title: "{book_title}" - Focus: India's International Relations for UPSC Aspirants
-CHAPTER DETAILS: - Part Name: "{part_name}" - Chapter Title: "{chapter_title}" - Chapter Description/Goal: "{chapter_desc}"
-CHAPTER OUTLINE SUMMARY:
-{outline_summary}
+CHAPTER DETAILS: - Part Name: "{part_name}" - Chapter Title: "{chapter_title}"
+POINTS COVERED IN THIS CHAPTER:
+{points_summary}
 
-TASK: Based on the provided context, chapter details, and outline summary, write an engaging introduction for this chapter.
-- The introduction should clearly state the chapter's purpose and scope.
-- It should briefly preview the key topics or sections that will be covered (referencing the outline summary).
+TASK: Based on the provided context, chapter title, and the summary of points to be covered, write an engaging introduction for this specific chapter.
+- The introduction should clearly state the chapter's purpose and scope, as indicated by its title and the points it will cover.
+- It should briefly preview the key topics (points) that will be discussed within this chapter.
 - Set the stage for the reader, highlighting the importance of this chapter's content for understanding India's International Relations in the context of the UPSC exam.
-- Maintain an academic, clear, and concise tone suitable for UPSC preparation material. - Aim for a well-structured paragraph or two.
+- Maintain an academic, clear, and concise tone suitable for UPSC preparation material.
+- Aim for a well-structured paragraph or two.
+- This introduction will be labeled as item '.1' within the chapter.
 
 OUTPUT FORMAT: Your *entire* response MUST be a single, valid JSON object containing only one key, "introduction_text", with the generated introduction as its string value.
 Example JSON Output:
 {{
-  "introduction_text": "This chapter delves into the foundational concepts of foreign policy..."
+  "introduction_text": "This chapter focuses on defining foreign policy..."
 }}
 
 CRITICAL INSTRUCTIONS: 1. Respond ONLY with the valid JSON object. 2. Do NOT include any text outside the JSON object. 3. Ensure the text addresses the task based *only* on the provided information.
 """
     return prompt
 
-def generate_point_prompt(book_title: str, part_name: str, chapter_title: str, section_title: str, point_text: str) -> str:
-    """Generates the prompt for elaborating on a specific content point."""
-    prompt = f"""You are an expert academic writer specializing in content for UPSC (Union Public Service Commission) aspirants in India. Your task is to elaborate on a *single specific point* within a book chapter section.
+# <<< MODIFICATION >>> generate_point_prompt signature unchanged, but usage context changes (no section_title needed)
+def generate_point_prompt(book_title: str, part_name: str, chapter_title: str, point_text: str, point_number: str) -> str:
+    """Generates the prompt for elaborating on a specific content point within a numbered chapter."""
+    prompt = f"""You are an expert academic writer specializing in content for UPSC (Union Public Service Commission) aspirants in India. Your task is to elaborate on a *single specific point* within a book chapter.
 
 BOOK CONTEXT: - Book Title: "{book_title}" - Focus: India's International Relations for UPSC Aspirants
-CURRENT LOCATION IN BOOK: - Part Name: "{part_name}" - Chapter Title: "{chapter_title}" - Section Title: "{section_title}"
+CURRENT LOCATION IN BOOK: - Part Name: "{part_name}" - Chapter Title: "{chapter_title}" - Current Item Number: {point_number}
 SPECIFIC POINT TO ELABORATE ON: "{point_text}"
 
-TASK: Write a detailed and informative paragraph (or more if necessary) that elaborates *only* on the specific point mentioned above.
-- Assume this content will follow previous points and precede subsequent points within the section.
+TASK: Write a detailed and informative paragraph (or more if necessary) that elaborates *only* on the specific point mentioned above ({point_number}).
+- Assume this content will follow the chapter introduction (item .1) and any preceding points, and precede subsequent points within the chapter.
 - Provide accurate, relevant information, analysis, examples, and context suitable for a UPSC aspirant.
 - Ensure the generated content directly addresses the instruction given in the specific point.
 - Maintain an academic, clear, and objective tone. Use precise language.
@@ -247,8 +243,7 @@ CRITICAL INSTRUCTIONS: 1. Respond ONLY with the valid JSON object. 2. Do NOT inc
     return prompt
 
 # --- Gemini API Interaction ---
-# test_gemini_api remains unchanged
-
+# test_gemini_api and call_gemini_api_for_content remain unchanged
 def test_gemini_api(api_key: str, model_name: str = DEFAULT_MODEL):
     """Quick test of the Gemini API with a simple prompt, expecting JSON."""
     simple_prompt = "Return a JSON object with one key 'status' and value 'ok'."
@@ -276,7 +271,6 @@ def test_gemini_api(api_key: str, model_name: str = DEFAULT_MODEL):
         console.print(f"[bold red]API test failed for model {model_name}: {e}[/bold red]")
         if "API key not valid" in str(e): console.print("[bold red]Check GOOGLE_API_KEY.[/bold red]")
         elif "billing" in str(e).lower(): console.print("[bold red]Check billing status.[/bold red]")
-        # else: console.print(traceback.format_exc()) # Optionally verbose
         return False
 
 
@@ -292,7 +286,6 @@ def call_gemini_api_for_content(
     """
     Calls the Gemini API, expecting a JSON response with a specific key.
     Handles retries, basic JSON fixing, and logging. Returns parsed JSON on success, None on failure.
-    *** Removed internal console.status to avoid conflicts with Progress bar. ***
     """
     genai.configure(api_key=api_key)
     generation_config = {"temperature": 0.75, "top_p": 0.95, "top_k": 40, "max_output_tokens": 4096}
@@ -315,7 +308,7 @@ def call_gemini_api_for_content(
                 console.print(f"[yellow]Retrying '{item_key_for_log}' (attempt {current_attempt_num}/{max_attempts}) after {backoff_time:.2f}s delay...[/yellow]")
                 time.sleep(backoff_time)
 
-            # --- API Call (NO internal console.status) ---
+            # --- API Call ---
             model = genai.GenerativeModel(model_name=model_name, generation_config=generation_config, safety_settings=safety_settings)
             response = model.generate_content(prompt)
             # --- End API Call ---
@@ -327,7 +320,7 @@ def call_gemini_api_for_content(
                     raise Exception(f"API call blocked for item '{item_key_for_log}'. Reason: {reason}.")
                 if response.parts: response_text = "".join(part.text for part in response.parts if hasattr(part, 'text'))
                 elif hasattr(response, 'text'): response_text = response.text
-                else: response_text = str(response)
+                else: response_text = str(response) # Fallback
                 if not response_text or not response_text.strip(): raise Exception(f"API returned empty response for '{item_key_for_log}'.")
 
                 log_entry["response_snippet"] = response_text[:200].replace('\n', ' ')
@@ -335,7 +328,7 @@ def call_gemini_api_for_content(
 
                 try: # JSON Parsing Block
                     parsed_response = json.loads(fixed_json_str)
-                    if not isinstance(parsed_response, dict): raise json.JSONDecodeError(f"Parsed JSON not dict", fixed_json_str, 0)
+                    if not isinstance(parsed_response, dict): raise json.JSONDecodeError(f"Parsed JSON is not a dict", fixed_json_str, 0)
                     if expected_key in parsed_response:
                         log_entry.update({"status": "success_parsed_json", "response_length": len(str(parsed_response.get(expected_key)))})
                         log_data.setdefault("api_calls", []).append(log_entry)
@@ -345,7 +338,6 @@ def call_gemini_api_for_content(
                         raise json.JSONDecodeError(f"Expected key '{expected_key}' missing. Found: {list(parsed_response.keys())}", fixed_json_str, 0)
                 except json.JSONDecodeError as e:
                     error_msg = f"JSON parsing error for '{item_key_for_log}' attempt {current_attempt_num}: {e}"
-                    # console.print(f"[red]JSON ERROR: {error_msg}[/red]") # Can be noisy
                     log_entry.update({"status": "json_error_after_fix", "error": str(e), "raw_response_snippet": fixed_json_str[:200]})
                     # Heuristic wrap attempt
                     if not fixed_json_str.strip().startswith('{'):
@@ -355,16 +347,15 @@ def call_gemini_api_for_content(
                             log_data.setdefault("api_calls", []).append(log_entry)
                             gc.collect()
                             return wrapped_response # SUCCESS (heuristic)
-                        except Exception as wrap_err: pass # Failed wrap, continue retry/fail
+                        except Exception as wrap_err: pass
                     if current_attempt_num < max_attempts:
                         log_data.setdefault("api_calls", []).append(log_entry)
                         continue
                     else:
                         log_entry["status"] = "json_error_final_attempt"
-                        break # Exit retry loop
+                        break
             except Exception as proc_err:
                  error_msg = f"Response processing error for '{item_key_for_log}' attempt {current_attempt_num}: {proc_err}"
-                 # console.print(f"[red]PROC ERROR: {error_msg}[/red]") # Can be noisy
                  log_entry.update({"status": "response_processing_error", "error": str(proc_err)})
                  if current_attempt_num < max_attempts:
                      log_data.setdefault("api_calls", []).append(log_entry)
@@ -374,7 +365,7 @@ def call_gemini_api_for_content(
                      break
         except Exception as api_err:
             error_msg = f"API call exception for '{item_key_for_log}' attempt {current_attempt_num} using {model_name}: {api_err}"
-            console.print(f"[bold red]API ERROR: {error_msg}[/bold red]") # Keep API errors visible
+            console.print(f"[bold red]API ERROR: {error_msg}[/bold red]")
             log_entry.update({"status": "api_exception", "error": str(api_err)})
             if current_attempt_num < max_attempts:
                 log_data.setdefault("api_calls", []).append(log_entry)
@@ -388,12 +379,10 @@ def call_gemini_api_for_content(
     if log_entry.get("status") == "pending": log_entry["status"] = "failed_all_attempts"
     log_entry["error"] = log_entry.get("error", "Unknown error after all retries")
 
-    # Ensure final failed attempt is logged
     final_log_list = log_data.setdefault("api_calls", [])
     if not any(c.get("item_key") == item_key_for_log and c.get("attempt") == max_attempts for c in final_log_list):
         final_log_list.append(log_entry)
 
-    # Add to main errors list in log
     error_log_list = log_data.setdefault("errors", [])
     if not any(err.get("item_key") == item_key_for_log for err in error_log_list):
         error_log_list.append({
@@ -409,8 +398,8 @@ def call_gemini_api_for_content(
 
 def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model_name_arg: str):
     """
-    Processes the outlined JSON, generates content including hierarchical numbering,
-    and saves the generated content in a new structure, incrementally.
+    Processes outlined JSON, generates introductions (X.1) and points (X.2, X.3...)
+    for each chapter (derived from section_title), and saves incrementally.
     """
     console.print(f"Starting content generation for input file: [cyan]{input_file}[/cyan]")
     input_data = load_json_file(input_file)
@@ -426,143 +415,141 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
     console.print(f"Using model: [cyan]{model_name_arg}[/cyan]")
     console.print(f"Resuming from log. {len(processed_points_set)} items previously processed.")
 
-    # --- Initialize NEW Output Data Structure ---
+    # --- Initialize NEW Output Data Structure (Revised Structure with Content List) ---
     output_data = {
         "bookTitle": book_title,
         "generation_model": model_name_arg,
         "generation_timestamp": datetime.now().isoformat(),
         "parts": []
     }
-    # Load previous interim output if log exists and interim file exists
+    # Load previous interim output
     output_file_stem = Path(input_file).stem
     interim_filename = output_dir / f"{output_file_stem}_content_interim.json"
     if processed_points_set and interim_filename.exists():
         console.print(f"Loading existing interim output file: {interim_filename}")
         interim_data = load_json_file(str(interim_filename))
-        if interim_data and interim_data.get('bookTitle') == book_title: # Basic check
+        if interim_data and interim_data.get('bookTitle') == book_title:
             output_data = interim_data
             output_data["generation_model"] = model_name_arg # Update model if changed
             output_data["generation_timestamp"] = datetime.now().isoformat() # Update timestamp
+            output_data.setdefault("parts", [])
             console.print("Successfully loaded data from interim file.")
         else:
-            console.print("[yellow]Warning: Interim file found but seems invalid or for a different book. Starting fresh output structure.[/yellow]")
-            # Reset output_data if interim load fails
+            console.print("[yellow]Warning: Interim file found but seems invalid or for a different book. Starting fresh.[/yellow]")
             output_data = {"bookTitle": book_title, "generation_model": model_name_arg, "generation_timestamp": datetime.now().isoformat(), "parts": []}
 
 
-    # Calculate total points based on input outline and log
-    total_points_to_process = 0
+    # --- Identify Items to Process (Intros & Points) & Build Skeleton ---
+    total_items_to_process = 0
     items_to_process_list = []
-    original_total_items = 0 # Count all potential items regardless of log
+    original_total_items = 0 # Count potential intros + points
 
-    # --- Build Skeleton Output Structure & Identify Items to Process ---
-    for p_idx, part in enumerate(input_data.get('parts', [])):
-        part_name = part.get('name', f'Part {p_idx + 1}')
-        part_number_str = f"A{p_idx + 1}" # <<< MODIFICATION >>> Added part numbering
+    for p_idx, input_part in enumerate(input_data.get('parts', [])):
+        part_name = input_part.get('name', f'Part {p_idx + 1}')
+        part_number_str = f"A{p_idx + 1}"
 
-        # Ensure corresponding part exists in output_data, preserving order and adding number
-        output_part = next((p for i, p in enumerate(output_data['parts']) if p.get('name') == part_name), None)
+        # Ensure corresponding part exists in output_data
+        output_part = next((p for p in output_data['parts'] if p.get('name') == part_name), None)
         if output_part is None:
-            output_part = {
-                'part_number': part_number_str, # <<< MODIFICATION >>> Store part number
-                'name': part_name,
-                'chapters': []
-            }
+            output_part = {'part_number': part_number_str, 'name': part_name, 'chapters': []}
             output_data['parts'].append(output_part)
         else:
-             # Ensure numbering exists even if loaded from interim
-             output_part.setdefault('part_number', part_number_str)
-             output_part.setdefault('chapters', [])
+            output_part.setdefault('part_number', part_number_str)
+            output_part.setdefault('chapters', [])
 
+        chapter_counter_in_part = 0
+        for c_idx_orig, input_chapter_orig in enumerate(input_part.get('chapters', [])):
+            if 'generated_outline' in input_chapter_orig and isinstance(input_chapter_orig['generated_outline'], dict):
+                for s_idx, input_section in enumerate(input_chapter_orig['generated_outline'].get('writing_sections', [])):
+                    chapter_counter_in_part += 1
+                    current_chapter_number = chapter_counter_in_part
+                    chapter_title = input_section.get('section_title', f'Chapter {current_chapter_number}')
+                    points_to_cover = input_section.get('content_points_to_cover', [])
+                    if not isinstance(points_to_cover, list): points_to_cover = []
 
-        for c_idx, chapter in enumerate(part.get('chapters', [])):
-            chapter_title = chapter.get('title', f'Chapter {c_idx + 1}')
-            chapter_number_int = c_idx + 1 # <<< MODIFICATION >>> Added chapter numbering
+                    # Ensure corresponding chapter exists in output_part
+                    output_chapter = next((ch for ch in output_part['chapters'] if ch.get('title') == chapter_title and ch.get('chapter_number') == current_chapter_number), None)
+                    if output_chapter is None:
+                        output_chapter = {
+                            'chapter_number': current_chapter_number,
+                            'title': chapter_title,
+                            'content': [] # <<< Content is now a list of items (intro + points)
+                        }
+                        output_part['chapters'].append(output_chapter)
+                        output_part['chapters'].sort(key=lambda x: x.get('chapter_number', 0))
+                    else:
+                        output_chapter.setdefault('chapter_number', current_chapter_number)
+                        output_chapter.setdefault('content', [])
 
-            # Ensure corresponding chapter exists in output_part, preserving order and adding number
-            output_chapter = next((c for i, c in enumerate(output_part['chapters']) if c.get('title') == chapter_title), None)
-            if output_chapter is None:
-                output_chapter = {
-                    'chapter_number': chapter_number_int, # <<< MODIFICATION >>> Store chapter number
-                    'title': chapter_title,
-                    'generated_content': {'introduction': None, 'sections': []}
-                 }
-                output_part['chapters'].append(output_chapter)
+                    # --- Check Intro Item ---
+                    intro_number_str = f"{current_chapter_number}.1"
+                    # Use a unique key for logging the intro
+                    intro_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-intro"
+                    original_total_items += 1
+
+                    # Check if intro already exists in output structure
+                    intro_already_generated = any(
+                        item.get('item_number') == intro_number_str and item.get('type') == 'introduction' and item.get('text')
+                        for item in output_chapter['content'] if isinstance(item, dict)
+                    )
+
+                    if intro_key not in processed_points_set and not intro_already_generated:
+                        total_items_to_process += 1
+                        items_to_process_list.append({
+                            'type': 'intro',
+                            'key': intro_key,
+                            'p_idx': p_idx,
+                            'c_idx_orig': c_idx_orig,
+                            's_idx': s_idx,
+                            'part_name': part_name,
+                            'chapter_title': chapter_title, # New chapter title
+                            'chapter_points': points_to_cover, # Pass points for context
+                            'item_number_to_assign': intro_number_str # e.g., "1.1"
+                        })
+
+                    # --- Check Point Items ---
+                    for pt_idx, point_text in enumerate(points_to_cover):
+                        point_number_str = f"{current_chapter_number}.{pt_idx + 2}" # <<< Points start at .2 >>>
+                        # Unique key for logging the point
+                        point_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-p{pt_idx}"
+                        original_total_items += 1
+
+                        # Check if point already exists in output structure
+                        point_already_generated = any(
+                            item.get('item_number') == point_number_str and item.get('type') == 'point' and item.get('text')
+                            for item in output_chapter['content'] if isinstance(item, dict)
+                        )
+
+                        if point_key not in processed_points_set and not point_already_generated:
+                            total_items_to_process += 1
+                            items_to_process_list.append({
+                                'type': 'point',
+                                'key': point_key,
+                                'p_idx': p_idx,
+                                'c_idx_orig': c_idx_orig,
+                                's_idx': s_idx,
+                                'pt_idx': pt_idx, # Store original point index if needed later
+                                'part_name': part_name,
+                                'chapter_title': chapter_title, # New chapter title
+                                'point_text': point_text,
+                                'item_number_to_assign': point_number_str # e.g., "1.2", "1.3"
+                            })
             else:
-                 # Ensure numbering and structure exists even if loaded from interim
-                 output_chapter.setdefault('chapter_number', chapter_number_int)
-                 output_chapter.setdefault('generated_content', {'introduction': None, 'sections': []})
-                 output_chapter['generated_content'].setdefault('introduction', None)
-                 output_chapter['generated_content'].setdefault('sections', [])
+                 console.print(f"[yellow]Warning: Skipping input structure Part {p_idx+1}-OrigChapter {c_idx_orig+1} - Missing 'generated_outline'.[/yellow]")
+
+    # --- End Item Identification & Skeleton Build ---
 
 
-            if 'generated_outline' in chapter and isinstance(chapter['generated_outline'], dict):
-                # Check Introduction
-                intro_key = f"p{p_idx}-c{c_idx}-intro"
-                original_total_items += 1
-                # Only add to processing list if not already done (check log *and* existing content)
-                # No specific number for intro, just check if content exists
-                intro_content_exists = isinstance(output_chapter['generated_content'].get('introduction'), str) and output_chapter['generated_content']['introduction']
-                if intro_key not in processed_points_set and not intro_content_exists:
-                    total_points_to_process += 1
-                    items_to_process_list.append({'type': 'intro', 'key': intro_key, 'p_idx': p_idx, 'c_idx': c_idx})
-
-                # Check Points
-                sections = chapter['generated_outline'].get('writing_sections', [])
-                if isinstance(sections, list):
-                     for s_idx, section in enumerate(sections):
-                          section_title = section.get('section_title', f'Section {s_idx+1}')
-                          section_number_int = s_idx + 1 # <<< MODIFICATION >>> Added section number (for point numbering)
-                          points = section.get('content_points_to_cover', [])
-
-                          # Ensure section exists in output structure, adding number
-                          output_section = next((s for i, s in enumerate(output_chapter['generated_content']['sections']) if s.get('title') == section_title), None)
-                          if output_section is None:
-                              output_section = {
-                                  'section_number_in_chapter': section_number_int, # <<< MODIFICATION >>> Store section number
-                                  'title': section_title,
-                                  'points': []
-                              }
-                              output_chapter['generated_content']['sections'].append(output_section)
-                          else:
-                               output_section.setdefault('section_number_in_chapter', section_number_int)
-                               output_section.setdefault('points', [])
-
-
-                          if isinstance(points, list):
-                             for pt_idx, point_text in enumerate(points):
-                                 point_key = f"p{p_idx}-c{c_idx}-s{s_idx}-p{pt_idx}"
-                                 point_number_str = f"{chapter_number_int}.{section_number_int}.{pt_idx + 1}" # <<< MODIFICATION >>> Calculate point number
-
-                                 original_total_items += 1
-                                 # Only process if not in log AND not already present in output structure (check by number or original text)
-                                 point_already_generated = any(
-                                     p.get('point_number') == point_number_str or # Check number first
-                                     (p.get('original_point') == point_text and p.get('content')) # Fallback check original text
-                                     for p in output_section['points']
-                                     if isinstance(p, dict) # Ensure p is a dictionary
-                                 )
-                                 if point_key not in processed_points_set and not point_already_generated:
-                                     total_points_to_process += 1
-                                     items_to_process_list.append({
-                                         'type': 'point', 'key': point_key, 'p_idx': p_idx, 'c_idx': c_idx,
-                                         's_idx': s_idx, 'pt_idx': pt_idx, 'point_text': point_text,
-                                         'section_title': section_title,
-                                         'point_number_to_assign': point_number_str # <<< MODIFICATION >>> Pass the calculated number
-                                     })
-            else: # No outline found in input
-                console.print(f"[yellow]Warning: Skipping Chapter {part_number_str}-{chapter_number_int} ('{chapter_title[:30]}...') - Missing 'generated_outline' in input file.[/yellow]")
-    # --- End Skeleton Build & Item Identification ---
-
-
-    if total_points_to_process == 0:
-        console.print("[bold green]No new content points or introductions found to process based on the log file and existing interim data.[/bold green]")
+    if total_items_to_process == 0:
+        console.print("[bold green]No new introductions or points found to process based on the log file and existing interim data.[/bold green]")
         if original_total_items > 0:
              console.print(f"(Total potential items in input: {original_total_items}, Processed items in log: {len(processed_points_set)})")
-        return
+        # Need to potentially save final structure if loaded from interim
+        # return # Don't exit early
 
-    console.print(f"Total items (intros + points) to process in this run: {total_points_to_process}")
+    console.print(f"Total items (intros + points) to process in this run: {total_items_to_process}")
 
+    # (Filenames and logging setup remain similar)
     final_filename = output_dir / f"{output_file_stem}_content_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     final_log_filename = Path(log_file_path)
 
@@ -573,17 +560,26 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
     api_call_timestamps: Deque[float] = deque(maxlen=API_CALL_LIMIT_PER_MINUTE)
     processed_count_session = 0
 
+    # Helper function for sorting content items
+    def get_sort_key(item):
+        try:
+            # Use Decimal for accurate sorting of 1.1, 1.10, 1.2 etc.
+            return Decimal(item.get('item_number', '0.0'))
+        except:
+            return Decimal('0.0') # Fallback for invalid numbers
+
     with Progress(
         SpinnerColumn(), TextColumn("[progress.description]{task.description}"), BarColumn(),
         TaskProgressColumn(), TextColumn("({task.completed}/{task.total})"), TimeRemainingColumn(), TimeElapsedColumn(),
-        console=console, disable=not rich_available or total_points_to_process == 0
+        console=console, disable=not rich_available or total_items_to_process == 0
     ) as progress:
 
-        task_id = progress.add_task(f"Generating content for [cyan]{book_title}[/cyan]", total=total_points_to_process)
+        task_id = progress.add_task(f"Generating content for [cyan]{book_title}[/cyan]", total=total_items_to_process)
 
         for item_info in items_to_process_list:
             item_key = item_info['key']
-            p_idx, c_idx = item_info['p_idx'], item_info['c_idx']
+            item_type = item_info['type']
+            item_number_to_assign = item_info['item_number_to_assign']
 
             # --- Rate Limiting ---
             now = time.monotonic()
@@ -591,109 +587,91 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
                 time_since_oldest = now - api_call_timestamps[0]
                 if time_since_oldest < 60.0:
                     wait_time = 60.0 - time_since_oldest
-                    # console.print(f"[yellow]Rate limit (~{API_CALL_LIMIT_PER_MINUTE}/min) hit. Waiting {wait_time:.2f}s...[/yellow]")
                     time.sleep(wait_time)
                     now = time.monotonic()
                 else:
                     api_call_timestamps.popleft()
-            random_delay = random.uniform(0.5, 1.5) # Slightly shorter delay
+            random_delay = random.uniform(0.5, 1.5)
             time.sleep(random_delay)
             # --- End Rate Limiting ---
 
-            # Get references to input chapter data (for outline) and output chapter data (for storing content)
-            input_part = input_data['parts'][p_idx]
-            input_chapter = input_part['chapters'][c_idx]
+            # Retrieve context
+            part_name = item_info['part_name']
+            chapter_title = item_info['chapter_title']
+            p_idx = item_info['p_idx']
 
-            # Get references to the OUTPUT structures (which now include numbering)
-            output_part = output_data['parts'][p_idx] # Assumes order is maintained
-            output_chapter = output_part['chapters'][c_idx] # Assumes order is maintained
-            part_name = output_part.get('name') # Get name from output structure
-            chapter_title = output_chapter.get('title') # Get title from output structure
-            chapter_desc = input_chapter.get('description', '') # Description still comes from input
-            outline_data = input_chapter.get('generated_outline', {}) # Get outline from INPUT data
+            # Derive chapter number from the item number string "Chap.Item" -> Chap
+            try:
+                current_chapter_number = int(item_number_to_assign.split('.')[0])
+            except:
+                console.print(f"[bold red]Error parsing chapter number from item number '{item_number_to_assign}' for item {item_key}. Skipping.[/bold red]")
+                continue
 
             api_response = None
             try:
-                if item_info['type'] == 'intro':
-                    progress.update(task_id, description=f"Intro {output_part.get('part_number', 'P?')}-Ch{output_chapter.get('chapter_number', 'C?')} '{chapter_title[:20]}...'")
-                    prompt = generate_intro_prompt(book_title, part_name, chapter_title, chapter_desc, outline_data)
+                # Find the correct output Part and Chapter
+                output_part = next((p for p in output_data['parts'] if p.get('part_number') == f"A{p_idx + 1}"), None)
+                if not output_part:
+                     console.print(f"[bold red]Internal Error: Output part A{p_idx + 1} not found for item {item_key}. Skipping.[/bold red]")
+                     continue
+                output_chapter = next((ch for ch in output_part['chapters'] if ch.get('chapter_number') == current_chapter_number and ch.get('title') == chapter_title), None)
+                if not output_chapter:
+                     console.print(f"[bold red]Internal Error: Output chapter {current_chapter_number} ('{chapter_title}') not found for item {item_key}. Skipping.[/bold red]")
+                     continue
+                output_chapter.setdefault('content', []) # Ensure content list exists
+
+                # --- Generate Content based on Type ---
+                if item_type == 'intro':
+                    progress.update(task_id, description=f"Intro {item_number_to_assign} '{chapter_title[:20]}...'")
+                    chapter_points = item_info['chapter_points']
+                    prompt = generate_chapter_intro_prompt(book_title, part_name, chapter_title, chapter_points)
                     api_response = call_gemini_api_for_content(prompt, api_key, log_data, model_name_arg, expected_key="introduction_text", item_key_for_log=item_key)
 
-                    # Store in OUTPUT data structure
+                    # Store Intro
+                    intro_entry = {
+                        'item_number': item_number_to_assign,
+                        'type': 'introduction',
+                        'text': None
+                    }
                     if api_response and "introduction_text" in api_response:
-                        output_chapter['generated_content']['introduction'] = api_response["introduction_text"]
+                        intro_entry['text'] = api_response["introduction_text"]
                     else:
-                         output_chapter['generated_content']['introduction'] = f"ERROR: Failed to generate intro ({item_key})."
-                         console.print(f"[bold red]\n -> Failed intro generation for {item_key}. See log.[/bold red]")
+                        intro_entry['text'] = f"ERROR: Failed to generate introduction ({item_key}). See log."
+                        console.print(f"[bold red]\n -> Failed intro generation for {item_key} ({item_number_to_assign}). See log.[/bold red]")
 
-                elif item_info['type'] == 'point':
-                    s_idx, pt_idx = item_info['s_idx'], item_info['pt_idx']
-                    section_title = item_info['section_title']
+                    # Add or update intro entry in content list
+                    existing_item_index = next((i for i, item in enumerate(output_chapter['content']) if isinstance(item, dict) and item.get('item_number') == item_number_to_assign), -1)
+                    if existing_item_index != -1:
+                        output_chapter['content'][existing_item_index] = intro_entry
+                    else:
+                        output_chapter['content'].append(intro_entry)
+
+
+                elif item_type == 'point':
+                    progress.update(task_id, description=f"Point {item_number_to_assign} '{chapter_title[:15]}...'")
                     point_text = item_info['point_text']
-                    point_number_to_assign = item_info['point_number_to_assign'] # <<< MODIFICATION >>> Get the pre-calculated point number
-                    num_points_in_section = len(outline_data.get('writing_sections', [])[s_idx].get('content_points_to_cover', []))
-
-                    progress.update(task_id, description=f"Pt {point_number_to_assign} '{section_title[:15]}...'")
-
-                    prompt = generate_point_prompt(book_title, part_name, chapter_title, section_title, point_text)
+                    prompt = generate_point_prompt(book_title, part_name, chapter_title, point_text, item_number_to_assign)
                     api_response = call_gemini_api_for_content(prompt, api_key, log_data, model_name_arg, expected_key="point_content", item_key_for_log=item_key)
 
-                    # Find the correct section in OUTPUT data
-                    output_section = next((s for s in output_chapter['generated_content']['sections'] if s.get('title') == section_title), None)
-                    # Should not be None because skeleton was built, but handle defensively
-                    if output_section is None:
-                         console.print(f"[bold red]Internal Error: Output section '{section_title}' not found for item {item_key}. Skipping.[/bold red]")
-                         # Log this specific error?
-                         processed_points_set.add(item_key) # Mark as processed to avoid retrying
-                         log_data["processed_points"] = sorted(list(processed_points_set))
-                         progress.update(task_id, advance=1)
-                         continue # Skip to next item
-
-                    output_section.setdefault('points', [])
-
-                    # Find if point dict exists, otherwise create
-                    point_entry = None
-                    # <<< MODIFICATION >>> Try finding existing point by number first
-                    for i, p_entry in enumerate(output_section['points']):
-                         if isinstance(p_entry, dict) and p_entry.get('point_number') == point_number_to_assign:
-                              point_entry = p_entry
-                              break
-                    # Fallback: If not found by number, try matching by original_point text (handles older interim files potentially)
-                    if point_entry is None:
-                        for i, p_entry in enumerate(output_section['points']):
-                             if isinstance(p_entry, dict) and p_entry.get('original_point') == point_text and not p_entry.get('point_number'): # Match text only if number isn't set yet
-                                  point_entry = p_entry
-                                  break
-
-                    if point_entry is None:
-                          # Create new entry with number
-                          point_entry = {
-                              'point_number': point_number_to_assign, # <<< MODIFICATION >>> Add number
-                              'original_point': point_text,
-                              'content': None
-                          }
-                          # Ensure list is long enough before inserting at correct index
-                          while len(output_section['points']) <= pt_idx:
-                               output_section['points'].append(None) # Pad with None placeholder if needed
-                          # Replace placeholder or append
-                          if pt_idx < len(output_section['points']) and output_section['points'][pt_idx] is None:
-                                output_section['points'][pt_idx] = point_entry
-                          elif pt_idx == len(output_section['points']):
-                                output_section['points'].append(point_entry)
-                          else:
-                                # Index already occupied by something unexpected? Insert cautiously.
-                                console.print(f"[yellow]Warning: Point index {pt_idx} mismatch for {item_key}. Inserting.[/yellow]")
-                                output_section['points'].insert(pt_idx, point_entry)
-
-                    # Ensure number is set even if found via fallback text match
-                    point_entry.setdefault('point_number', point_number_to_assign)
-
-                    # Store result in the correct point_entry within OUTPUT data
+                    # Store Point
+                    point_entry = {
+                        'item_number': item_number_to_assign,
+                        'type': 'point',
+                        'original_point': point_text, # Keep original text for reference
+                        'text': None
+                    }
                     if api_response and "point_content" in api_response:
-                        point_entry['content'] = api_response["point_content"]
+                        point_entry['text'] = api_response["point_content"]
                     else:
-                        point_entry['content'] = f"ERROR: Failed to generate point ({item_key}). See log."
-                        console.print(f"[bold red]\n -> Failed point generation for {item_key} ({point_number_to_assign}). See log.[/bold red]")
+                        point_entry['text'] = f"ERROR: Failed to generate point ({item_key}). See log."
+                        console.print(f"[bold red]\n -> Failed point generation for {item_key} ({item_number_to_assign}). See log.[/bold red]")
+
+                    # Add or update point entry in content list
+                    existing_item_index = next((i for i, item in enumerate(output_chapter['content']) if isinstance(item, dict) and item.get('item_number') == item_number_to_assign), -1)
+                    if existing_item_index != -1:
+                        output_chapter['content'][existing_item_index] = point_entry
+                    else:
+                        output_chapter['content'].append(point_entry)
 
 
                 # --- Post-processing for the item ---
@@ -701,11 +679,14 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
                 processed_points_set.add(item_key)
                 log_data["processed_points"] = sorted(list(processed_points_set))
                 processed_count_session += 1
+
+                # Sort content within the chapter after adding/updating
+                output_chapter['content'].sort(key=get_sort_key)
+
                 progress.update(task_id, advance=1)
 
                 # --- Incremental Saving ---
-                if processed_count_session % INTERIM_SAVE_FREQUENCY == 0 or processed_count_session == total_points_to_process:
-                    # Save the constructed OUTPUT data
+                if processed_count_session % INTERIM_SAVE_FREQUENCY == 0 or processed_count_session == total_items_to_process:
                     if not save_json_file(output_data, str(interim_filename)):
                          console.print("[bold red]FATAL: Failed to save interim data. Exiting.[/bold red]")
                          sys.exit(1)
@@ -716,7 +697,11 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
 
             except KeyboardInterrupt:
                  console.print("\n[bold yellow]Keyboard interrupt detected. Saving progress before exiting...[/bold yellow]")
-                 save_json_file(output_data, str(interim_filename)) # Save output_data
+                 # Ensure content is sorted before final save
+                 for p in output_data.get('parts', []):
+                     for ch in p.get('chapters', []):
+                         ch.get('content', []).sort(key=get_sort_key)
+                 save_json_file(output_data, str(interim_filename))
                  log_data["processed_points"] = sorted(list(processed_points_set))
                  save_json_file(log_data, str(final_log_filename))
                  console.print("Progress saved. Exiting.")
@@ -729,42 +714,55 @@ def process_outlined_json(input_file: str, api_key: str, output_dir: Path, model
                      "error": f"Unexpected loop error: {e}", "traceback": traceback.format_exc(),
                      "status": "unexpected_error", "model_used": model_name_arg
                  })
-                 # Attempt to save progress
-                 save_json_file(output_data, str(interim_filename)) # Save output_data
+                 # Ensure content is sorted before saving progress on error
+                 for p in output_data.get('parts', []):
+                     for ch in p.get('chapters', []):
+                         ch.get('content', []).sort(key=get_sort_key)
+                 save_json_file(output_data, str(interim_filename))
                  log_data["processed_points"] = sorted(list(processed_points_set))
                  save_json_file(log_data, str(final_log_filename))
                  console.print("[yellow]Attempting to continue processing next item...[/yellow]")
                  if item_key not in processed_points_set:
                      processed_points_set.add(item_key)
                      log_data["processed_points"] = sorted(list(processed_points_set))
-                 progress.update(task_id, advance=1) # Advance progress bar
+                 progress.update(task_id, advance=1) # Advance progress bar even on error
 
     # --- Finalization ---
     console.print("\n[bold green]=== Content Generation Complete ===[/bold green]")
 
-    # Final save - rename interim to final
+    # Ensure final sort before saving
+    for p in output_data.get('parts', []):
+        p.get('chapters', []).sort(key=lambda x: x.get('chapter_number', 0))
+        for ch in p.get('chapters', []):
+            ch.get('content', []).sort(key=get_sort_key)
+
+    # Final save - rename interim to final (logic remains similar)
     try:
         final_save_path = Path(final_filename)
         interim_path = Path(interim_filename)
-        if interim_path.exists():
-             # Before renaming, ensure final save of potentially modified output_data
-             if not save_json_file(output_data, str(interim_path)):
-                  console.print("[bold red]Error performing final save to interim file before rename.[/bold red]")
-             else:
-                  interim_path.rename(final_save_path)
-                  console.print(f"Final content saved to: [link=file://{os.path.abspath(final_save_path)}]{final_save_path}[/link]")
-        else: # Should only happen if no items were processed or saving failed earlier
+
+        if not save_json_file(output_data, str(interim_path)):
+            console.print("[bold red]Error performing final save to interim file before rename.[/bold red]")
+            if not save_json_file(output_data, str(final_save_path)):
+                 console.print("[bold red]Error saving final output file directly.[/bold red]")
+            else:
+                 console.print(f"Final content saved to: [link=file://{os.path.abspath(final_save_path)}]{final_save_path}[/link]")
+        elif interim_path.exists():
+            interim_path.rename(final_save_path)
+            console.print(f"Final content saved to: [link=file://{os.path.abspath(final_save_path)}]{final_save_path}[/link]")
+        else:
              if not save_json_file(output_data, str(final_save_path)):
-                  console.print("[bold red]Error saving final output file directly.[/bold red]")
+                  console.print("[bold red]Error saving final output file directly (interim file did not exist).[/bold red]")
              else:
                   console.print(f"Final content saved to: [link=file://{os.path.abspath(final_save_path)}]{final_save_path}[/link]")
     except Exception as e:
-        console.print(f"[bold red]Error renaming interim file to final output file: {e}[/bold red]")
+        console.print(f"[bold red]Error finalizing output file: {e}[/bold red]")
         console.print(f"Data might still be available at: {interim_filename}")
 
+    # Final log save
     log_data["end_time"] = datetime.now().isoformat()
     log_data["total_items_processed_in_log"] = len(processed_points_set)
-    final_errors = [e for e in log_data.get("errors", []) if e.get("status") != "resolved"]
+    final_errors = [e for e in log_data.get("errors", [])]
     log_data["items_with_final_errors"] = len(final_errors)
 
     if not save_json_file(log_data, str(final_log_filename)):
@@ -783,10 +781,9 @@ def main():
     print(f"\n--- Script Execution Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
     load_dotenv() # Attempt to load .env
 
-    # Determine default model - check environment first, then use hardcoded default
     effective_default_model = os.environ.get("DEFAULT_GEMINI_MODEL", DEFAULT_MODEL)
 
-    parser = argparse.ArgumentParser(description='Generate chapter content with numbering using Google Gemini API based on an outlined JSON.')
+    parser = argparse.ArgumentParser(description='Generate chapter introductions (X.1) and points (X.2+) using Google Gemini API based on an outlined JSON.') # Updated description
     parser.add_argument('--input_file', type=str, required=True, help='Path to the input JSON file containing book structure and generated outlines.')
     parser.add_argument('--output_dir', type=str, default='results/Content', help='Directory to save output content JSON and log files (default: results/Content)')
     parser.add_argument('--model', type=str, default=effective_default_model, help=f'Name of the Gemini model to use (default: {effective_default_model})')
