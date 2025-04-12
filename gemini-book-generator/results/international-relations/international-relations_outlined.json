@@ -6,306 +6,94 @@
       "chapters": [
         {
           "title": "Defining Foreign Policy: A State's External Strategy",
-          "description": "Explores the concept of foreign policy as the sum of a state's strategies and actions in interacting with other states and international actors. Focuses on objectives like securing national interests (security, economic prosperity, values), and the instruments used (diplomacy, economic measures, military power).",
-          "generated_outline": {
-            "chapter_title_suggestion": "Foreign Policy: Strategies and Actions of the State",
-            "writing_sections": [
-              {
-                "section_title": "Defining Foreign Policy: An Introduction",
-                "content_points_to_cover": [
-                  "Define foreign policy comprehensively, highlighting its multifaceted nature as encompassing strategies and actions.  Distinguish it from domestic policy.",
-                  "Discuss the evolution of the concept of foreign policy, tracing its historical development and shifts in understanding.",
-                  "Explore the various perspectives on defining foreign policy, including realist, liberalist, constructivist, and critical approaches.  Compare and contrast these perspectives and their implications for understanding state behavior."
-                ],
-                "Google Search_terms": [
-                  "Definition of foreign policy",
-                  "History of foreign policy",
-                  "Theories of foreign policy: realism, liberalism, constructivism"
-                ]
-              },
-              {
-                "section_title": "National Interests as the Driving Force of Foreign Policy",
-                "content_points_to_cover": [
-                  "Identify and analyze the core national interests that shape a state's foreign policy.  Focus on security (military, political, and economic), economic prosperity (trade, investment, development), and ideological values (human rights, democracy, etc.).",
-                  "Discuss how these national interests can sometimes conflict and require prioritization by policymakers. Provide examples of historical situations where states faced such dilemmas.",
-                  "Examine the role of domestic factors (public opinion, interest groups, bureaucratic politics) in influencing the definition and pursuit of national interests."
-                ],
-                "Google Search_terms": [
-                  "National interests in foreign policy",
-                  "Security dilemma in international relations",
-                  "Economic interests and foreign policy",
-                  "Ideology and foreign policy"
-                ]
-              },
-              {
-                "section_title": "Instruments of Foreign Policy: Diplomacy, Economic Measures, and Military Power",
-                "content_points_to_cover": [
-                  "Analyze diplomacy as a primary instrument of foreign policy, covering its various forms (bilateral, multilateral, public, quiet diplomacy) and effectiveness.",
-                  "Discuss the use of economic measures (sanctions, trade agreements, aid, investment) as tools to achieve foreign policy objectives.  Provide specific examples of successful and unsuccessful applications.",
-                  "Examine the role of military power in foreign policy, including its limitations and potential negative consequences.  Discuss the concept of hard power versus soft power."
-                ],
-                "Google Search_terms": [
-                  "Diplomacy in international relations",
-                  "Economic sanctions effectiveness",
-                  "Military intervention in foreign policy",
-                  "Soft power vs hard power"
-                ]
-              },
-              {
-                "section_title": "The Role of Non-State Actors in Shaping Foreign Policy",
-                "content_points_to_cover": [
-                  "Analyze the growing influence of non-state actors (multinational corporations, international organizations, NGOs, terrorist groups) on foreign policy decision-making.",
-                  "Discuss how states adapt their foreign policies to engage with these non-state actors.  Provide examples of states collaborating with or confronting non-state actors.",
-                  "Explore the challenges and opportunities presented by the increasing interconnectedness of state and non-state actors in the international system."
-                ],
-                "Google Search_terms": [
-                  "Non-state actors and foreign policy",
-                  "Influence of multinational corporations on foreign policy",
-                  "International organizations and state sovereignty",
-                  "Terrorism and foreign policy"
-                ]
-              },
-              {
-                "section_title": "Conclusion: The Evolving Landscape of Foreign Policy",
-                "content_points_to_cover": [
-                  "Summarize the key arguments and findings of the chapter.",
-                  "Discuss the challenges and opportunities facing states in formulating and implementing their foreign policies in the 21st century, including globalization, technological advancements, and climate change.",
-                  "Offer concluding thoughts on the future of foreign policy and its implications for international relations."
-                ],
-                "Google Search_terms": [
-                  "Future of foreign policy",
-                  "Globalization and foreign policy",
-                  "Technology and foreign policy",
-                  "Climate change and international relations"
-                ]
-              }
-            ]
-          }
+          "description": "Explores the concept of foreign policy as the sum of a state's strategies and actions in interacting with other states and international actors. Focuses on objectives like securing national interests (security, economic prosperity, values), and the instruments used (diplomacy, economic measures, military power)."
         },
         {
           "title": "Understanding International Relations (IR): The Academic Discipline",
-          "description": "Introduces International Relations as the academic field studying the interactions between various global actors, including states, International Organizations (IOs), Non-Governmental Organizations (NGOs), and Multinational Corporations (MNCs). Covers key concepts like sovereignty, power, anarchy, and interdependence.",
-          "generated_outline": {
-            "chapter_title_suggestion": "International Relations: A Foundation",
-            "writing_sections": [
-              {
-                "section_title": "Defining International Relations as an Academic Discipline",
-                "content_points_to_cover": [
-                  "Define International Relations (IR) concisely and broadly, emphasizing its interdisciplinary nature.  Highlight its evolution as a field of study.",
-                  "Explain the core purpose of studying IR: understanding interactions between global actors and the resulting global phenomena.",
-                  "Discuss the key differences between IR and other related disciplines like comparative politics, international law, and international political economy, highlighting areas of overlap and divergence.",
-                  "Briefly introduce the major theoretical perspectives in IR (realism, liberalism, constructivism, etc.)—this will be expanded later, but a brief overview sets the stage."
-                ],
-                "Google Search_terms": [
-                  "Definition of International Relations",
-                  "History of International Relations as a discipline",
-                  "Interdisciplinary nature of International Relations",
-                  "IR theoretical perspectives overview"
-                ]
-              },
-              {
-                "section_title": "Key Actors in the International System",
-                "content_points_to_cover": [
-                  "Define and explain the role of states as the primary actors in IR, including the concept of state sovereignty and its limitations in the modern era.",
-                  "Analyze the increasing influence of non-state actors: International Organizations (IOs) such as the UN and WTO, Non-Governmental Organizations (NGOs) like Amnesty International and Doctors Without Borders, and Multinational Corporations (MNCs) like Apple and Coca-Cola. Provide specific examples of their influence on global events.",
-                  "Discuss the changing nature of state power in the context of globalization and the rise of non-state actors.  Explore the concept of 'soft power' in relation to these actors.",
-                  "Compare and contrast the motivations, capabilities, and constraints of these different types of actors."
-                ],
-                "Google Search_terms": [
-                  "State sovereignty in international relations",
-                  "Role of IOs in global governance",
-                  "Influence of NGOs on international politics",
-                  "Multinational corporations and global power",
-                  "Soft power in international relations"
-                ]
-              },
-              {
-                "section_title": "Core Concepts in International Relations",
-                "content_points_to_cover": [
-                  "Define and explain the concept of anarchy in the international system, and its implications for state behavior. Discuss different interpretations of anarchy.",
-                  "Analyze the concept of power in IR.  Explain different dimensions of power (hard power, soft power, smart power) and how they are exercised by various actors.",
-                  "Examine the concept of interdependence in the international system, including economic interdependence, security interdependence, and environmental interdependence. Provide examples of both cooperation and conflict stemming from interdependence.",
-                  "Discuss the relationship between these core concepts (anarchy, power, interdependence) and how they interact to shape international outcomes."
-                ],
-                "Google Search_terms": [
-                  "Anarchy in international relations theory",
-                  "Power in international relations",
-                  "Hard power vs. soft power",
-                  "Interdependence in international relations",
-                  "Cooperation and conflict in international relations"
-                ]
-              },
-              {
-                "section_title": "Conclusion: The Ongoing Evolution of International Relations",
-                "content_points_to_cover": [
-                  "Summarize the key concepts and actors discussed in the chapter.",
-                  "Briefly reflect on the challenges and complexities of studying IR in an increasingly interconnected and rapidly changing world.",
-                  "Suggest avenues for further exploration of the topics covered, pointing towards subsequent chapters in the book.",
-                  "Offer a concluding thought on the importance of understanding IR for navigating the global landscape."
-                ],
-                "Google Search_terms": [
-                  "Challenges in international relations",
-                  "Future of international relations",
-                  "Globalization and international relations"
-                ]
-              }
-            ]
-          }
+          "description": "Introduces International Relations as the academic field studying the interactions between various global actors, including states, International Organizations (IOs), Non-Governmental Organizations (NGOs), and Multinational Corporations (MNCs). Covers key concepts like sovereignty, power, anarchy, and interdependence."
         },
         {
           "title": "Distinguishing Foreign Policy and International Relations",
-          "description": "Clarifies the relationship between Foreign Policy (FP) and International Relations (IR), highlighting FP as the practical application of strategies by states within the broader theoretical and analytical context provided by IR. Uses concepts from chapters 1.1 and 1.2 to illustrate the distinction.",
-          "generated_outline": {
-            "chapter_title_suggestion": "Foreign Policy as the Practice of International Relations",
-            "writing_sections": [
-              {
-                "section_title": "Defining International Relations (IR) and Foreign Policy (FP)",
-                "content_points_to_cover": [
-                  "Define International Relations (IR) comprehensively, emphasizing its theoretical and analytical nature.  Discuss its core concerns: state interactions, international organizations, global governance, and the dynamics of power.",
-                  "Define Foreign Policy (FP) precisely, focusing on its practical application.  Explain that it's the set of strategies and actions a state employs to achieve its interests in the international arena.  Highlight the role of decision-making processes within states.",
-                  "Compare and contrast IR and FP, emphasizing that IR provides the framework (theories, concepts, models) within which FP operates.  Use a metaphor to illustrate this relationship (e.g., IR is the map, FP is the journey).  Consider including a visual aid (diagram)."
-                ],
-                "Google Search_terms": [
-                  "definition of international relations",
-                  "theoretical approaches in international relations",
-                  "foreign policy definition and examples",
-                  "foreign policy decision making process"
-                ]
-              },
-              {
-                "section_title": "The Interplay Between IR Theory and FP Practice",
-                "content_points_to_cover": [
-                  "Select at least three prominent IR theories (e.g., realism, liberalism, constructivism) from chapters 1.1 and 1.2.",
-                  "For each theory, explain how it informs or shapes FP choices.  Provide concrete examples of how states' foreign policies reflect the tenets of these theories (e.g., realist foreign policy emphasizing national security, liberal foreign policy promoting international cooperation).",
-                  "Discuss potential tensions or contradictions between IR theories and the practical constraints of FP.  For instance, a state might theoretically subscribe to liberalism but act in a realist manner due to security concerns."
-                ],
-                "Google Search_terms": [
-                  "realism in international relations examples",
-                  "liberal internationalism foreign policy",
-                  "constructivism and foreign policy",
-                  "application of IR theories to foreign policy"
-                ]
-              },
-              {
-                "section_title": "Case Studies: Illustrating the FP-IR Distinction",
-                "content_points_to_cover": [
-                  "Select at least two case studies demonstrating the interplay between IR theory and FP. These could include historical events or contemporary foreign policy decisions.",
-                  "Analyze each case study, showing how a specific state's FP was shaped by broader IR dynamics and theoretical frameworks discussed in previous sections.",
-                  "Compare and contrast the FP responses in the chosen case studies, highlighting similarities and differences in their approaches and outcomes. Consider the impact of domestic factors on FP choices."
-                ],
-                "Google Search_terms": [
-                  "case studies foreign policy decision making",
-                  "impact of international relations on foreign policy case studies",
-                  "foreign policy analysis case studies",
-                  "comparative foreign policy analysis"
-                ]
-              },
-              {
-                "section_title": "Conclusion:  The Dynamic Relationship Between IR and FP",
-                "content_points_to_cover": [
-                  "Summarize the key distinctions between IR and FP, reiterating that FP is the practical application of strategies within the broader context of IR theories and analytical frameworks.",
-                  "Emphasize the dynamic and reciprocal relationship between IR and FP: IR theories inform FP choices, and FP actions can influence the evolution of IR theories.",
-                  "Offer concluding thoughts on the importance of understanding this relationship for analyzing international affairs and predicting future trends.  Consider briefly mentioning the limitations of applying IR theories to real-world FP."
-                ],
-                "Google Search_terms": [
-                  "relationship between theory and practice in international relations",
-                  "limitations of applying IR theories to foreign policy",
-                  "future trends in international relations and foreign policy"
-                ]
-              }
-            ]
-          }
+          "description": "Clarifies the relationship between Foreign Policy (FP) and International Relations (IR), highlighting FP as the practical application of strategies by states within the broader theoretical and analytical context provided by IR. Uses concepts from chapters 1.1 and 1.2 to illustrate the distinction."
         },
         {
           "title": "Key Theories of International Relations and Indian Foreign Policy",
-          "description": "Provides an overview of major IR theories – Realism (emphasizing power politics and national interest), Liberalism (focusing on cooperation, international institutions, and democratic peace), and Constructivism (highlighting the role of ideas, norms, and identity). Analyzes how these theories offer different lenses for understanding and evaluating India's foreign policy choices. [1.3]",
+          "description": "Provides an overview of major IR theories – Realism (emphasizing power politics and national interest), Liberalism (focusing on cooperation, international institutions, and democratic peace), and Constructivism (highlighting the role of ideas, norms, and identity). Analyzes how these theories offer different lenses for understanding and evaluating India's foreign policy choices. [1.3]"
+        },
+        {
+          "title": "The Evolution of International Relations as a Discipline",
+          "description": "Traces the historical development of IR study, noting its origins post-WWI and its evolution through major debates (e.g., Idealism vs. Realism). Discusses the shift from a predominantly state-centric focus to encompass a wider range of actors and issues like globalization and transnational challenges. [1.4]",
           "generated_outline": {
-            "chapter_title_suggestion": "Indian Foreign Policy Through the Lens of Realism, Liberalism, and Constructivism",
+            "chapter_title_suggestion": "The Genesis and Growth of International Relations: From Post-WWI Origins to Contemporary Challenges",
             "writing_sections": [
               {
-                "section_title": "Introduction: Understanding the Theoretical Frameworks and Indian Foreign Policy",
+                "section_title": "The Interwar Genesis of International Relations as a Discipline",
                 "content_points_to_cover": [
-                  "Define the scope of the chapter and its objective: analyzing India's foreign policy through the lens of major IR theories.",
-                  "Briefly introduce the three main IR theories – Realism, Liberalism, and Constructivism – highlighting their core tenets and key differences.",
-                  "Explain why these theories are particularly relevant for understanding India's foreign policy context and choices.",
-                  "Outline the chapter's structure and the approach to analyzing India's foreign policy through each theoretical lens."
+                  "Detail the intellectual and political context that led to the emergence of IR as a distinct field of study after WWI. Focus on the failures of the pre-war international system and the search for solutions.",
+                  "Analyze the contributions of key early thinkers and their schools of thought.  Identify the major works and central arguments of these early scholars (e.g., Woodrow Wilson's idealism).",
+                  "Discuss the institutionalization of IR studies: establishment of academic departments, journals, and international organizations influencing the field.  Highlight early influential organizations and their roles."
                 ],
                 "Google Search_terms": [
-                  "Key theories of international relations",
-                  "Realism Liberalism Constructivism comparison",
-                  "Indian foreign policy overview"
+                  "Origins of International Relations",
+                  "Post-WWI international relations theory",
+                  "Woodrow Wilson and international relations",
+                  "Early international relations scholars",
+                  "Founding of IR departments"
                 ]
               },
               {
-                "section_title": "Realism and Indian Foreign Policy: Power Politics and National Interest",
+                "section_title": "The Rise of Realism and Idealism: A Foundational Debate",
                 "content_points_to_cover": [
-                  "Define Realism in detail, emphasizing its core assumptions about state behavior, anarchy, and the pursuit of power.",
-                  "Analyze specific instances in India's foreign policy history that can be interpreted through a realist lens (e.g., non-alignment during the Cold War, relations with Pakistan, nuclear weapons program).",
-                  "Discuss the limitations of applying a purely realist framework to understanding India's foreign policy, considering its complex regional and global engagements.",
-                  "Analyze India's pursuit of national interest and its strategic calculations in the context of regional and global power dynamics."
+                  "Define and contrast the core tenets of classical realism (Morgenthau, etc.) and idealism (Wilson, etc.) in IR theory.  Provide clear examples of each.",
+                  "Analyze the key debates between realists and idealists, focusing on their differing perspectives on human nature, state behavior, and the possibility of international cooperation.",
+                  "Discuss the historical context in which these perspectives emerged and evolved.  How did the Cold War influence these debates?",
+                  "Explore the limitations and strengths of both approaches in explaining international phenomena."
                 ],
                 "Google Search_terms": [
-                  "Realism in international relations",
-                  "Realist analysis of Indian foreign policy",
-                  "India's national interest",
-                  "India Pakistan relations realist perspective",
-                  "India's nuclear program realist interpretation"
+                  "Classical realism vs. idealism",
+                  "Hans Morgenthau",
+                  "E.H. Carr",
+                  "Idealism in international relations",
+                  "Cold War and IR theory"
                 ]
               },
               {
-                "section_title": "Liberalism and Indian Foreign Policy: Cooperation, Institutions, and Democratic Peace",
+                "section_title": "Beyond State-Centrism: The Expansion of the IR Discipline",
                 "content_points_to_cover": [
-                  "Define Liberalism in IR theory, focusing on cooperation, international institutions, and the promotion of democracy.",
-                  "Examine India's engagement with international organizations (e.g., UN, WTO, BRICS) and its role in multilateral diplomacy through a liberal framework.",
-                  "Analyze India's relationships with democratic states and the extent to which its foreign policy reflects a 'democratic peace' thesis.",
-                  "Explore the limitations of a purely liberal perspective, acknowledging the challenges and complexities of India's relationships with non-democratic states."
+                  "Explain the shift from a state-centric focus to a more inclusive approach encompassing non-state actors (NGOs, IGOs, MNCs, etc.). Provide examples of each.",
+                  "Analyze the impact of globalization on the study of international relations. How has increased interconnectedness shaped the field?",
+                  "Discuss the emergence of new research areas within IR, such as transnational crime, environmental politics, and human rights. Provide specific examples of research questions within these areas.",
+                  "Explore the challenges and opportunities presented by this expanded scope of IR, including issues of methodological pluralism and interdisciplinarity."
                 ],
                 "Google Search_terms": [
-                  "Liberalism in international relations",
-                  "India's role in international organizations",
-                  "India's multilateral diplomacy",
-                  "Democratic peace theory and India",
-                  "India's relations with democratic states"
+                  "Non-state actors in international relations",
+                  "Globalization and international relations",
+                  "Transnational crime",
+                  "Environmental politics IR",
+                  "Human rights in international relations",
+                  "Feminist IR theory",
+                  "Postcolonial IR theory"
                 ]
               },
               {
-                "section_title": "Constructivism and Indian Foreign Policy: Ideas, Norms, and Identity",
+                "section_title": "Contemporary Debates and Future Directions in International Relations",
                 "content_points_to_cover": [
-                  "Define Constructivism, emphasizing the role of ideas, norms, and identity in shaping state behavior and international relations.",
-                  "Analyze how India's national identity, its historical experiences, and its evolving self-perception influence its foreign policy choices.",
-                  "Discuss the impact of changing international norms (e.g., human rights, environmental protection) on India's foreign policy.",
-                  "Explore how constructivism helps explain India's evolving relationships with other states based on shared norms and values."
+                  "Identify and discuss current major debates within the field, such as constructivism, liberalism, critical theory, and post-structuralism.  Provide brief explanations of each.",
+                  "Analyze the impact of contemporary global challenges (e.g., climate change, terrorism, pandemics) on the study and practice of international relations.",
+                  "Explore emerging trends and future directions in the discipline.  What are the key questions driving current research?",
+                  "Conclude by summarizing the evolution of IR as a dynamic and evolving field, reflecting its ongoing adaptation to a rapidly changing world."
                 ],
                 "Google Search_terms": [
-                  "Constructivism in international relations",
-                  "India's national identity and foreign policy",
-                  "Norms and Indian foreign policy",
-                  "Constructivist analysis of India's relations with other states",
-                  "Impact of international norms on India"
-                ]
-              },
-              {
-                "section_title": "Comparative Analysis and Conclusion: Evaluating India's Foreign Policy Choices",
-                "content_points_to_cover": [
-                  "Compare and contrast the explanatory power of Realism, Liberalism, and Constructivism in understanding India's foreign policy.",
-                  "Identify the strengths and weaknesses of each theoretical approach in explaining specific aspects of India's foreign policy.",
-                  "Discuss the limitations of applying single theoretical lenses and suggest a more nuanced approach that integrates elements from multiple theories.",
-                  "Offer a concluding assessment of India's foreign policy, considering its evolving strategic environment and the challenges it faces in the 21st century."
-                ],
-                "Google Search_terms": [
-                  "Comparative analysis of IR theories",
-                  "Evaluating Indian foreign policy",
-                  "Strengths and weaknesses of IR theories",
-                  "Integrating IR theories",
-                  "Future of Indian foreign policy"
+                  "Contemporary international relations theory",
+                  "Constructivism in IR",
+                  "Liberalism in IR",
+                  "Critical theory and IR",
+                  "Post-structuralism and IR",
+                  "Future of International Relations"
                 ]
               }
             ]
           }
-        },
-        {
-          "title": "The Evolution of International Relations as a Discipline",
-          "description": "Traces the historical development of IR study, noting its origins post-WWI and its evolution through major debates (e.g., Idealism vs. Realism). Discusses the shift from a predominantly state-centric focus to encompass a wider range of actors and issues like globalization and transnational challenges. [1.4]"
         }
       ]
     },
@@ -314,15 +102,229 @@
       "chapters": [
         {
           "title": "Historical Context: Colonialism, Independence, and Partition",
-          "description": "Examines the lasting impact of the colonial experience and the struggle for independence on India's worldview and foreign policy principles, emphasizing sovereignty, anti-colonialism, and non-interference. Discusses the specific impact of Partition on regional relations. [2.1]"
+          "description": "Examines the lasting impact of the colonial experience and the struggle for independence on India's worldview and foreign policy principles, emphasizing sovereignty, anti-colonialism, and non-interference. Discusses the specific impact of Partition on regional relations. [2.1]",
+          "generated_outline": {
+            "chapter_title_suggestion": "Shaping India's Foreign Policy: The Enduring Legacy of Colonialism, Independence, and Partition",
+            "writing_sections": [
+              {
+                "section_title": "The Colonial Legacy: Shaping India's Worldview",
+                "content_points_to_cover": [
+                  "Analyze the impact of British colonialism on India's political, economic, and social structures.  Focus on how these structures influenced the development of India's post-independence foreign policy.",
+                  "Discuss the rise of Indian nationalism and its diverse strands, highlighting the role of anti-colonial sentiment in shaping India's foreign policy orientation.",
+                  "Examine specific examples of British policies (e.g., 'divide and rule', economic exploitation) and their lasting consequences on India's relations with neighboring countries and the global community.",
+                  "Analyze the impact of colonial administrative structures and institutions on India's post-independence governance and its approach to international relations."
+                ],
+                "Google Search_terms": [
+                  "British colonial policies in India",
+                  "Impact of colonialism on Indian nationalism",
+                  "Rise of Indian nationalism and foreign policy",
+                  "Colonial legacy and post-colonial foreign policy"
+                ]
+              },
+              {
+                "section_title": "The Struggle for Independence: Forging a Non-Aligned Path",
+                "content_points_to_cover": [
+                  "Detail the key figures and events of India's independence movement, emphasizing the role of Gandhian philosophy and its influence on India's commitment to non-violence and peaceful coexistence.",
+                  "Analyze Nehru's role in shaping India's foreign policy, focusing on his vision of non-alignment and its implications for India's relations with the US and USSR during the Cold War.",
+                  "Discuss the principles of Panchsheel and their significance in India's foreign policy, particularly in relation to its relations with its immediate neighbors.",
+                  "Examine the evolution of India's foreign policy from its initial non-alignment stance to its current, more multifaceted approach."
+                ],
+                "Google Search_terms": [
+                  "Nehru's foreign policy",
+                  "Non-alignment movement",
+                  "Panchsheel principles",
+                  "India's foreign policy during Cold War"
+                ]
+              },
+              {
+                "section_title": "The Partition of India: A Scar on Regional Relations",
+                "content_points_to_cover": [
+                  "Provide a detailed account of the Partition of India and Pakistan, highlighting the human cost and its lasting impact on the relationship between the two nations.",
+                  "Analyze the role of communal violence during Partition and its enduring effects on regional stability and trust.",
+                  "Discuss the unresolved issues stemming from Partition, such as the Kashmir dispute, and their implications for India's foreign policy in South Asia.",
+                  "Examine the various attempts at conflict resolution and peace-building between India and Pakistan, analyzing their successes and failures.",
+                  "Explore the impact of Partition on the displacement of populations and its continued influence on regional demographics and political dynamics."
+                ],
+                "Google Search_terms": [
+                  "Partition of India",
+                  "India-Pakistan relations",
+                  "Kashmir conflict",
+                  "Communal violence in Partition",
+                  "Refugee crisis Partition India"
+                ]
+              },
+              {
+                "section_title": "Sovereignty, Anti-Colonialism, and Non-Interference: Cornerstones of Indian Foreign Policy",
+                "content_points_to_cover": [
+                  "Define and explain the core principles of sovereignty, anti-colonialism, and non-interference as they relate to India's foreign policy.",
+                  "Provide historical examples demonstrating how these principles have guided India's actions on the world stage.",
+                  "Analyze the challenges and contradictions inherent in upholding these principles in a complex and ever-changing global environment.",
+                  "Discuss how these principles have shaped India's approach to regional and global governance.",
+                  "Assess the extent to which these principles remain relevant and influential in contemporary India's foreign policy."
+                ],
+                "Google Search_terms": [
+                  "India's foreign policy principles",
+                  "Sovereignty in Indian foreign policy",
+                  "Anti-colonialism and Indian foreign policy",
+                  "Non-interference in Indian foreign policy",
+                  "India's role in international organizations"
+                ]
+              }
+            ]
+          }
         },
         {
           "title": "Geographical Determinants: Location, Borders, and Resources",
-          "description": "Analyzes the profound influence of India's strategic location in South Asia, its extensive land and maritime borders, and resource endowments on its security perceptions, neighborhood policies, and maritime strategy. [2.2]"
+          "description": "Analyzes the profound influence of India's strategic location in South Asia, its extensive land and maritime borders, and resource endowments on its security perceptions, neighborhood policies, and maritime strategy. [2.2]",
+          "generated_outline": {
+            "chapter_title_suggestion": "India's Geopolitical Landscape: Location, Borders, and Resources as Determinants of Foreign Policy",
+            "writing_sections": [
+              {
+                "section_title": "India's Strategic Location in South Asia: A Geopolitical Overview",
+                "content_points_to_cover": [
+                  "Analyze India's central location within South Asia, highlighting its proximity to major powers and regions of geopolitical significance (e.g., Central Asia, the Middle East). Discuss the implications of this location for India's security and foreign policy.",
+                  "Examine the historical context of India's location, tracing how its geographical position has shaped its interactions with neighboring countries and its role in regional dynamics. Consider the impact of the British Raj and post-colonial developments.",
+                  "Compare and contrast India's geopolitical situation with that of other major powers in the region or globally, focusing on the similarities and differences in their strategic challenges and opportunities arising from their respective locations."
+                ],
+                "Google Search_terms": [
+                  "India's geopolitical location South Asia",
+                  "India's strategic depth",
+                  "India's neighborhood first policy",
+                  "Geopolitics of the Indian Ocean"
+                ]
+              },
+              {
+                "section_title": "India's Extensive Land and Maritime Borders: Security Challenges and Opportunities",
+                "content_points_to_cover": [
+                  "Detail the characteristics of India's land borders, identifying key border disputes and their implications for regional stability (e.g., disputes with China, Pakistan, etc.). Analyze the impact of these disputes on India's defense spending and foreign policy priorities.",
+                  "Discuss the significance of India's long coastline and its extensive maritime borders. Analyze the challenges posed by maritime security threats (e.g., piracy, smuggling, illegal fishing), and India's response through its maritime strategy.",
+                  "Examine the role of international cooperation in managing border security challenges. Analyze India's participation in regional and multilateral security frameworks, and assess their effectiveness in addressing shared security concerns."
+                ],
+                "Google Search_terms": [
+                  "India China border dispute",
+                  "India Pakistan border security",
+                  "India's maritime strategy",
+                  "Indian Ocean Rim Association (IORA)",
+                  "India's coastal security"
+                ]
+              },
+              {
+                "section_title": "Resource Endowments and their Impact on India's Foreign Policy",
+                "content_points_to_cover": [
+                  "Analyze India's diverse resource base, including its energy resources, minerals, and agricultural potential. Assess the extent to which these resources influence India's economic diplomacy and foreign policy priorities.",
+                  "Discuss the role of energy security in shaping India's foreign policy. Analyze India's efforts to diversify its energy sources and secure reliable access to energy resources, both domestically and internationally.",
+                  "Examine the implications of resource scarcity and competition for India's relations with its neighbors and other countries. Analyze how resource issues can contribute to both cooperation and conflict in the region."
+                ],
+                "Google Search_terms": [
+                  "India's energy security",
+                  "India's mineral resources",
+                  "India's agricultural exports",
+                  "Resource diplomacy India",
+                  "India's economic engagement with Central Asia"
+                ]
+              },
+              {
+                "section_title": "Synthesis: Integrating Geographical Factors into India's Foreign Policy Framework",
+                "content_points_to_cover": [
+                  "Provide a concise summary of the key arguments presented in the chapter, emphasizing the interconnectedness of India's geographical features and its foreign policy choices.",
+                  "Develop a comprehensive analysis of how India's location, borders, and resources collectively shape its security perceptions, neighborhood policies, and maritime strategy.",
+                  "Offer concluding remarks on the future implications of these geographical determinants for India's foreign policy, considering potential challenges and opportunities in the evolving geopolitical landscape."
+                ],
+                "Google Search_terms": [
+                  "India's foreign policy doctrine",
+                  "India's Act East Policy",
+                  "India's strategic partnerships",
+                  "Future of India's geopolitics"
+                ]
+              }
+            ]
+          }
         },
         {
           "title": "Cultural and Societal Dimensions: Diversity and Diaspora",
-          "description": "Explores the role of India's rich cultural heritage, linguistic and religious diversity, democratic values, and the large global diaspora as elements of soft power and factors influencing foreign policy considerations and public diplomacy. [2.3]"
+          "description": "Explores the role of India's rich cultural heritage, linguistic and religious diversity, democratic values, and the large global diaspora as elements of soft power and factors influencing foreign policy considerations and public diplomacy. [2.3]",
+          "generated_outline": {
+            "chapter_title_suggestion": "India's Foreign Policy: The Influence of Culture, Diversity, and Diaspora",
+            "writing_sections": [
+              {
+                "section_title": "The Tapestry of Indian Culture: A Foundation for Soft Power",
+                "content_points_to_cover": [
+                  "Define and explain the concept of 'soft power' in the context of international relations, emphasizing its relevance to India's foreign policy.",
+                  "Analyze the diverse cultural heritage of India, including its ancient traditions, art forms, philosophies (e.g., Yoga, Buddhism), and contributions to global knowledge systems. Provide specific examples and historical context.",
+                  "Explore how these cultural elements are leveraged in India's public diplomacy efforts and initiatives.  Discuss specific examples of cultural exchanges, collaborations, and events that promote India's image and interests abroad.",
+                  "Discuss the role of cultural institutions (e.g., Indian Council for Cultural Relations - ICCR) and their impact on shaping India's soft power projection."
+                ],
+                "Google Search_terms": [
+                  "\"soft power\" international relations",
+                  "Indian cultural heritage examples",
+                  "India's public diplomacy initiatives",
+                  "ICCR impact on India's image"
+                ]
+              },
+              {
+                "section_title": "Linguistic and Religious Diversity: Navigating a Pluralistic Foreign Policy",
+                "content_points_to_cover": [
+                  "Analyze the impact of India's linguistic and religious diversity on its foreign policy approach.  Discuss the challenges and opportunities this diversity presents.",
+                  "Examine how India's commitment to secularism and democratic values influences its interactions with other nations, particularly those with diverse populations.",
+                  "Investigate specific examples where India's internal diversity has shaped its foreign policy decisions or its relationships with particular countries or regions.",
+                  "Discuss how India balances its internal diversity with its external projection of national identity and interests."
+                ],
+                "Google Search_terms": [
+                  "India's linguistic diversity foreign policy",
+                  "India's religious diversity international relations",
+                  "Indian secularism foreign policy",
+                  "India's national identity global projection"
+                ]
+              },
+              {
+                "section_title": "Democratic Values and Foreign Policy Decision-Making",
+                "content_points_to_cover": [
+                  "Examine the role of democratic values and institutions in shaping India's foreign policy decision-making processes.  Discuss the influence of public opinion, parliamentary debates, and media coverage.",
+                  "Analyze how India's commitment to democratic principles influences its engagement with other democracies and authoritarian regimes.",
+                  "Discuss the transparency and accountability mechanisms in India's foreign policy, and evaluate their effectiveness.",
+                  "Compare and contrast India's approach to foreign policy decision-making with other democratic nations."
+                ],
+                "Google Search_terms": [
+                  "India's democratic institutions foreign policy",
+                  "public opinion Indian foreign policy",
+                  "transparency accountability Indian foreign policy",
+                  "comparative analysis democratic foreign policy decision-making"
+                ]
+              },
+              {
+                "section_title": "The Indian Diaspora: A Global Network of Influence",
+                "content_points_to_cover": [
+                  "Analyze the size, distribution, and characteristics of the Indian diaspora globally.  Highlight its economic, political, and cultural influence in various countries.",
+                  "Examine how the Indian diaspora contributes to India's soft power and its economic and political relationships with other nations.",
+                  "Discuss specific examples of how the diaspora has played a role in shaping India's foreign policy or its relations with particular countries.",
+                  "Explore the challenges and opportunities associated with engaging with and leveraging the Indian diaspora for foreign policy objectives.",
+                  "Analyze potential future roles and influence of the Indian diaspora in shaping India's foreign policy."
+                ],
+                "Google Search_terms": [
+                  "Indian diaspora global distribution",
+                  "Indian diaspora economic influence",
+                  "Indian diaspora political influence",
+                  "Indian diaspora foreign policy impact",
+                  "engaging Indian diaspora foreign policy"
+                ]
+              },
+              {
+                "section_title": "Conclusion:  Synthesizing Cultural, Societal, and Diasporic Influences on Indian Foreign Policy",
+                "content_points_to_cover": [
+                  "Summarize the key findings of the chapter, highlighting the significant roles of culture, diversity, and the diaspora in shaping India's foreign policy.",
+                  "Offer a nuanced assessment of the strengths and challenges associated with leveraging these elements for effective foreign policy outcomes.",
+                  "Suggest potential future research directions or policy recommendations based on the analysis presented in the chapter.",
+                  "Connect the findings of this chapter to the broader themes explored in Part II of the book."
+                ],
+                "Google Search_terms": [
+                  "synthesis Indian foreign policy factors",
+                  "challenges leveraging soft power",
+                  "future research directions Indian foreign policy",
+                  "India's foreign policy future trends"
+                ]
+              }
+            ]
+          }
         },
         {
           "title": "Economic Trajectory: From Socialism to Liberalization",

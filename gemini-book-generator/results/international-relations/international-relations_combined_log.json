@@ -1,8 +1,8 @@
 {
   "input_file_path": "/Users/sauravtripathi/Downloads/write-content-markdown/international-relations.json",
   "start_time": "2025-04-12T12:54:01.249667",
-  "end_time": "2025-04-12T12:54:38.223533",
-  "total_duration_seconds": 36.976616,
+  "end_time": "2025-04-12T12:59:21.232071",
+  "total_duration_seconds": 36.781074,
   "model_used_general": null,
   "outline_model_used": "gemini-1.5-flash",
   "content_model_used": null,
@@ -14,7 +14,11 @@
     "outline:p0-ch0",
     "outline:p0-ch1",
     "outline:p0-ch2",
-    "outline:p0-ch3"
+    "outline:p0-ch3",
+    "outline:p0-ch4",
+    "outline:p1-ch0",
+    "outline:p1-ch1",
+    "outline:p1-ch2"
   ],
   "errors": [],
   "api_calls": []
