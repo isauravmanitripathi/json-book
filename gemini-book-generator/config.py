@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 load_dotenv() # Load environment variables from .env file
 
 # --- Gemini API Configuration ---
-DEFAULT_GEMINI_MODEL = os.environ.get("DEFAULT_GEMINI_MODEL", "gemini-1.5-flash") # Model for content generation
-OUTLINE_GEMINI_MODEL = os.environ.get("OUTLINE_GEMINI_MODEL", "gemini-1.5-flash") # Model for outline generation (can be same or different)
+DEFAULT_GEMINI_MODEL = os.environ.get("DEFAULT_GEMINI_MODEL", "gemini-2.0-flash") # Model for content generation
+OUTLINE_GEMINI_MODEL = os.environ.get("OUTLINE_GEMINI_MODEL", "gemini-2.0-flash") # Model for outline generation (can be same or different)
 API_RETRY_COUNT = 3 # Number of retries for API calls
 API_CALL_LIMIT_PER_MINUTE = 15 # Rate limit (adjust based on the specific model's limits)
 API_MAX_OUTPUT_TOKENS_OUTLINE = 8192 # Max tokens for outline generation response

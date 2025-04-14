@@ -29,7 +29,7 @@ except ImportError:
          print("Error: Unable to import config.py. Ensure it's accessible.")
          # Define minimal fallbacks if config cannot be imported
          config = type('obj', (object,), {
-             'DEFAULT_GEMINI_MODEL': 'gemini-1.5-flash',
+             'DEFAULT_GEMINI_MODEL': 'gemini-2.0-flash',
              'API_RETRY_COUNT': 3,
              'API_CALL_LIMIT_PER_MINUTE': 15,
              'API_MAX_OUTPUT_TOKENS_CONTENT': 4096,

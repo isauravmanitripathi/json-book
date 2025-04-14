@@ -9,6 +9,7 @@ import time
 import gc
 import random
 import sys # Added for sys.exit
+import json # Added for escaping input strings
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Tuple, Dict, Any, Set, List, Deque
@@ -22,7 +23,12 @@ try:
 except ImportError:
     print("Error: Failed to import necessary modules in content_generator.py.")
     print("Ensure config.py, api/gemini_client.py, and utils/* exist and are importable.")
-    config = type('obj', (object,), {'API_RETRY_COUNT': 3, 'INTERIM_SAVE_FREQUENCY_CONTENT': 1, 'MAX_CONTEXT_SUMMARY_LENGTH': 2000})() # Provide default for frequency
+    # Provide default for config attributes needed in this file if import fails
+    config = type('obj', (object,), {
+        'API_RETRY_COUNT': 3,
+        'INTERIM_SAVE_FREQUENCY_CONTENT': 1, # Not used directly here but good practice
+        'MAX_CONTEXT_SUMMARY_LENGTH': 2000
+    })()
     sys.exit(1)
 
 
@@ -37,50 +43,80 @@ def get_sort_key(item: Dict[str, Any]) -> Decimal:
 def _summarize_context(text: str, max_length: int) -> str:
     """Basic summarization by trimming."""
     if len(text) <= max_length: return text
-    start_index = len(text) - max_length
-    sentence_break = text.rfind(". ", start_index - 50, start_index + 50)
-    if sentence_break != -1: start_index = sentence_break + 2
-    elif text.rfind("\n", start_index - 50, start_index + 50) != -1:
-         start_index = text.rfind("\n", start_index - 50, start_index + 50) + 1
-    return "... (trimmed) ...\n" + text[start_index:].strip()
+    # Try to find a reasonable break point near the desired length
+    preferred_end = len(text) - max_length
+    # Look for sentence endings first
+    sentence_break = text.rfind(". ", max(0, preferred_end - 100), preferred_end + 100)
+    # Then look for paragraph breaks
+    para_break = text.rfind("\n\n", max(0, preferred_end - 100), preferred_end + 100)
 
-# --- Prompt Generation Functions (generate_chapter_intro_prompt, generate_point_prompt - same as before) ---
+    start_index = preferred_end # Default if no good break found nearby
+
+    # Choose the break point closest to the preferred end, favoring paragraph breaks
+    if para_break != -1 and (sentence_break == -1 or abs(para_break - preferred_end) <= abs(sentence_break - preferred_end)):
+        start_index = para_break + 2 # Start after the double newline
+    elif sentence_break != -1:
+        start_index = sentence_break + 2 # Start after the period and space
+
+    # Ensure start_index is within bounds
+    start_index = min(start_index, len(text) - 1)
+    start_index = max(0, start_index)
+
+    # Construct the summary
+    summary = text[start_index:].strip()
+    if start_index > 0:
+        # Add ellipsis only if text was actually trimmed
+        summary = "... (trimmed preceding content) ...\n\n" + summary
+
+    return summary
+
+# --- Prompt Generation Functions (MODIFIED - Efficient, In-Depth Main Writer) ---
+
 def generate_chapter_intro_prompt(book_title: str, part_name: str, chapter_title: str, chapter_points: List[str]) -> str:
-    """Generates the prompt for writing an introduction for a chapter."""
-    points_summary = "\n".join(f"- {point}" for point in chapter_points if point)
-    if not points_summary: points_summary = "- (No specific points listed in outline)"
-    prompt = f"""You are an expert academic writer specializing in content creation. Your task is to write a compelling and informative introduction for a specific chapter section in a book.
+    """
+    Generates the prompt for writing an engaging, context-setting, and concise
+    introduction for a chapter section.
+    """
+    # Escape inputs
+    escaped_book_title = json.dumps(book_title)[1:-1]
+    escaped_part_name = json.dumps(part_name)[1:-1]
+    escaped_chapter_title = json.dumps(chapter_title)[1:-1]
+
+    # Create a summary string from the points
+    points_summary = "\n".join(f"{i+1}. {point}" for i, point in enumerate(chapter_points) if point)
+    if not points_summary: points_summary = "(No specific points listed in outline)"
+    # Escape the entire block of points for safe inclusion
+    escaped_points_summary = json.dumps(points_summary)[1:-1]
+
+    prompt = f"""You are an gemini-2.0-flashExpert Academic Writergemini-2.0-flash crafting an engaging, informative, and concise introduction for a specific chapter section.
 
 BOOK CONTEXT:
-- Book Title: "{book_title}"
+- Book Title: "{escaped_book_title}"
 
 CURRENT SECTION DETAILS:
-- Part Name: "{part_name}"
-- Chapter Section Title: "{chapter_title}" (This section acts like a sub-chapter)
+- Part Name: "{escaped_part_name}"
+- Chapter Section Title: "{escaped_chapter_title}"
 
-POINTS COVERED IN THIS CHAPTER SECTION:
-{points_summary}
+OUTLINE OF POINTS COVERED IN THIS SECTION:
+(Note: These points are detailed explanations outlining the core content.)
+---
+{escaped_points_summary}
+---
 
 TASK:
-Based on the provided context, section title, and the summary of points to be covered, write an engaging introduction for this *specific chapter section*.
-- The introduction should clearly state the section's purpose and scope.
-- It should briefly preview the key topics (points) that will be discussed within this section.
-- Set the stage for the reader, highlighting the importance of this section's content within the broader chapter/part.
-- Maintain an academic, clear, and concise tone.
-- Aim for a well-structured paragraph or two.
-- This introduction will be the first item (e.g., '.1') within this chapter section.
+Write a compelling introduction for this chapter section that effectively sets the stage. Write in detail and depth. Make the text long and engaging. Cover every aspect in introduction.
 
 OUTPUT FORMAT:
-Your *entire* response MUST be a single, valid JSON object containing only one key, "introduction_text", with the generated introduction as its string value.
+Your *entire* response MUST be a single, valid JSON object containing only one key, "introduction_text".
 Example JSON Output:
 {{
-  "introduction_text": "This section delves into the core principles of..."
+  "introduction_text": "Building on the established framework, this section critically examines the real-world application of Theory X across diverse cultures, assessing its practical challenges and enduring relevance. We analyze implementation hurdles, explore successful adaptations via case studies, and evaluate the theory's overall predictive power in contemporary management."
 }}
 
 CRITICAL INSTRUCTIONS:
 1. Respond ONLY with the valid JSON object.
 2. Do NOT include any text outside the JSON object.
-3. Ensure the text addresses the task based *only* on the provided information.
+3. Ensure the introduction is engaging, informative, previews key themes efficiently, and highlights significance concisely.
 """
     return prompt
 
@@ -88,49 +124,77 @@ def generate_point_prompt(
     book_title: str, part_name: str, chapter_section_title: str, point_text: str,
     point_number: str, previous_content_summary: Optional[str] = None
 ) -> str:
-    """Generates the prompt for elaborating on a specific content point, providing preceding context."""
-    context_section = "This is the first elaborated point in this chapter section after the introduction."
+    """
+    Generates the prompt for the main AI writer to create a detailed, enriched,
+    and efficient elaboration of a content point, focusing on substantive depth.
+    """
+    # Escape inputs
+    escaped_book_title = json.dumps(book_title)[1:-1]
+    escaped_part_name = json.dumps(part_name)[1:-1]
+    escaped_chapter_section_title = json.dumps(chapter_section_title)[1:-1]
+    escaped_point_text = json.dumps(point_text)[1:-1] # The detailed outline point/directive
+    escaped_point_number = json.dumps(point_number)[1:-1]
+
+    context_section = "This is the first main content point in this chapter section following the introduction."
     if previous_content_summary and previous_content_summary.strip():
         summary_trimmed = _summarize_context(previous_content_summary.strip(), config.MAX_CONTEXT_SUMMARY_LENGTH)
-        context_section = f"""PRECEDING CONTENT SUMMARY (From the introduction up to the previous item in this chapter section):
+        # Escape the potentially multi-line summary block
+        escaped_summary = json.dumps(summary_trimmed)[1:-1]
+        context_section = f"""PRECEDING CONTENT SUMMARY (Represents the flow of text generated so far in this section):
 ---
-{summary_trimmed}
+{escaped_summary}
 ---
 """
-    prompt = f"""You are an expert academic writer specializing in content creation. Your task is to elaborate on a *single specific point* within a book chapter section, ensuring coherence with preceding text.
+    else:
+        # Escape the default context string
+        context_section = json.dumps(context_section)[1:-1]
+
+    prompt = f"""You are an expert on writing in depth, long, detailed, insightful, and efficiently written content for a book chapter. Your goal is to write on a specific directive, ensuring the reader gains a deep understanding ("understands everything") of the critical information without unnecessary verbosity. You main aim to explain every in length and detail.
+
+    Important - Right Now you are writing for international relations of india/International polity/ Foregin policy of india. So cater to the audience accordingly.
 
 BOOK CONTEXT:
-- Book Title: "{book_title}"
+- Book Title: "{escaped_book_title}"
 
 CURRENT LOCATION IN BOOK:
-- Part Name: "{part_name}"
-- Chapter Section Title: "{chapter_section_title}"
-- Current Item Number: {point_number} (e.g., ChapterSection.ItemNumber)
+- Part Name: "{escaped_part_name}"
+- Chapter Section Title: "{escaped_chapter_section_title}"
+- Current Item Number: {escaped_point_number} (Indicates position in the section's flow)
 
-SPECIFIC POINT TO ELABORATE ON:
-"{point_text}"
+CORE DIRECTIVE / DETAILED OUTLINE POINT FOR THIS SEGMENT:
+(This provides the central theme, concepts, and explanations to cover and expand upon)
+---
+"{escaped_point_text}"
+---
 
 CONTEXT FROM EARLIER IN THIS SECTION:
+(Ensure your writing flows logically from this preceding text and avoids repetition)
 {context_section}
 
 TASK:
-Write detailed and informative content (one or more paragraphs) that elaborates *only* on the `SPECIFIC POINT TO ELABORATE ON` ({point_number}).
-- **CRITICAL:** Read the 'PRECEDING CONTENT SUMMARY'. **DO NOT REPEAT** information already covered there. Build upon that context and focus *exclusively* on providing new, relevant details, analysis, examples, or explanations for the current point.
-- Assume this content follows the preceding items (intro and potentially other points) and precedes subsequent points within this chapter section.
-- Provide accurate, relevant information suitable for the book's audience.
-- Maintain an academic, clear, and objective tone. Use precise language.
+Write a gemini-2.0-flashthorough, detailed, enriched, AND efficient elaborationgemini-2.0-flash based *primarily* on the `CORE DIRECTIVE / DETAILED OUTLINE POINT FOR THIS SEGMENT` ({escaped_point_number}). Aim for depth and clarity worthy of publication.
+- gemini-2.0-flashExpand Core Ideas Insightfully:gemini-2.0-flash Fully develop the concepts, arguments, and explanations from the Core Directive into clear, well-structured paragraphs. Focus on insightful explanations.
+- gemini-2.0-flashEnrich with gemini-2.0-flashEssentialgemini-2.0-flash Detail:gemini-2.0-flash Actively add gemini-2.0-flashrelevantgemini-2.0-flash details crucial for deep understanding. Prioritize:
+    - Necessary background context or precise definitions.
+    - Clear explanations of important mechanisms, processes, or principles.
+    - Highly relevant illustrative examples (generic types acceptable).
+    - Key nuances, implications, or connections that significantly enhance comprehension.
+- gemini-2.0-flashWrite Efficiently and Substantively:gemini-2.0-flash Explain concepts thoroughly but gemini-2.0-flashavoid unnecessary repetition or verbose phrasing.gemini-2.0-flash Focus on conveying gemini-2.0-flashimportant information and explanations directly and clearly.gemini-2.0-flash Maximize the substance delivered per sentence.
+- gemini-2.0-flashEnsure Coherence:gemini-2.0-flash Critically analyze the 'PRECEDING CONTENT SUMMARY'. Your generated text MUST flow logically from it and gemini-2.0-flashstrictly avoid repeatinggemini-2.0-flash concepts already explained. Use transitions effectively.
+- gemini-2.0-flashMaintain Focus:gemini-2.0-flash While enriching, ensure all added details are gemini-2.0-flashdirectly relevantgemini-2.0-flash to explaining or supporting the specific theme of the `CORE DIRECTIVE`. Do not introduce unrelated topics.
+- gemini-2.0-flashAchieve Depth and Clarity:gemini-2.0-flash Produce writing that is precise, accurate, and sufficiently detailed for a comprehensive understanding of this segment.
 
 OUTPUT FORMAT:
-Your *entire* response MUST be a single, valid JSON object containing only one key, "point_content", with the generated elaboration as its string value.
-Example JSON Output (if the point was "Discuss historical context..."):
+Your *entire* response MUST be a single, valid JSON object containing only one key, "point_content", with the generated detailed and efficient text as its string value.
+Example JSON Output (Focusing on substance for Theory X assumptions):
 {{
-  "point_content": "The historical context for this policy begins in the post-independence era..."
+  "point_content": "McGregor's Theory X rests on specific assumptions about worker motivation that drive authoritarian management styles. Its first tenet is the inherent dislike of work: the average person avoids effort and responsibility. This necessitates external pressure, leading to the second assumption: coercion and control (e.g., threats, close supervision) are required for adequate organizational effort. This contrasts sharply with Theory Y's view of work as potentially fulfilling... [Explains implications for management structure concisely]. These assumptions, while criticized for oversimplification, highlight a control-oriented paradigm influencing... [Connects to broader management thought efficiently]."
 }}
 
 CRITICAL INSTRUCTIONS:
 1. Respond ONLY with the valid JSON object.
 2. Do NOT include any text outside the JSON object.
-3. Ensure the generated text directly and exclusively elaborates on the single `SPECIFIC POINT TO ELABORATE ON`, avoiding repetition from the provided context summary.
+3. Ensure the generated text offers gemini-2.0-flashsubstantive depth and clarity without unnecessary verbositygemini-2.0-flash, faithfully elaborating and enriching the Core Directive while maintaining coherence and focus. Avoid redundancy.
 """
     return prompt
 
@@ -180,6 +244,7 @@ def run_content_stage(
             console.print("Successfully loaded data from interim content file.")
         else:
             console.print("[warning]Interim content file found but seems invalid or for a different book. Rebuilding.[/warning]")
+            processed_items_set.clear() # Clear processed set if starting fresh
 
 
     # --- Build Skeleton & Identify Items to Process ---
@@ -202,48 +267,92 @@ def run_content_stage(
         chapter_counter_in_part = 0
         for c_idx_orig, input_chapter_orig in enumerate(input_part.get('chapters', [])):
              generated_outline = input_chapter_orig.get('generated_outline')
+             # Skip if outline is missing, not a dict, or marked with an error
              if not isinstance(generated_outline, dict) or generated_outline.get("error"):
+                 # Optionally log skipping this original chapter?
+                 # console.print(f"[dim]Skipping content generation for original chapter {c_idx_orig} due to missing/invalid outline.[/dim]")
                  continue
+
              writing_sections = generated_outline.get('writing_sections', [])
              if not isinstance(writing_sections, list): writing_sections = []
 
              for s_idx, input_section in enumerate(writing_sections):
+                 # Treat each writing section as a chapter in the output
                  chapter_counter_in_part += 1
-                 current_chapter_number = chapter_counter_in_part
-                 output_chapter_title = input_section.get('section_title', f'Chapter Section {current_chapter_number}')
+                 current_chapter_number = chapter_counter_in_part # Unique chapter number within the part
+                 output_chapter_title = input_section.get('section_title')
+                 # Handle potentially missing section titles
+                 if not output_chapter_title:
+                      # Try to derive from original chapter title if possible, or use a placeholder
+                      orig_ch_title = input_chapter_orig.get('title', f'Original Chapter {c_idx_orig+1}')
+                      output_chapter_title = f"{orig_ch_title} - Section {s_idx+1}"
+                      console.print(f"[warning]Outline section {s_idx} in original chapter {c_idx_orig} missing title. Using derived title: '{output_chapter_title}'[/warning]")
+
+
                  points_to_cover = input_section.get('content_points_to_cover', [])
                  if not isinstance(points_to_cover, list): points_to_cover = []
 
+                 # Find or create the output chapter structure
                  output_chapter = chapter_map.get(output_chapter_title)
                  if output_chapter is None:
                       output_chapter = {'chapter_number': current_chapter_number, 'title': output_chapter_title, 'content': []}
+                      # Add to the correct part's chapters list
                       output_part['chapters'].append(output_chapter)
+                      # Update the map for potential reuse if titles aren't unique (though they should be)
                       chapter_map[output_chapter_title] = output_chapter
                  else:
-                      output_chapter.setdefault('content', [])
+                      output_chapter.setdefault('content', []) # Ensure content list exists
+
+                 # Sort existing content for context gathering
                  output_chapter['content'].sort(key=get_sort_key)
                  content_map = {item.get('item_number'): item for item in output_chapter.get('content', [])}
 
+                 # --- Check and add Intro item ---
                  intro_item_number_str = f"{current_chapter_number}.1"
-                 intro_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-intro"
+                 intro_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-intro" # Unique key based on original outline structure
                  log_key = f"{stage_name}:{intro_key}"
                  total_items_identified += 1
+                 # Check if already processed (in log) OR exists validly in loaded data
                  intro_already_generated = log_key in processed_items_set or \
                      (intro_item_number_str in content_map and content_map[intro_item_number_str].get('text') and "ERROR:" not in content_map[intro_item_number_str]['text'])
-                 if not intro_already_generated:
-                      items_to_process.append({ 'type': 'intro', 'key': intro_key, 'p_idx': p_idx, 'c_idx_orig': c_idx_orig, 's_idx': s_idx, 'part_name': part_name, 'chapter_title': output_chapter_title, 'chapter_points': [pt for pt in points_to_cover if pt], 'item_number_to_assign': intro_item_number_str, 'output_chapter_ref': output_chapter })
 
+                 if not intro_already_generated:
+                      items_to_process.append({
+                          'type': 'intro',
+                          'key': intro_key,
+                          'part_name': part_name,
+                          'chapter_title': output_chapter_title, # Use the final output title
+                          'chapter_points': [pt for pt in points_to_cover if pt], # Pass the actual points
+                          'item_number_to_assign': intro_item_number_str,
+                          'output_chapter_ref': output_chapter # Direct reference to modify
+                      })
+
+                 # --- Check and add Point items ---
                  for pt_idx, point_text in enumerate(points_to_cover):
-                      if not point_text: continue
-                      point_item_number_str = f"{current_chapter_number}.{pt_idx + 2}"
-                      point_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-p{pt_idx}"
+                      if not point_text or not isinstance(point_text, str) or not point_text.strip():
+                           # console.print(f"[dim]Skipping empty point at index {pt_idx} in section {s_idx} of original chapter {c_idx_orig}[/dim]")
+                           continue # Skip empty or invalid points
+
+                      point_item_number_str = f"{current_chapter_number}.{pt_idx + 2}" # Start points from .2
+                      point_key = f"p{p_idx}-c{c_idx_orig}-s{s_idx}-p{pt_idx}" # Unique key
                       log_key = f"{stage_name}:{point_key}"
                       total_items_identified += 1
+                      # Check if already processed OR exists validly in loaded data
                       point_already_generated = log_key in processed_items_set or \
                          (point_item_number_str in content_map and content_map[point_item_number_str].get('text') and "ERROR:" not in content_map[point_item_number_str]['text'])
-                      if not point_already_generated:
-                          items_to_process.append({ 'type': 'point', 'key': point_key, 'p_idx': p_idx, 'c_idx_orig': c_idx_orig, 's_idx': s_idx, 'pt_idx': pt_idx, 'part_name': part_name, 'chapter_title': output_chapter_title, 'point_text': point_text, 'item_number_to_assign': point_item_number_str, 'output_chapter_ref': output_chapter })
 
+                      if not point_already_generated:
+                          items_to_process.append({
+                              'type': 'point',
+                              'key': point_key,
+                              'part_name': part_name,
+                              'chapter_title': output_chapter_title, # Use the final output title
+                              'point_text': point_text, # The detailed point from outline
+                              'item_number_to_assign': point_item_number_str,
+                              'output_chapter_ref': output_chapter # Direct reference
+                          })
+
+        # Ensure chapters within each part are sorted numerically after identification
         for part in final_output_data.get('parts', []):
             part.get('chapters', []).sort(key=lambda x: x.get('chapter_number', 0))
     # --- End Item Identification ---
@@ -266,49 +375,88 @@ def run_content_stage(
             log_key = f"{stage_name}:{item_key}"
             item_type = item_info['type']
             item_number_to_assign = item_info['item_number_to_assign']
-            output_chapter_ref = item_info['output_chapter_ref']
+            output_chapter_ref = item_info['output_chapter_ref'] # Direct reference to the chapter dict
 
             progress.update(task_id, description=f"Content {item_number_to_assign} ({item_type})...")
 
             prompt = None
             expected_api_key = None
             try:
-                # --- Generate Prompt (Logic remains same) ---
+                # --- Generate Prompt using the MODIFIED functions ---
                 if item_type == 'intro':
                     expected_api_key = "introduction_text"
-                    prompt = generate_chapter_intro_prompt( final_output_data['bookTitle'], item_info['part_name'], item_info['chapter_title'], item_info['chapter_points'] )
+                    prompt = generate_chapter_intro_prompt(
+                        final_output_data['bookTitle'],
+                        item_info['part_name'],
+                        item_info['chapter_title'],
+                        item_info['chapter_points']
+                    )
                 elif item_type == 'point':
                     expected_api_key = "point_content"
+                    # --- Gather Preceding Context (Improved Robustness) ---
                     previous_content_summary = ""
                     try:
                          current_item_num_decimal = Decimal(item_number_to_assign)
                          preceding_items_text = []
+                         # Ensure content list exists and is sorted before gathering context
+                         output_chapter_ref.setdefault('content', [])
                          output_chapter_ref['content'].sort(key=get_sort_key)
+
                          for item in output_chapter_ref.get('content', []):
-                             if isinstance(item, dict) and 'item_number' in item and 'text' in item and item['text'] and "ERROR:" not in item['text']:
+                             # Check item validity more carefully
+                             if isinstance(item, dict) and \
+                                item.get('item_number') and \
+                                isinstance(item.get('text'), str) and \
+                                item['text'] and \
+                                "ERROR:" not in item['text']:
                                  try:
                                      item_num_decimal = Decimal(item['item_number'])
-                                     if item_num_decimal < current_item_num_decimal: preceding_items_text.append(item['text'])
-                                 except (InvalidOperation, TypeError): continue
+                                     # Only include items strictly before the current one
+                                     if item_num_decimal < current_item_num_decimal:
+                                         preceding_items_text.append(item['text'])
+                                 except (InvalidOperation, TypeError, ValueError):
+                                     # Ignore items with invalid numbers
+                                     # console.print(f"[dim]Skipping item with invalid number '{item.get('item_number')}' during context gathering for {log_key}[/dim]")
+                                     continue
+                         # Join the valid preceding texts
                          previous_content_summary = "\n\n---\n\n".join(preceding_items_text)
-                    except Exception as e: console.print(f"[warning]Could not gather preceding content for {log_key}: {e}[/warning]")
-                    prompt = generate_point_prompt( final_output_data['bookTitle'], item_info['part_name'], item_info['chapter_title'], item_info['point_text'], item_number_to_assign, previous_content_summary )
-                else: raise ValueError(f"Unknown item type: {item_type}")
+                    except Exception as e:
+                        # Log specific error during context gathering
+                        console.print(f"[warning]Could not gather preceding content for {log_key} due to error: {e}[/warning]")
+                        # Proceed without context summary if gathering fails
+                        previous_content_summary = "" # Ensure it's reset
+
+                    prompt = generate_point_prompt(
+                        final_output_data['bookTitle'],
+                        item_info['part_name'],
+                        item_info['chapter_title'],
+                        item_info['point_text'],
+                        item_number_to_assign,
+                        previous_content_summary
+                    )
+                else:
+                    # Should not happen if item identification is correct
+                    raise ValueError(f"Unknown item type encountered: {item_type}")
 
             except Exception as e:
                  # (Error handling for prompt generation remains same)
                  error_msg = f"Error generating prompt for {log_key}: {e}"
                  console.print(f"[error]{error_msg}[/error]")
                  log_handler.log_error(log_data, stage_name, item_key, {"error": error_msg, "status": "prompt_error"})
-                 error_entry = {'item_number': item_number_to_assign, 'type': item_type, 'text': f"ERROR: {error_msg}"}
-                 if item_type == 'point': error_entry['original_point'] = item_info['point_text']
-                 output_chapter_ref['content'] = [item for item in output_chapter_ref.get('content', []) if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
+                 # --- Update content with error (Improved) ---
+                 error_entry = {'item_number': item_number_to_assign, 'type': item_type, 'text': f"ERROR: Prompt generation failed. {error_msg}"}
+                 if item_type == 'point': error_entry['original_point'] = item_info.get('point_text', 'N/A') # Add original point if available
+                 # Ensure content list exists
+                 output_chapter_ref.setdefault('content', [])
+                 # Remove any previous entry for this item number before adding error
+                 output_chapter_ref['content'] = [item for item in output_chapter_ref['content'] if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
                  output_chapter_ref['content'].append(error_entry)
                  output_chapter_ref['content'].sort(key=get_sort_key)
+                 # --- End Update content with error ---
                  overall_success = False
-                 log_handler.save_log(log_data, log_file_path)
-                 progress.update(task_id, advance=1)
-                 continue
+                 log_handler.save_log(log_data, log_file_path) # Save log after prompt error
+                 if task_id is not None: progress.update(task_id, advance=1)
+                 continue # Skip API call for this item
 
             # --- Call API (Logic remains same) ---
             parsed_response, error_message = gemini_client.call_gemini_api(
@@ -319,52 +467,67 @@ def run_content_stage(
             )
 
             # --- Process API Response ---
+            # Prepare basic item entry structure
             item_entry = { 'item_number': item_number_to_assign, 'type': item_type, 'text': None }
-            if item_type == 'point': item_entry['original_point'] = item_info['point_text']
+            if item_type == 'point':
+                item_entry['original_point'] = item_info.get('point_text', 'N/A')
 
-            if parsed_response and expected_api_key and expected_api_key in parsed_response:
-                item_entry['text'] = parsed_response[expected_api_key]
-                if not item_entry['text']:
-                     warn_msg = f"API returned empty content for {log_key}."
+            # Check response validity
+            if parsed_response and expected_api_key and isinstance(parsed_response.get(expected_api_key), str):
+                generated_text = parsed_response[expected_api_key].strip()
+                if generated_text:
+                    item_entry['text'] = generated_text
+                    log_status = "api_success"
+                else:
+                     # Handle cases where API returns the key but with empty/whitespace string
+                     warn_msg = f"API returned empty content for key '{expected_api_key}' for {log_key}."
                      console.print(f"[warning]{warn_msg}[/warning]")
                      item_entry['text'] = f"WARNING: {warn_msg}"
-                     log_handler.log_error(log_data, stage_name, item_key, {"warning": warn_msg, "status": "api_empty_response"})
+                     log_status = "api_empty_response"
+                     log_handler.log_error(log_data, stage_name, item_key, {"warning": warn_msg, "status": log_status})
 
-                # Add/Update Item
-                output_chapter_ref['content'] = [item for item in output_chapter_ref.get('content', []) if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
+                # --- Add/Update Item in chapter content (Improved) ---
+                output_chapter_ref.setdefault('content', [])
+                # Remove previous entry for this item number
+                output_chapter_ref['content'] = [item for item in output_chapter_ref['content'] if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
                 output_chapter_ref['content'].append(item_entry)
                 output_chapter_ref['content'].sort(key=get_sort_key)
+                # --- End Add/Update Item ---
 
-                log_handler.log_item_success(log_data, stage_name, item_key)
-                processed_items_set.add(log_key)
+                # Log success only if content was non-empty
+                if log_status == "api_success":
+                    log_handler.log_item_success(log_data, stage_name, item_key)
+                processed_items_set.add(log_key) # Mark as processed even if warning/empty
                 processed_in_stage += 1
-                progress.update(task_id, advance=1, description=f"Done {item_number_to_assign}")
+                if task_id is not None: progress.update(task_id, advance=1, description=f"Done {item_number_to_assign}")
 
-                # --- SAVE AFTER SUCCESS ---
-                # Save interim content data and log immediately after success
+                # --- SAVE AFTER SUCCESS/Warning ---
+                # Save interim content data and log immediately
                 if not file_handler.save_json_file(final_output_data, interim_content_path):
                     console.print(f"[error]CRITICAL: Failed to save interim content data to {interim_content_path} after processing {log_key}! Potential data loss.[/error]")
-                    # return None, False # Optionally stop
+                    # Consider stopping if save fails: return None, False
                 if not log_handler.save_log(log_data, log_file_path):
                     console.print(f"[warning]Failed to save log file after processing {log_key}.[/warning]")
-                # --- END SAVE AFTER SUCCESS ---
+                # --- END SAVE AFTER SUCCESS/Warning ---
 
             else:
-                # (Error handling for API failure remains same)
-                 final_error_msg = error_message or f"API response missing expected key '{expected_api_key}'"
+                # Handle API failure or invalid response format
+                 final_error_msg = error_message or f"API response invalid or missing expected key '{expected_api_key}'"
                  console.print(f"[error]Failed to generate content for {log_key}. Error: {final_error_msg}[/error]")
                  log_handler.log_error(log_data, stage_name, item_key, {"error": final_error_msg, "status": "api_failure_or_bad_format"})
                  item_entry['text'] = f"ERROR: Generation failed. {final_error_msg}"
-                 # Add/Update Item with error
-                 output_chapter_ref['content'] = [item for item in output_chapter_ref.get('content', []) if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
+                 # --- Add/Update Item with error (Improved) ---
+                 output_chapter_ref.setdefault('content', [])
+                 output_chapter_ref['content'] = [item for item in output_chapter_ref['content'] if not (isinstance(item, dict) and item.get('item_number') == item_number_to_assign)]
                  output_chapter_ref['content'].append(item_entry)
                  output_chapter_ref['content'].sort(key=get_sort_key)
+                 # --- End Add/Update Item with error ---
                  overall_success = False
                  # Save log immediately after error
                  log_handler.save_log(log_data, log_file_path)
-                 progress.update(task_id, advance=1) # Advance past failed item
+                 if task_id is not None: progress.update(task_id, advance=1) # Advance past failed item
 
-            gc.collect()
+            gc.collect() # Garbage collection remains the same
 
 
     # --- Finalization ---
@@ -373,7 +536,9 @@ def run_content_stage(
     for part in final_output_data.get('parts', []):
         part.get('chapters', []).sort(key=lambda x: x.get('chapter_number', 0))
         for chapter in part.get('chapters', []):
-            chapter.get('content', []).sort(key=get_sort_key)
+             # Ensure content exists before sorting
+             chapter.setdefault('content', [])
+             chapter['content'].sort(key=get_sort_key)
 
     # Save final content data
     console.print(f"Saving final content data state to [path]{final_content_path}[/path]...")
@@ -382,16 +547,16 @@ def run_content_stage(
         overall_success = False
         log_handler.log_error(log_data, stage_name, "final_save", {"error": f"Failed to save final content data to {final_content_path}"})
     else:
-        # Clean up interim file on successful final save
+        # Clean up interim file only on successful final save
         if interim_content_path.exists():
             try:
                 interim_content_path.unlink()
-                # console.print(f"Cleaned up interim file: [path]{interim_content_path}[/path]") # Less verbose
+                # console.print(f"Cleaned up interim file: [path]{interim_content_path}[/path]")
             except OSError as e:
                  console.print(f"[warning]Could not remove interim content file {interim_content_path}: {e}[/warning]")
 
 
-    # Save final log state (already saved after last item/error, but safe to save again)
+    # Save final log state (important to capture final state)
     log_handler.save_log(log_data, log_file_path)
 
     return final_output_data, overall_success
