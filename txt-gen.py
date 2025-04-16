@@ -8,7 +8,8 @@ ignore_files = {"openai-rerwite.py"}
 ignore_dirs = {
     "json_writer",
     "pdf_worker_2",
-    ".venv"  # Ignoring the virtual environment folder
+    ".venv",
+      "gemini-book-generator"  # Ignoring the virtual environment folder
 }
 
 # Output file path
