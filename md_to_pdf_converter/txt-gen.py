@@ -1,7 +1,7 @@
 import os
 
-# Define the base directory where main.py is located
-base_dir = "/Users/sauravtripathi/Downloads/generate-pdf"
+# Define the base directory as the directory where the script is located
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Files and directories to ignore
 ignore_files = {"openai-rerwite.py"}
@@ -9,8 +9,7 @@ ignore_dirs = {
     "json_writer",
     "pdf_worker_2",
     ".venv",
-      "gemini-book-generator",
-        "md_to_pdf_converter"  # Ignoring the virtual environment folder
+    "gemini-book-generator"  # Ignoring the virtual environment folder
 }
 
 # Output file path

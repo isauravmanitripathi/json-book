@@ -1,0 +1,132 @@
+{
+  "style_name": "default",
+  "description": "A clean, standard style for Markdown documents.",
+  "page": {
+    "size": "A4",
+    "margins": {
+      "left": 72,
+      "right": 72,
+      "top": 72,
+      "bottom": 72
+    }
+  },
+  "fonts": {
+    "body": "Times-Roman",
+    "body_bold": "Times-Bold",
+    "body_italic": "Times-Italic",
+    "heading": "Helvetica-Bold",
+    "code": "Courier"
+  },
+  "page_numbers": {
+    "show": true,
+    "format": "Page {current}",
+    "position": "bottom-center",
+    "font_name": "Helvetica",
+    "font_size": 9,
+    "color": "#555555",
+    "start_page": 1
+  },
+  "table_of_contents": {
+    "title": {
+      "text": "Table of Contents",
+      "font_name": "heading",
+      "font_size": 18,
+      "color": "#000000",
+      "alignment": "center",
+      "space_after": 20
+    },
+    "level_styles": [
+      {
+        "font_name": "body_bold",
+        "font_size": 12,
+        "indent": 20,
+        "leading": 16,
+        "color": "#000000",
+        "space_after": 5
+      },
+      {
+        "font_name": "body",
+        "font_size": 11,
+        "indent": 40,
+        "leading": 14,
+        "color": "#333333",
+        "space_after": 4
+      }
+    ]
+  },
+  "chapter_heading": {
+    "font_name": "heading",
+    "font_size": 20,
+    "color": "#000000",
+    "alignment": "left",
+    "space_before": 30,
+    "space_after": 15,
+    "page_break_before": true
+  },
+  "section_heading": {
+    "font_name": "heading",
+    "font_size": 16,
+    "color": "#222222",
+    "alignment": "left",
+    "space_before": 18,
+    "space_after": 10
+  },
+  "paragraph": {
+    "font_name": "body",
+    "font_size": 11,
+    "color": "#000000",
+    "leading": 14,
+    "alignment": "justified",
+    "space_after": 6,
+    "first_line_indent": 18
+  },
+  "code_block": {
+    "font_name": "code",
+    "font_size": 9,
+    "leading": 11,
+    "background_color": "#f0f0f0",
+    "text_color": "#000000",
+    "border_color": "#cccccc",
+    "border_width": 0.5,
+    "padding": 10,
+    "space_before": 8,
+    "space_after": 8
+  },
+  "table": {
+    "header": {
+      "font_name": "body_bold",
+      "font_size": 10,
+      "background_color": "#e0e0e0",
+      "text_color": "#000000",
+      "alignment": "CENTER",
+      "padding_bottom": 4
+    },
+    "cell": {
+      "font_name": "body",
+      "font_size": 10,
+      "text_color": "#000000",
+      "alignment": "LEFT",
+      "padding": 3
+    },
+    "grid": {
+      "color": "#aaaaaa",
+      "width": 0.5,
+      "use_inner_lines": true,
+      "use_outer_lines": true
+    },
+    "space_before": 10,
+    "space_after": 10
+  },
+  "image": {
+    "caption": {
+      "font_name": "body_italic",
+      "font_size": 9,
+      "color": "#555555",
+      "leading": 11,
+      "alignment": "center",
+      "space_before": 4,
+      "italic": true
+    },
+    "space_after": 10
+  }
+}
